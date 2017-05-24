@@ -5,7 +5,7 @@ $(document).ready(function(){
 	// Fill the canvas to the screen without scalling the mouse/touch coordinate
 	ctx.canvas.width  = window.innerWidth;
   	ctx.canvas.height = window.innerHeight;
-	ctx.strokeStyle = "grey";
+	ctx.lineCap="round";
 	ctx.lineWidth = 6;
 
 	// Set up mouse events for drawing
@@ -13,24 +13,47 @@ $(document).ready(function(){
 	var mousePos = { x:0, y:0 };
 	var lastPos = mousePos;
 
-	$(canvas).on("tap", function() {
-		document.body.innerHTML = "tab";
+	$.Finger = {
+		pressDuration: 300,
+		doubleTapInterval: 300,
+		flickDuration: 150,
+		motionThreshold: 5
+	};
+
+	$(canvas).on("tap", function(e) {
+		ctx.beginPath();
+		ctx.arc(e.x, e.y, 30, 0, 2 * Math.PI);
+		ctx.stroke();
 	});
 
-	$(canvas).on("doubletap", function() {
-		document.body.innerHTML = "doubletap";
+	$(canvas).on("doubletap", function(e) {
+		ctx.beginPath();
+		ctx.arc(e.x, e.y, 30, 0, 2 * Math.PI);
+		ctx.beginPath();
+		ctx.arc(e.x, e.y, 60, 0, 2 * Math.PI);
+		ctx.stroke();
 	});
 
-	$(canvas).on("press", function() {
-		document.body.innerHTML = "press";
+	$(canvas).on("press", function(e) {
+		ctx.beginPath();
+		ctx.arc(e.x, e.y, 30, 0, 2 * Math.PI);
+		ctx.fill();
 	});
 
-	$(canvas).on("flick", function() {
-		document.body.innerHTML = "flick";
+	$(canvas).on("flick", function(e) {
+		ctx.strokeStyle = "black";
+		ctx.beginPath();
+		ctx.moveTo(e.x - e.dx, e.y - e.dy);
+		ctx.lineTo(e.x, e.y);
+		ctx.stroke();
 	});
 
-	$(canvas).on("drag", function() {
-		document.body.innerHTML = "drag";
+	$(canvas).on("drag", function(e) {
+		ctx.strokeStyle = "grey";
+		ctx.beginPath();
+		ctx.moveTo(e.x - e.dx, e.y - e.dy);
+		ctx.lineTo(e.x, e.y);
+		ctx.stroke();
 	});
 
 	/*var timer;
