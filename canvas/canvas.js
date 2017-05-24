@@ -40,16 +40,16 @@ $(document).ready(function(){
 		ctx.fill();
 	});
 
-	$(canvas).on("flick", function(e) {
-		ctx.strokeStyle = "black";
+	$(canvas).on("drag", function(e) {
+		ctx.strokeStyle = "grey";
 		ctx.beginPath();
 		ctx.moveTo(e.x - e.dx, e.y - e.dy);
 		ctx.lineTo(e.x, e.y);
 		ctx.stroke();
 	});
 
-	$(canvas).on("drag", function(e) {
-		ctx.strokeStyle = "grey";
+	$(canvas).on("flick", function(e) {
+		ctx.strokeStyle = "black";
 		ctx.beginPath();
 		ctx.moveTo(e.x - e.dx, e.y - e.dy);
 		ctx.lineTo(e.x, e.y);
