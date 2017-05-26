@@ -1,6 +1,28 @@
 $(document).ready(function(){
 })
 
+$(document).on("click", "ul li", function(event) {
+    /*$(this).animate({
+        opacity: 0,
+        left: "+=50%"
+    }, 300, "swing", function () {
+        // Animation complete.
+        $(this).remove();
+    });*/
+}).on("swipeleft", "ul li", function(e) {
+    $(this).animate({
+        left: "-=13%"
+    }, 130, "swing", function () {
+
+    });
+}).on("swiperight", "ul li", function(e) {
+    $(this).animate({
+        left: "+=13%"
+    }, 130, "swing", function () {
+
+    });
+});
+
 function switchTheme() {
     var $pages = $("[data-role='page']");
 
