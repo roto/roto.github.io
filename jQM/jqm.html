@@ -28,7 +28,7 @@
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
 
 <body>
-	<div id="page" data-role="page" data-theme="a">
+	<div id="page" data-role="page">
 		<div data-role="header" data-position="fixed">
 			<div data-role="navbar" data-iconpos="left">
 				<ul>
@@ -44,21 +44,25 @@
 				<li><a href="#"><img src="https://www.w3schools.com/jquerymobile/chrome.png" alt="Chrome" class="ui-li-icon">Chrome</a></li>
 				<li>
 					<a href="#">
-						<img src="https://www.w3schools.com/jquerymobile/chrome.png">
-						<h2>Google Chrome</h2>
-						<p>Google Chrome is a free, open-source web browser. Released in 2008.</p>
-					</a>
+					<img src="https://www.w3schools.com/jquerymobile/chrome.png">
+					<h2>Google Chrome</h2>
+					<p>Google Chrome is a free, open-source web browser. Released in 2008.</p>
+				</a>
 					<a href="#">Some Text</a>
 				</li>
 			</ul>
 		</div>
 
-		<div data-role="footer" data-position="fixed" style="text-align:center;">
+		<div data-role="footer" data-position="fixed">
 			<a href="#" class="ui-btn ui-icon-plus ui-btn-icon-left">Add Me On Facebook</a>
 			<a href="#" class="ui-btn ui-icon-plus ui-btn-icon-left">Add Me On Twitter</a>
-			<a href="#" class="ui-btn ui-icon-plus ui-btn-icon-left">Add Me On Instagram</a>
-			<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
+			<div style="float:right">
+				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
+			</div>
 		</div>
+	</div>
+
+	<div id="page2" data-role="page">
 	</div>
 
 	<!-- Javascript at the bottom for fast page loading -->
