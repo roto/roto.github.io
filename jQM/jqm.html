@@ -28,29 +28,51 @@
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
 
 <body>
-	<div id="page" data-role="page" data-theme="b">
+	<!-- Home Page -->
+
+	<!-- Order Page -->
+	<div id="order" data-role="page" data-theme="b">
 		<div data-role="header" data-position="fixed">
-			<div data-role="navbar" data-iconpos="left">
-				<ul>
-					<li><a href="#anylink" data-icon="home">Home</a></li>
-					<li><a href="#anylink" data-icon="arrow-r" class="ui-btn">Page Two</a></li>
-					<li><a href="#anylink" data-icon="search">Search</a></li>
-				</ul>
-			</div>
+			<a href="#anylink" data-icon="arrow-l">Home</a>
+			<h1>ORDER</h1>
+			<a href="#menu" data-icon="bars">Menu</a>
 		</div>
 
 		<div role="main" data-role="main" class="ui-content">
 			<ul id="menu" data-role="listview" data-inset="false">
-				<li><a href="#"><img src="https://www.w3schools.com/jquerymobile/chrome.png" alt="Chrome" class="ui-li-icon">Chrome</a></li>
+				<li>
+					<a href="#">
+						<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXjZvvV4Q2-JUUtC9mIK9sxVTsnxDTw6M1jWt-e2atLkezbPQHTA">
+						<h2>Google Chrome</h2>
+						<p>Google Chrome is a free, open-source web browser. Released in 2008.</p>
+					</a>
+					<a href="#" class="ui-btn ui-icon-edit">Some Text</a>
+				</li>
 				<li>
 					<a href="#">
 						<img src="https://www.w3schools.com/jquerymobile/chrome.png">
 						<h2>Google Chrome</h2>
 						<p>Google Chrome is a free, open-source web browser. Released in 2008.</p>
 					</a>
-					<a href="#">Some Text</a>
+					<a href="#" class="ui-btn ui-icon-edit">Some Text</a>
 				</li>
 			</ul>
+		</div>
+
+		<div data-role="footer" data-position="fixed">
+			<a href="#" class="ui-btn ui-icon-location ui-btn-icon-left">Table</a>
+			<div style="float:right">
+				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- Menu Page -->
+	<div id="menu" data-role="page" data-theme="b">
+		<div data-role="header" data-position="fixed">
+			<a href="#order" data-icon="arrow-l">Order</a>
+			<h1>MENU</h1>
+			<a href="#menu" data-icon="search">Search</a>
 		</div>
 
 		<div data-role="footer" data-position="fixed">
@@ -60,9 +82,6 @@
 				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
 			</div>
 		</div>
-	</div>
-
-	<div id="page2" data-role="page" data-theme="b">
 	</div>
 
 	<!-- Javascript at the bottom for fast page loading -->
@@ -79,6 +98,7 @@
 	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
 	<!-- main script -->
+	<link rel="stylesheet" href="jqm.css">
 	<script src="jqm.js"></script>
 </body>
 </html>
