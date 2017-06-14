@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en" class="">
+
 <head>
 	<meta charset="utf-8">
 
@@ -16,8 +17,8 @@
 
 	<!-- Fill the page -->
 	<style>
-		* { margin: 0; padding: 0;}
-		body, html { height:100%; }
+		* { margin: 0; padding: 0; }
+		body, html { height: 100%; }
 	</style>
 
 	<!-- Prevent page zooming -->
@@ -42,7 +43,26 @@
 			<ul id="menu" data-role="listview" data-inset="false">
 				<li>
 					<a href="#">
-						<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXjZvvV4Q2-JUUtC9mIK9sxVTsnxDTw6M1jWt-e2atLkezbPQHTA">
+						<img style="border-radius: 50%"
+								src="https://media.foody.vn/res/g1/6682/prof/s480x300/foody-mobile-foody-a-hai-com-ga-x-869-635948407399671556.jpg"
+						<h2>Cơm Gà</h2>
+						<p>Cơm rang với đùi gà rán.</p>
+					</a>
+					<a href="#" class="ui-btn ui-icon-edit">Some Text</a>
+				</li>
+				<li>
+					<a href="#">
+						<img style="border-radius: 50%"
+								src="https://www.w3schools.com/jquerymobile/chrome.png"
+						<h2>Google Chrome</h2>
+						<p>Google Chrome is a free, open-source web browser. Released in 2008.</p>
+					</a>
+						<a href="#" class="ui-btn ui-icon-edit">Some Text</a>
+				</li>
+				<li>
+					<a href="#">
+						<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXjZvvV4Q2-JUUtC9mIK9sxVTsnxDTw6M1jWt-e2atLkezbPQHTA"
+								style="border-radius: 50%">
 						<h2>Google Chrome</h2>
 						<p>Google Chrome is a free, open-source web browser. Released in 2008.</p>
 					</a>
@@ -50,7 +70,8 @@
 				</li>
 				<li>
 					<a href="#">
-						<img src="https://www.w3schools.com/jquerymobile/chrome.png">
+						<img src="https://www.w3schools.com/jquerymobile/chrome.png"
+								style="border-radius: 50%">
 						<h2>Google Chrome</h2>
 						<p>Google Chrome is a free, open-source web browser. Released in 2008.</p>
 					</a>
@@ -75,9 +96,71 @@
 			<a href="#menu" data-icon="search">Search</a>
 		</div>
 
+		<!-- http://demos.jquerymobile.com/1.4.0/filterable/#FilterCollapsibleSetandcollapsiblechildren -->
+		<form id="menuFilterForm" class="ui-filterable">
+			<input id="menuFilter" data-type="search" placeholder="Tìm món..">
+		</form>
+
+		<div role="main" data-role="main" class="ui-content">
+			<ul id="menu" data-role="listview" data-inset="false" data-filter="true" data-input="#menuFilter" data-children="> div, > div ul li">
+				<div data-role="collapsible" data-collapsed="false">
+					<h4>Cơm</h4>
+					<ul data-role="listview" data-inset="true">
+						<li>
+							<a href="#">
+								<img src="https://media.foody.vn/res/g1/6682/prof/s480x300/foody-mobile-foody-a-hai-com-ga-x-869-635948407399671556.jpg"
+										style="border-radius: 50%">
+								<h2>Cơm Gà</h2>
+								<p>Cơm rang với đùi gà rán.</p>
+							</a>
+							<a href="#" class="ui-btn ui-icon-plus">Order</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="https://nau.vn/wp-content/uploads/2014/12/com-rang-dua-bo.jpg"
+										style="border-radius: 50%">
+								<h2>Cơm rang dưa bò</h2>
+							</a>
+							<a href="#" class="ui-btn ui-icon-plus">Order</a>
+						</li>
+					</ul>
+				</div>
+				<div data-role="collapsible" data-collapsed="false">
+					<h4>Phở</h4>
+					<ul data-role="listview" data-inset="true">
+						<li>
+							<a href="#">
+								<img src="http://media.phunutoday.vn/files/upload_images/2016/02/16/cach-nau-pho-bo-tai-gau-1-phunutoday_vn.jpg"
+										style="border-radius: 50%">
+								<h2>Phở bò</h2>
+								<p>Tái, chín, lăn, gàu..</p>
+							</a>
+							<a href="#" class="ui-btn ui-icon-plus">Order</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="http://amthuchanoi.org/wp-content/uploads/2015/04/Diem-danh-nhung-quan-pho-ga-ngon-o-ha-noi6.jpg"
+										style="border-radius: 50%">
+								<h2>Phở gà</h2>
+								<p>Đùi, cánh..</p>
+							</a>
+							<a href="#" class="ui-btn ui-icon-plus">Order</a>
+						</li>
+						<li>
+							<a href="#">
+								<img src="https://www.vietravel.com/Images/NewsPicture/mien-gan.jpg"
+										style="border-radius: 50%">
+								<h2>Phở ngan</h2>
+								<p>Măng, tiết..</p>
+							</a>
+							<a href="#" class="ui-btn ui-icon-plus">Order</a>
+						</li>
+					</ul>
+				</div>
+			</ul>
+		</div>
+
 		<div data-role="footer" data-position="fixed">
-			<a href="#" class="ui-btn ui-icon-plus ui-btn-icon-left">Add Me On Facebook</a>
-			<a href="#" class="ui-btn ui-icon-plus ui-btn-icon-left">Add Me On Twitter</a>
 			<div style="float:right">
 				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
 			</div>
@@ -101,4 +184,5 @@
 	<link rel="stylesheet" href="jqm.css">
 	<script src="jqm.js"></script>
 </body>
+
 </html>

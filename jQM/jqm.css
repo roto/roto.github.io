@@ -1,7 +1,12 @@
 /* vertical centralize the list iamge */
 li > a > img {
-    position:absolute;
-    top:0;
-    bottom:0;
-    margin:auto;
+    border-radius: 50%;
+    position: absolute; /* somehow, still need a property in the HTML img tag */
+    top: 0;
+    bottom: 0;
+    margin: 5px;
+    object-fit: cover;
+    width:  70px;
+    height: 70px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.3);
 }
