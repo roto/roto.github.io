@@ -1,7 +1,7 @@
 /* vertical centralize the list iamge */
-li > a > img {
-    border-radius: 50%;
-    position: absolute; /* somehow, still need a property in the HTML img tag */
+ul[data-role="listview"] > li > a > img {
+    border-radius: 50%; /* somehow, still need a property in the HTML img tag */
+    position: absolute;
     top: 0;
     bottom: 0;
     margin: 5px;
@@ -9,4 +9,33 @@ li > a > img {
     width:  70px;
     height: 70px;
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.3);
+}
+
+ul[data-role="listview"] > li > a {
+    top: 0;
+    bottom: 0;
+}
+
+/* Remove the padding around the big + button */
+li#new-order > a {
+    padding: 0px;
+}
+
+/* Remove the default right icon button */
+li#new-order > a::after {
+    background-image: none;
+    background-color: transparent;
+}
+
+/* Set the height for list item */
+li#new-order > a > div.ui-li-thumb {
+    height: 80px;
+    text-align: center;
+}
+
+/* Set the size and centerize the image */
+li#new-order > a > div.ui-li-thumb > img {
+    width:  70px;
+    height: 70px;
+    margin: 5px;
 }

@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 function populateMenuSearchIndexes() {
     // for each direct children of 'listview' elements
-    $('[data-role="listview"]').children().each(function(idx, listdata) {
+    $('div#menu [data-role="listview"]').children().each(function(idx, listdata) {
         // simplize the whitespaces
         var text = listdata.innerText.replace(/\s+/g, ' ');
         // set the 'data-filtertext' attribute with both simplized innerText and de-diacritics one
