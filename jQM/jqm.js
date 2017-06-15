@@ -5,10 +5,21 @@ $(document).ready(function(){
 function populateMenuSearchIndexes() {
     // for each direct children of 'listview' elements
     $('div#menu [data-role="listview"]').children().each(function(idx, listdata) {
+        var $listdata = $(listdata);
+
+        var filterText = $listdata.attr('data-filtertext');
+        if (typeof filterText !== typeof undefined &&  filterText !== false) {
+            // data-filtertext attribute is already exist, skip
+            return;
+        }
+
         // simplize the whitespaces
-        var text = listdata.innerText.replace(/\s+/g, ' ');
-        // set the 'data-filtertext' attribute with both simplized innerText and de-diacritics one
-        $(listdata).attr("data-filtertext", text + "|" + removeDiacritics(text));
+        var text = listdata.innerText.trim().replace(/\s+/g, ' ');
+        var normalizedText = removeDiacritics(text);
+        if (normalizedText !== text) {
+            // set the 'data-filtertext' attribute with both simplized innerText and de-diacritics one
+            $listdata.attr("data-filtertext", text + "|" + normalizedText);
+        }
     });
 }
 
