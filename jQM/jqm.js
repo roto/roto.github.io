@@ -85,14 +85,14 @@ function populateMenu() {
 			continue;
 		}
 
-		var groupHTML = generateGroupHTML(group);
+		var groupHTML = generateMenuGroupHTML(group);
 
 		// append the collapsible group div
 		$container.append($(groupHTML));
 	}
 }
 
-function generateGroupHTML(group) {
+function generateMenuGroupHTML(group) {
 	var groupHTML = '';
 	var groupFilterText = group.nofilter ? '|' : ''; // put an useless | to disable group filter
 
@@ -116,8 +116,8 @@ function generateGroupHTML(group) {
 			item.id = itemID;
 		}
 
-		generateItemFilterText(item, !group.nofilter);
-		itemsHTML += generateItemHTML(item);
+		generateMenuItemFilterText(item, !group.nofilter);
+		itemsHTML += generateMenuItemHTML(item);
 		groupFilterText += item.filterText;
 	}
 
@@ -134,7 +134,7 @@ function generateGroupHTML(group) {
 	return groupHTML;
 }
 
-function generateItemFilterText(item, allowFilter) {
+function generateMenuItemFilterText(item, allowFilter) {
 	if (typeof item.filterText !== 'undefined' && item.filterText.length > 0) {
 		// filter text is already generated, return
 		return;
@@ -155,8 +155,8 @@ function generateItemFilterText(item, allowFilter) {
 	}
 }
 
-function generateItemHTML(item) {
-	var itemHTML = '<a href="javascript:showDetail(\'' + item.id + '\')">';
+function generateMenuItemHTML(item) {
+	var itemHTML = '<a href="javascript:menuShowDetail(\'' + item.id + '\')">';
 
 	if (item.image) {
 		itemHTML += '<img style="border-radius: 50%" src="' + item.image + '">';
@@ -170,7 +170,7 @@ function generateItemHTML(item) {
 		itemHTML += '<p>' + item.desc + '</p>';
 	}
 
-	itemHTML += '</a><a href="javascript:newOrder(\'' + item.id + '\');" class="ui-btn ui-icon-plus">Order</a></li>';
+	itemHTML += '</a><a href="javascript:menuNewOrder(\'' + item.id + '\');" class="ui-btn ui-icon-plus">Order</a></li>';
 
 	if (item.filterText.length > 0) {
 		itemHTML = '<li id="item-' + item.id + '" data-filtertext="' + item.filterText + '">' + itemHTML;
@@ -181,13 +181,13 @@ function generateItemHTML(item) {
 	return itemHTML;
 }
 
-function newOrder(itemID) {
+function menuNewOrder(itemID) {
 	$container = $('ul#order[data-role="listview"]');
 
 	alert("New order: " + itemID);
 }
 
-function showDetail(itemID) {
+function menuShowDetail(itemID) {
 	alert("Show detail: " + itemID);
 }
 
