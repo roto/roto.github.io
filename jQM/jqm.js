@@ -6,64 +6,64 @@ $(document).ready(function(){
 	});*/
 })
 
-var menuGroups = [{
+var menuGroups = [
+	{
 		id: "hot",
 		name: "Hot",
 		nofilter: true,
-		items: [{
-				name:   "Phở Ngó",
-				desc:   "Gọi trà đá ngồi ngó người ta ăn.",
-				image:  "http://media.tinmoi.vn/2015/09/04/ngo-sen-va-nhung-tac-dung-tuuyet-voi-it-biet.jpg",
-			},
-		]
+		items: ["pho-ngo"],
 	}, {
 		id: "recent",
 		name: "Recent",
 		nofilter: true,
-		items: [{
-				name:   "Phở Gà",
-				desc:   "Đùi, cánh..",
-				image:  "http://amthuchanoi.org/wp-content/uploads/2015/04/Diem-danh-nhung-quan-pho-ga-ngon-o-ha-noi6.jpg",
-			}, {
-				name:	"Cơm Rang Dưa Bò",
-				image:  "https://nau.vn/wp-content/uploads/2014/12/com-rang-dua-bo.jpg",
-			},
-		]
+		items: ["pho-ga", "com-rang-dua-bo"],
 	}, {
 		id: "com",
 		name: "Cơm",
-		items: [{
-				name:   "Cơm Gà",
-				desc:   "Cơm rang với đùi gà rán.",
-				image:  "https://media.foody.vn/res/g1/6682/prof/s480x300/foody-mobile-foody-a-hai-com-ga-x-869-635948407399671556.jpg",
-			}, {
-				name:	"Cơm Rang Dưa Bò",
-				image:  "https://nau.vn/wp-content/uploads/2014/12/com-rang-dua-bo.jpg",
-			},
-		]
+		items: ["com-ga", "com-rang-dua-bo"],
 	}, {
 		id: "pho",
 		name: "Phở",
-		items: [{
-				name:   "Phở bò",
-				desc:   "Tái, chín, lăn, gàu...",
-				image:  "http://media.phunutoday.vn/files/upload_images/2016/02/16/cach-nau-pho-bo-tai-gau-1-phunutoday_vn.jpg",
-			}, {
-				name:   "Phở Gà",
-				desc:   "Đùi, cánh..",
-				image:  "http://amthuchanoi.org/wp-content/uploads/2015/04/Diem-danh-nhung-quan-pho-ga-ngon-o-ha-noi6.jpg",
-			}, {
-				name:   "Phở Ngan",
-				desc:   "Măng, tiết..",
-				image:  "https://www.vietravel.com/Images/NewsPicture/mien-gan.jpg",
-			}, {
-				name:   "Phở Ngó",
-				desc:   "Gọi trà đá ngồi ngó người ta ăn.",
-				image:  "http://media.tinmoi.vn/2015/09/04/ngo-sen-va-nhung-tac-dung-tuuyet-voi-it-biet.jpg",
-			},
-		]
+		items: ["pho-bo", "pho-ga", "pho-ngan", "pho-ngo"],
 	},
 ];
+
+var menuItems = {
+	"com-ga": {
+		name:   "Cơm Gà",
+		desc:   "Cơm rang với đùi gà rán.",
+		image:  "https://media.foody.vn/res/g1/6682/prof/s480x300/foody-mobile-foody-a-hai-com-ga-x-869-635948407399671556.jpg",
+	},
+	
+	'com-rang-dua-bo': {
+		name:	"Cơm Rang Dưa Bò",
+		image:  "https://nau.vn/wp-content/uploads/2014/12/com-rang-dua-bo.jpg",
+	},
+
+	"pho-bo": {
+		name:   "Phở bò",
+		desc:   "Tái, chín, lăn, gàu...",
+		image:  "http://media.phunutoday.vn/files/upload_images/2016/02/16/cach-nau-pho-bo-tai-gau-1-phunutoday_vn.jpg",
+	},
+	
+	"pho-ga": {
+		name:   "Phở Gà",
+		desc:   "Đùi, cánh..",
+		image:  "http://amthuchanoi.org/wp-content/uploads/2015/04/Diem-danh-nhung-quan-pho-ga-ngon-o-ha-noi6.jpg",
+	},
+	
+	"pho-ngan": {
+		name:   "Phở Ngan",
+		desc:   "Măng, tiết..",
+		image:  "https://www.vietravel.com/Images/NewsPicture/mien-gan.jpg",
+	},
+	
+	"pho-ngo": {
+		name:   "Phở Ngó",
+		desc:   "Gọi trà đá ngồi ngó người ta ăn.",
+		image:  "http://media.tinmoi.vn/2015/09/04/ngo-sen-va-nhung-tac-dung-tuuyet-voi-it-biet.jpg",
+	},
+};
 
 function getFilterText(text) {
 	var normalizedText = removeDiacritics(text);
@@ -82,72 +82,113 @@ function populateMenu() {
 		var group = menuGroups[idx];
 		if (typeof group === 'undefined' || typeof group.items === 'undefined' || group.items.length === 0) {
 			// group.items is not defined or empty
-			return;
+			continue;
 		}
 
-		var groupHTML = '';
-		var groupFilterText = group.nofilter ? '|' : ''; // put an useless | to disable filter
-
-		// create the group name
-		if (group.name) {
-			groupHTML += '<h4>' + group.name + '</h4>';
-			if (!group.nofilter) {
-				groupFilterText += '|' + getFilterText(group.name);
-			}
-		}
-
-		// create each item LI
-		var itemsHTML = '';
-
-		// for each group's items
-		for (var i = 0; i < group.items.length; ++i) {
-			var item = group.items[i];
-			var itemFilterText = '';
-			var itemHTML = '<a href="#">';
-
-			if (item.image) {
-				itemHTML += '<img style="border-radius: 50%" src="' + item.image + '">';
-			}
-
-			if (item.name) {
-				itemHTML += '<h2>' + item.name + '</h2>';
-				if (!group.nofilter) {
-					itemFilterText += '|' + getFilterText(item.name);
-				}
-			}
-
-			if (item.desc) {
-				itemHTML += '<p>' + item.desc + '</p>';
-				if (!group.nofilter) {
-					itemFilterText += '|' + getFilterText(item.desc);
-				}
-			}
-
-			itemHTML += '</a><a href="#" class="ui-btn ui-icon-plus">Order</a></li>';
-
-			if (itemFilterText.length > 0 && !group.nofilter) {
-				groupFilterText += itemFilterText;
-				itemHTML = '<li data-filtertext="' + itemFilterText + '">' + itemHTML;
-			} else {
-				itemHTML = '<li>' + itemHTML;
-			}
-
-			itemsHTML += itemHTML;
-		}
-
-		// nested items UL
-		groupHTML += '<ul data-role="listview" data-inset="true">' + itemsHTML + '</ul>';
-
-		// generate the collapsible group div with data-filtertext
-		var groupHTMLPrefix = '<div data-role="collapsible" data-collapsed="false" id="group-' + group.id + '"';
-		if (groupFilterText.length > 0) {
-			groupHTMLPrefix += ' data-filtertext="' + groupFilterText + '"';
-		}
-		groupHTML = groupHTMLPrefix + '>' + groupHTML + '</div>';
+		var groupHTML = generateGroupHTML(group);
 
 		// append the collapsible group div
 		$container.append($(groupHTML));
 	}
+}
+
+function generateGroupHTML(group) {
+	var groupHTML = '';
+	var groupFilterText = group.nofilter ? '|' : ''; // put an useless | to disable group filter
+
+	// create the group name
+	if (group.name) {
+		groupHTML += '<h4>' + group.name + '</h4>';
+		if (!group.nofilter) {
+			groupFilterText += '|' + getFilterText(group.name);
+		}
+	}
+
+	// create each item LI
+	var itemsHTML = '';
+
+	// for each group's items
+	for (var i = 0; i < group.items.length; ++i) {
+		var itemID = group.items[i];
+		var item = menuItems[itemID];
+		if (!item.id) {
+			// make sure the item.id is set
+			item.id = itemID;
+		}
+
+		generateItemFilterText(item, !group.nofilter);
+		itemsHTML += generateItemHTML(item);
+		groupFilterText += item.filterText;
+	}
+
+	// nested items UL
+	groupHTML += '<ul data-role="listview" data-inset="true">' + itemsHTML + '</ul>';
+
+	// generate the collapsible group div with data-filtertext
+	var groupHTMLPrefix = '<div data-role="collapsible" data-collapsed="false" id="group-' + group.id + '"';
+	if (groupFilterText.length > 0) {
+		groupHTMLPrefix += ' data-filtertext="' + groupFilterText + '"';
+	}
+	groupHTML = groupHTMLPrefix + '>' + groupHTML + '</div>';
+
+	return groupHTML;
+}
+
+function generateItemFilterText(item, allowFilter) {
+	if (typeof item.filterText !== 'undefined' && item.filterText.length > 0) {
+		// filter text is already generated, return
+		return;
+	}
+
+	item.filterText = "";
+
+	if (!allowFilter) {
+		return;
+	}
+
+	if (item.name) {
+		item.filterText += '|' + getFilterText(item.name);
+	}
+
+	if (item.desc) {
+		item.filterText += '|' + getFilterText(item.desc);
+	}
+}
+
+function generateItemHTML(item) {
+	var itemHTML = '<a href="javascript:showDetail(\'' + item.id + '\')">';
+
+	if (item.image) {
+		itemHTML += '<img style="border-radius: 50%" src="' + item.image + '">';
+	}
+
+	if (item.name) {
+		itemHTML += '<h2>' + item.name + '</h2>';
+	}
+
+	if (item.desc) {
+		itemHTML += '<p>' + item.desc + '</p>';
+	}
+
+	itemHTML += '</a><a href="javascript:newOrder(\'' + item.id + '\');" class="ui-btn ui-icon-plus">Order</a></li>';
+
+	if (item.filterText.length > 0) {
+		itemHTML = '<li id="item-' + item.id + '" data-filtertext="' + item.filterText + '">' + itemHTML;
+	} else {
+		itemHTML = '<li id="item-' + item.id + '">' + itemHTML;
+	}
+
+	return itemHTML;
+}
+
+function newOrder(itemID) {
+	$container = $('ul#order[data-role="listview"]');
+
+	alert("New order: " + itemID);
+}
+
+function showDetail(itemID) {
+	alert("Show detail: " + itemID);
 }
 
 function switchTheme() {
