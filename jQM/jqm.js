@@ -1,10 +1,18 @@
 $(document).ready(function(){
+	populateOrder();
 	populateMenu();
 
 	/*$("#menuFilterInput").bind("input", function(event, ui) {
 		// on filter input change
 	});*/
 })
+
+var orderItems = {
+	"pho-bo" : {
+		customization: "ít bún"
+	},
+	"com-ga" : null,
+};
 
 var menuGroups = [
 	{
@@ -65,6 +73,44 @@ var menuItems = {
 	},
 };
 
+function populateOrder() {
+	var orderItemsHTML = '';
+
+	// for each menu's groups
+	for (var itemID in orderItems) {
+		var orderItem = orderItems[itemID];
+		var item = menuItems[itemID];
+		orderItemsHTML += generateOrderItemHTML(orderItem, item);
+	}
+
+	// add an big plus sign to add new order
+	orderItemsHTML += '<li id="new-order"><a href="#menu"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
+
+	$('ul#order-list[data-role="listview"]').empty().append($(orderItemsHTML)).listview().listview("refresh");
+}
+
+function generateOrderItemHTML(orderItem, item) {
+	var orderItemHTML = '<li><a href="#">';
+
+	if (item.image) {
+		orderItemHTML += '<img style="border-radius: 50%" src="' + item.image + '">';
+	}
+
+	if (item.name) {
+		orderItemHTML += '<h2>' + item.name + '</h2>';
+	}
+
+	if (orderItem && orderItem.customization) {
+		// show customization
+		orderItemHTML += '<p>' + orderItem.customization + '</p>';
+	}
+
+	orderItemHTML += '<span class="ui-li-count">sending..</span>';
+	orderItemHTML += '</a><a href="#" class="ui-btn ui-icon-edit">Edit</a></li>';
+
+	return orderItemHTML;
+}
+
 function getFilterText(text) {
 	var normalizedText = removeDiacritics(text);
 	if (normalizedText === text) {
@@ -74,8 +120,7 @@ function getFilterText(text) {
 }
 
 function populateMenu() {
-	$container = $('ul#menu[data-role="listview"]');
-	$container.empty();
+	var groupsHTML = '';
 
 	// for each menu's groups
 	for (var idx = 0; idx < menuGroups.length; ++idx) {
@@ -85,11 +130,11 @@ function populateMenu() {
 			continue;
 		}
 
-		var groupHTML = generateMenuGroupHTML(group);
-
-		// append the collapsible group div
-		$container.append($(groupHTML));
+		groupsHTML += generateMenuGroupHTML(group);
 	}
+
+	// append the collapsible group div
+	$('ul#menu-list[data-role="listview"]').empty().append($(groupsHTML)).listview().listview("refresh");
 }
 
 function generateMenuGroupHTML(group) {
