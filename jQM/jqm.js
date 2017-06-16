@@ -126,6 +126,27 @@ function menuNewOrder(itemID) {
 	$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
 }
 
+function removeOrder(orderItemID) {
+	if (!orderItems.hasOwnProperty(orderItemID)) {
+		console.warn('Order item "' + orderItemID + '" is not in the order');
+		return;
+	}
+
+	var orderItem = orderItems[orderItemID];
+
+	// animate the item out
+	$('#order-item-' + orderItemID).animate(
+		{ height:0, opacity:0 },
+		'slow',
+		function() {
+			// remove the item's DOM when animation complete
+			$(this).remove();
+		}
+	);
+
+	delete orderItems[orderItemID];
+}
+
 function generateOrderItemHTML(orderItem) {
 	var orderItemHTML = '<li id="order-item-' + orderItem.id + '"><a href="#">';
 
@@ -143,7 +164,7 @@ function generateOrderItemHTML(orderItem) {
 	}
 
 	orderItemHTML += '<span class="ui-li-count">sending..</span>';
-	orderItemHTML += '</a><a href="#" class="ui-btn ui-icon-edit">Edit</a></li>';
+	orderItemHTML += '</a><a href="javascript:removeOrder(\'' + orderItem.id + '\')" class="ui-btn ui-icon-edit">Edit</a></li>';
 
 	return orderItemHTML;
 }
