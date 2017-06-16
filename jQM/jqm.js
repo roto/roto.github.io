@@ -1,19 +1,48 @@
 $(document).ready(function(){
 	populateMenu();
+
+	/*$("#menuFilterInput").bind("input", function(event, ui) {
+		// on filter input change
+	});*/
 })
 
 var menuGroups = [{
+		id: "hot",
+		name: "Hot",
+		nofilter: true,
+		items: [{
+				name:   "Phở Ngó",
+				desc:   "Gọi trà đá ngồi ngó người ta ăn.",
+				image:  "http://media.tinmoi.vn/2015/09/04/ngo-sen-va-nhung-tac-dung-tuuyet-voi-it-biet.jpg",
+			},
+		]
+	}, {
+		id: "recent",
+		name: "Recent",
+		nofilter: true,
+		items: [{
+				name:   "Phở Gà",
+				desc:   "Đùi, cánh..",
+				image:  "http://amthuchanoi.org/wp-content/uploads/2015/04/Diem-danh-nhung-quan-pho-ga-ngon-o-ha-noi6.jpg",
+			}, {
+				name:	"Cơm Rang Dưa Bò",
+				image:  "https://nau.vn/wp-content/uploads/2014/12/com-rang-dua-bo.jpg",
+			},
+		]
+	}, {
+		id: "com",
 		name: "Cơm",
 		items: [{
 				name:   "Cơm Gà",
 				desc:   "Cơm rang với đùi gà rán.",
 				image:  "https://media.foody.vn/res/g1/6682/prof/s480x300/foody-mobile-foody-a-hai-com-ga-x-869-635948407399671556.jpg",
 			}, {
-				name: "Cơm Rang Dưa Bò",
+				name:	"Cơm Rang Dưa Bò",
 				image:  "https://nau.vn/wp-content/uploads/2014/12/com-rang-dua-bo.jpg",
 			},
 		]
 	}, {
+		id: "pho",
 		name: "Phở",
 		items: [{
 				name:   "Phở bò",
@@ -57,12 +86,14 @@ function populateMenu() {
 		}
 
 		var groupHTML = '';
-		var groupFilterText = '';
+		var groupFilterText = group.nofilter ? '|' : ''; // put an useless | to disable filter
 
 		// create the group name
 		if (group.name) {
 			groupHTML += '<h4>' + group.name + '</h4>';
-			groupFilterText += '|' + getFilterText(group.name);
+			if (!group.nofilter) {
+				groupFilterText += '|' + getFilterText(group.name);
+			}
 		}
 
 		// create each item LI
@@ -80,17 +111,21 @@ function populateMenu() {
 
 			if (item.name) {
 				itemHTML += '<h2>' + item.name + '</h2>';
-				itemFilterText += '|' + getFilterText(item.name);
+				if (!group.nofilter) {
+					itemFilterText += '|' + getFilterText(item.name);
+				}
 			}
 
 			if (item.desc) {
 				itemHTML += '<p>' + item.desc + '</p>';
-				itemFilterText += '|' + getFilterText(item.desc);
+				if (!group.nofilter) {
+					itemFilterText += '|' + getFilterText(item.desc);
+				}
 			}
 
 			itemHTML += '</a><a href="#" class="ui-btn ui-icon-plus">Order</a></li>';
 
-			if (itemFilterText.length > 0) {
+			if (itemFilterText.length > 0 && !group.nofilter) {
 				groupFilterText += itemFilterText;
 				itemHTML = '<li data-filtertext="' + itemFilterText + '">' + itemHTML;
 			} else {
@@ -104,7 +139,7 @@ function populateMenu() {
 		groupHTML += '<ul data-role="listview" data-inset="true">' + itemsHTML + '</ul>';
 
 		// generate the collapsible group div with data-filtertext
-		var groupHTMLPrefix = '<div data-role="collapsible" data-collapsed="false"';
+		var groupHTMLPrefix = '<div data-role="collapsible" data-collapsed="false" id="group-' + group.id + '"';
 		if (groupFilterText.length > 0) {
 			groupHTMLPrefix += ' data-filtertext="' + groupFilterText + '"';
 		}
