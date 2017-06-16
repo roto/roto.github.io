@@ -7,12 +7,16 @@ $(document).ready(function(){
 	});*/
 })
 
-var orderItems = {
-	"pho-bo" : {
-		customization: "ít bún"
+// temporary initial object
+var initialOrderItems = [{
+		itemID: "pho-bo",
+		customization: "ít bún",
+	}, {
+		itemID: "com-ga",
 	},
-	"com-ga" : null,
-};
+];
+
+var orderItems = {};
 
 var menuGroups = [
 	{
@@ -77,11 +81,13 @@ function populateOrder() {
 	var orderItemsHTML = '';
 
 	// for each menu's groups
-	for (var itemID in orderItems) {
-		var orderItem = orderItems[itemID];
-		var item = menuItems[itemID];
-		orderItemsHTML += generateOrderItemHTML(orderItem, item);
+	for (var i in initialOrderItems) {
+		var orderItem = createNewOrderItem(initialOrderItems[i].itemID);
+		orderItemsHTML += generateOrderItemHTML(orderItem);
 	}
+
+	// done with the initial orders
+	delete initialOrderItems;
 
 	// add an big plus sign to add new order
 	orderItemsHTML += '<li id="new-order"><a href="#menu"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
@@ -89,15 +95,46 @@ function populateOrder() {
 	$('ul#order-list[data-role="listview"]').empty().append($(orderItemsHTML)).listview().listview("refresh");
 }
 
-function generateOrderItemHTML(orderItem, item) {
-	var orderItemHTML = '<li><a href="#">';
+function createNewOrderItem(itemID) {
+	var orderItem = {
+		id: generateOrderItemID(itemID),
+		item: menuItems[itemID],
+	};
+	return orderItems[orderItem.id] = orderItem;
+}
 
-	if (item.image) {
-		orderItemHTML += '<img style="border-radius: 50%" src="' + item.image + '">';
+function generateOrderItemID(itemID) {
+	var item = menuItems[itemID];
+
+	if (!item.orderCount) {
+		item.orderCount = 1;
+		return itemID;
 	}
 
-	if (item.name) {
-		orderItemHTML += '<h2>' + item.name + '</h2>';
+	return itemID + '-' + (++item.orderCount);
+}
+
+function menuNewOrder(itemID) {
+	// TODO: check duplicated itemID in orderItems
+	// TODO: support item customization
+	var orderItem = createNewOrderItem(itemID);
+	var orderItemHTML = generateOrderItemHTML(orderItem);
+
+	$(orderItemHTML).insertBefore('#new-order');
+	$('ul#order-list[data-role="listview"]').listview().listview("refresh");
+	$.mobile.changePage('#order');
+	$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+}
+
+function generateOrderItemHTML(orderItem) {
+	var orderItemHTML = '<li id="order-item-' + orderItem.id + '"><a href="#">';
+
+	if (orderItem.item.image) {
+		orderItemHTML += '<img style="border-radius: 50%" src="' + orderItem.item.image + '">';
+	}
+
+	if (orderItem.item.name) {
+		orderItemHTML += '<h2>' + orderItem.item.name + '</h2>';
 	}
 
 	if (orderItem && orderItem.customization) {
@@ -224,12 +261,6 @@ function generateMenuItemHTML(item) {
 	}
 
 	return itemHTML;
-}
-
-function menuNewOrder(itemID) {
-	$container = $('ul#order[data-role="listview"]');
-
-	alert("New order: " + itemID);
 }
 
 function menuShowDetail(itemID) {
