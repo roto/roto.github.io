@@ -45,35 +45,41 @@ var menuItems = {
 		name:   "Cơm Gà",
 		desc:   "Cơm rang với đùi gà rán.",
 		image:  "https://media.foody.vn/res/g1/6682/prof/s480x300/foody-mobile-foody-a-hai-com-ga-x-869-635948407399671556.jpg",
+		price:	"35000",
 	},
 	
 	'com-rang-dua-bo': {
 		name:	"Cơm Rang Dưa Bò",
 		image:  "https://nau.vn/wp-content/uploads/2014/12/com-rang-dua-bo.jpg",
+		price:	"25000",
 	},
 
 	"pho-bo": {
 		name:   "Phở bò",
 		desc:   "Tái, chín, lăn, gàu...",
 		image:  "http://media.phunutoday.vn/files/upload_images/2016/02/16/cach-nau-pho-bo-tai-gau-1-phunutoday_vn.jpg",
+		price:	"30000",
 	},
 	
 	"pho-ga": {
 		name:   "Phở Gà",
 		desc:   "Đùi, cánh..",
 		image:  "http://amthuchanoi.org/wp-content/uploads/2015/04/Diem-danh-nhung-quan-pho-ga-ngon-o-ha-noi6.jpg",
+		price:	"30000",
 	},
 	
 	"pho-ngan": {
 		name:   "Phở Ngan",
 		desc:   "Măng, tiết..",
 		image:  "https://www.vietravel.com/Images/NewsPicture/mien-gan.jpg",
+		price:	"3500000",
 	},
 	
 	"pho-ngo": {
 		name:   "Phở Ngó",
 		desc:   "Gọi trà đá ngồi ngó người ta ăn.",
 		image:  "http://media.tinmoi.vn/2015/09/04/ngo-sen-va-nhung-tac-dung-tuuyet-voi-it-biet.jpg",
+		price:	"5000",
 	},
 };
 
@@ -158,7 +164,7 @@ function generateOrderItemHTML(orderItem) {
 		orderItemHTML += '<h2>' + orderItem.item.name + '</h2>';
 	}
 
-	if (orderItem && orderItem.customization) {
+	if (orderItem.customization) {
 		// show customization
 		orderItemHTML += '<p>' + orderItem.customization + '</p>';
 	}
@@ -273,6 +279,10 @@ function generateMenuItemHTML(item) {
 		itemHTML += '<p>' + item.desc + '</p>';
 	}
 
+	if (item.price) {
+		itemHTML += '<span class="ui-li-count">' + formatPrice(item.price) + '</span>';
+	}
+
 	itemHTML += '</a><a href="javascript:menuNewOrder(\'' + item.id + '\');" class="ui-btn ui-icon-plus">Order</a></li>';
 
 	if (item.filterText.length > 0) {
@@ -323,6 +333,43 @@ function switchTheme() {
 
 		$page.page();
 	});
+}
+
+/*****************************************************************************/
+/*                             Common Utilities                              */
+/*****************************************************************************/
+
+function formatPrice(price) {
+	if (price % 1000000000 == 0) {
+		return addThousandSeparators(price / 1000000000) + "b";
+	} else if (price % 1000000 == 0) {
+		return addThousandSeparators(price / 1000000) + "m";
+	} else if (price % 1000 == 0) {
+		return addThousandSeparators(price / 1000) + "k";
+	} else {
+		return addThousandSeparators(price);
+	}
+}
+
+/* Separator constants */
+var DECIMAL_SEPARATOR = 0.1.toLocaleString().charAt(1);
+var THOUSAND_SEPARATOR = DECIMAL_SEPARATOR === "." ? "," : ".";
+var THOUSAND_REGEX = /(\d+)(\d{3})/;
+
+/* http://www.mredkj.com/javascript/nfbasic.html */
+function addThousandSeparators(number)
+{
+	var absNum = Math.abs(number);
+	if (absNum < 1000) {
+		return number;
+	}
+	var parts = absNum.toString().split(DECIMAL_SEPARATOR);
+	var intPart = parts[0];
+	var fracPart = parts.length > 1 ? DECIMAL_SEPARATOR + parts[1] : '';
+	while (THOUSAND_REGEX.test(intPart)) {
+		intPart = intPart.replace(THOUSAND_REGEX, '$1' + THOUSAND_SEPARATOR + '$2');
+	}
+	return (number < 0 ? "-" : "") + intPart + fracPart;
 }
 
 /**
