@@ -82,8 +82,20 @@
 			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 			<div data-role="header"><h1>New Order</h1></div>
 			<div data-role="main" class="ui-content">
-				<p>Some text..</p>
-				<a id="popup-confirm" href="#" class="ui-btn ui-corner-all ui-shadow ui-icon-check ui-btn-icon-right">Confirm</a>
+				<form>
+					<label for="request">Additional request:</label>
+					<input name="request" placeholder="Your additional request..">
+					<div id="slider_wrapper">
+						<label for="quantity">Quantity:</label>
+						<input name="quantity" type="range" min="1" max="10" value="1" data-highlight="true">
+						<!--div style="text-align: right;">
+							<a href="#" data-role="button" data-inline="true" data-icon="plus" data-mini="true">More</a>
+						</div-->
+					</div>
+				</form>
+				<div style="text-align: center;">
+					<a id="order-confirm" href="#" class="ui-btn ui-corner-all ui-btn-inline ui-shadow ui-icon-check ui-btn-icon-right">Confirm</a>
+				</div>
 			</div>
 			<!--div data-role="footer"><h1>Footer Text..</h1></div-->
 		</div>

@@ -122,8 +122,28 @@ function generateOrderItemID(itemID) {
 
 function menuNewOrder(itemID) {
 	var $dialog = $("#menuNewOrderDialog");
+	
+	var $rangeInput = $dialog.find('input[data-type="range"]');
 
-	$dialog.find("a#popup-confirm").off("click").click(function(){
+	function resetRangeSlider() {
+		$rangeInput.attr("max", 10);
+		$rangeInput.slider("refresh");
+		$dialog.find('div[role="application"]').show();
+	}
+
+	$rangeInput.on("focus", function() {
+		$rangeInput.removeAttr("max");
+	});
+
+	$rangeInput.on("blur", function() {
+		if ($rangeInput.val() > 10) {
+			$dialog.find('div[role="application"]').hide();
+		} else {
+			resetRangeSlider();
+		}
+	});
+
+	$dialog.find("a#order-confirm").off("click").click(function(){
 		// TODO: check duplicated itemID in orderItems
 		// TODO: support item customization
 		var orderItem = createNewOrderItem(itemID);
@@ -135,6 +155,7 @@ function menuNewOrder(itemID) {
 		$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
 	});
 
+	resetRangeSlider();
 	$dialog.popup("open");
 }
 
