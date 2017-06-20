@@ -39,3 +39,17 @@ li#new-order > a > div.ui-li-thumb > img {
     height: 70px;
     margin: 5px;
 }
+
+#menuNewOrderDialog-popup {
+    width: 90%;
+}
+
+/* Highlight the dialog buttons in theme a */
+div[data-theme="a"] [data-role="popup"] > [data-role="main"] > a {
+    border-color: gray;
+}
+
+/* Highlight the dialog buttons in theme b */
+div[data-theme="b"] [data-role="popup"] > [data-role="main"] > a {
+    border-color: lightgray;
+}

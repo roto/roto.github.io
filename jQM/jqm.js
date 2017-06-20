@@ -121,15 +121,21 @@ function generateOrderItemID(itemID) {
 }
 
 function menuNewOrder(itemID) {
-	// TODO: check duplicated itemID in orderItems
-	// TODO: support item customization
-	var orderItem = createNewOrderItem(itemID);
-	var orderItemHTML = generateOrderItemHTML(orderItem);
+	var $dialog = $("#menuNewOrderDialog");
 
-	$(orderItemHTML).insertBefore('#new-order');
-	$('ul#order-list[data-role="listview"]').listview().listview("refresh");
-	$.mobile.changePage('#order');
-	$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+	$dialog.find("a#popup-confirm").off("click").click(function(){
+		// TODO: check duplicated itemID in orderItems
+		// TODO: support item customization
+		var orderItem = createNewOrderItem(itemID);
+		var orderItemHTML = generateOrderItemHTML(orderItem);
+
+		$(orderItemHTML).insertBefore('#new-order');
+		$('ul#order-list[data-role="listview"]').listview().listview("refresh");
+		$.mobile.changePage('#order');
+		$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+	});
+
+	$dialog.popup("open");
 }
 
 function removeOrder(orderItemID) {
