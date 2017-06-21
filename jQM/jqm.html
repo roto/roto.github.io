@@ -135,6 +135,9 @@
 					<input name="request" placeholder="Your additional request..">
 					<label for="quantity">Quantity:</label>
 					<input name="quantity" type="range" min="1" max="10" value="1" data-highlight="true">
+					<div id="warn-duplicate" style="display: none; color: red">
+						You've already have an identical order. Are you sure to request a duplicated one?
+					</div>
 					<div style="text-align: center;">
 						<input type="submit" value="Confirm" data-role="button" data-inline="true" data-icon="check" data-iconpos="right">
 					</div>

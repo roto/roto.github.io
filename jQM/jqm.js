@@ -152,8 +152,34 @@ function menuNewOrder(itemID) {
 	$dialog.find('h1[role="heading"]').text(menuItems[itemID].name);
 
 	/* Request */
+	// pre-compose the request values of the same item ordered.
+	var orderedRequests = '|';
+	for (var i in orderItems) {
+		var orderItem = orderItems[i];
+		if (orderItem.item.id === itemID) {
+			if (orderItem.request) {
+				orderedRequests += orderItem.request.trim().toLowerCase();
+			}
+			orderedRequests += '|';
+		}
+	}
+
 	var $requestInput = $dialog.find('input[name="request"]');
-	$requestInput.val('');
+	$requestInput.off("input");
+	var $dupWarn = $dialog.find('#warn-duplicate');
+	$dupWarn.hide();
+	if (orderedRequests.length > 1) {
+		// there are orders of the same item, monitor the input event
+		$requestInput.on("input", function() {
+			if (0 <= orderedRequests.indexOf('|' + $requestInput.val().trim().toLowerCase() + '|')) {
+				// identical order exists, show warning
+				$dupWarn.show();
+			} else {
+				$dupWarn.hide();
+			}
+		});
+	}
+	$requestInput.val('').trigger("input");
 
 	/* Quantity */
 	var $quantityRangeInput = $dialog.find('input[name="quantity"]');
@@ -165,11 +191,11 @@ function menuNewOrder(itemID) {
 		$dialog.find('div[role="application"]').show();
 	}
 
-	$quantityRangeInput.on("focus", function() {
+	$quantityRangeInput.off("focus").on("focus", function() {
 		$quantityRangeInput.removeAttr("max");
 	});
 
-	$quantityRangeInput.on("blur", function() {
+	$quantityRangeInput.off("blur").on("blur", function() {
 		if ($quantityRangeInput.val() > 10) {
 			$dialog.find('div[role="application"]').hide();
 		} else {
