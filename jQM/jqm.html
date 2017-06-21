@@ -13,12 +13,14 @@
 
 	<!-- Allow user to add the page to home screen as Web App -->
 	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-title" content="GoiDat.vn">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<!--link rel="apple-touch-startup-image" href="startup.png"-->
 	<link rel="apple-touch-icon" href="images/logo.png"/>
 	<link rel="apple-touch-icon-precomposed" sizes="128x128" href="images/logo.png"/>
 
 	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="application-name" content="GoiDat.vn">
 	<link rel="shortcut icon" sizes="196x196" href="images/logo.png"/>
 	<link rel="shortcut icon" sizes="128x128" href="images/logo.png"/>
 
@@ -35,6 +37,17 @@
 	<!-- Prevent page zooming -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
+	<script>
+		// relocate standalone mode to home page
+		navigator.standalone = navigator.standalone ||
+				window.matchMedia('(display-mode: standalone)').matches ||
+				(screen.height-document.documentElement.clientHeight < 40) ||
+				(screen.width-document.documentElement.clientHeight<40);
+
+		if (navigator.standalone) {
+			window.location = '#';
+		}
+	</script>
 </head>
 
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
