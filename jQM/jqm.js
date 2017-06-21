@@ -2,6 +2,9 @@ $(document).ready(function(){
 	populateOrder();
 	populateMenu();
 
+	// fake fullscreen by auto-hide the address bar
+	window.scrollTo(0,1);
+
 	/*$("#menuFilterInput").bind("input", function(event, ui) {
 		// on filter input change
 	});*/
