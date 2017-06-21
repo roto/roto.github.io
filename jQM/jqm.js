@@ -149,6 +149,8 @@ function generateOrderItemID(itemID) {
 function menuNewOrder(itemID) {
 	var $dialog = $("#menuNewOrderDialog");
 
+	$dialog.find('h1[role="heading"]').text(menuItems[itemID].name);
+
 	/* Request */
 	var $requestInput = $dialog.find('input[name="request"]');
 	$requestInput.val('');
