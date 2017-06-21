@@ -38,12 +38,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
 	<script>
-		// relocate standalone mode to home page
+		// cross-browser flag
 		navigator.standalone = navigator.standalone ||
 				window.matchMedia('(display-mode: standalone)').matches ||
 				(screen.height-document.documentElement.clientHeight < 40) ||
-				(screen.width-document.documentElement.clientHeight<40);
+				(screen.width-document.documentElement.clientHeight < 40);
 
+		// relocate standalone mode to home page
 		if (navigator.standalone) {
 			window.location = '#';
 		}
