@@ -82,7 +82,7 @@
 	<!-- Order Page -->
 	<div id="order" data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed">
-			<a href="javascript:history.back()" data-icon="arrow-l">Home</a>
+			<a href="#" data-rel="back" data-icon="arrow-l">Home</a>
 			<h1>ORDER</h1>
 			<a href="#menu" data-icon="bars">Menu</a>
 		</div>
@@ -104,7 +104,7 @@
 	<!-- Menu Page -->
 	<div id="menu" data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed">
-			<a href="javascript:history.back()" data-icon="arrow-l">Order</a>
+			<a href="#" data-rel="back" data-icon="arrow-l">Order</a>
 			<h1>MENU</h1>
 			<!--a href="#menu" data-icon="search">Search</a-->
 		</div>
@@ -130,20 +130,15 @@
 			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 			<div data-role="header"><h1>New Order</h1></div>
 			<div data-role="main" class="ui-content">
-				<form>
+				<form id="new-order-form">
 					<label for="request">Additional request:</label>
 					<input name="request" placeholder="Your additional request..">
-					<div id="slider_wrapper">
-						<label for="quantity">Quantity:</label>
-						<input name="quantity" type="range" min="1" max="10" value="1" data-highlight="true">
-						<!--div style="text-align: right;">
-							<a href="#" data-role="button" data-inline="true" data-icon="plus" data-mini="true">More</a>
-						</div-->
+					<label for="quantity">Quantity:</label>
+					<input name="quantity" type="range" min="1" max="10" value="1" data-highlight="true">
+					<div style="text-align: center;">
+						<input type="submit" value="Confirm" data-role="button" data-inline="true" data-icon="check" data-iconpos="right">
 					</div>
 				</form>
-				<div style="text-align: center;">
-					<a id="order-confirm" href="#" class="ui-btn ui-corner-all ui-btn-inline ui-shadow ui-icon-check ui-btn-icon-right">Confirm</a>
-				</div>
 			</div>
 			<!--div data-role="footer"><h1>Footer Text..</h1></div-->
 		</div>

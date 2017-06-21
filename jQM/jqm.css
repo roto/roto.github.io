@@ -45,11 +45,11 @@ li#new-order > a > div.ui-li-thumb > img {
 }
 
 /* Highlight the dialog buttons in theme a */
-div[data-theme="a"] [data-role="popup"] > [data-role="main"] a {
+div[data-theme="a"] [data-role="popup"] > [data-role="main"] .ui-btn {
     border-color: gray;
 }
 
 /* Highlight the dialog buttons in theme b */
-div[data-theme="b"] [data-role="popup"] > [data-role="main"] a {
+div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
     border-color: lightgray;
 }

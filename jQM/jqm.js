@@ -176,7 +176,7 @@ function menuNewOrder(itemID) {
 	});
 	/* End of Quantity */
 
-	$dialog.find("a#order-confirm").off("click").click(function(){
+	$dialog.find("form#new-order-form").off("submit").submit(function(){
 		// TODO: check duplicated itemID in orderItems
 		// TODO: support item request
 		var orderItem = createNewOrderItem(itemID);
