@@ -10,9 +10,10 @@ $(document).ready(function(){
 // temporary initial object
 var initialOrderItems = [{
 		itemID: "pho-bo",
-		customization: "ít bún",
+		request: "ít bún",
 	}, {
 		itemID: "com-ga",
+		quantity: 2,
 	},
 ];
 
@@ -88,7 +89,14 @@ function populateOrder() {
 
 	// for each menu's groups
 	for (var i in initialOrderItems) {
-		var orderItem = createNewOrderItem(initialOrderItems[i].itemID);
+		var initialOrderItem = initialOrderItems[i];
+		var orderItem = createNewOrderItem(initialOrderItem.itemID);
+		if (initialOrderItem.request) {
+			orderItem.request = initialOrderItem.request;
+		}
+		if (initialOrderItem.quantity) {
+			orderItem.quantity = initialOrderItem.quantity;
+		}
 		orderItemsHTML += generateOrderItemHTML(orderItem);
 	}
 
@@ -122,31 +130,49 @@ function generateOrderItemID(itemID) {
 
 function menuNewOrder(itemID) {
 	var $dialog = $("#menuNewOrderDialog");
-	
-	var $rangeInput = $dialog.find('input[data-type="range"]');
+
+	/* Request */
+	var $requestInput = $dialog.find('input[name="request"]');
+	$requestInput.val('');
+
+	/* Quantity */
+	var $quantityRangeInput = $dialog.find('input[name="quantity"]');
+	$quantityRangeInput.val('1');
 
 	function resetRangeSlider() {
-		$rangeInput.attr("max", 10);
-		$rangeInput.slider("refresh");
+		$quantityRangeInput.attr("max", 10);
+		$quantityRangeInput.slider("refresh");
 		$dialog.find('div[role="application"]').show();
 	}
 
-	$rangeInput.on("focus", function() {
-		$rangeInput.removeAttr("max");
+	$quantityRangeInput.on("focus", function() {
+		$quantityRangeInput.removeAttr("max");
 	});
 
-	$rangeInput.on("blur", function() {
-		if ($rangeInput.val() > 10) {
+	$quantityRangeInput.on("blur", function() {
+		if ($quantityRangeInput.val() > 10) {
 			$dialog.find('div[role="application"]').hide();
 		} else {
 			resetRangeSlider();
 		}
 	});
+	/* End of Quantity */
 
 	$dialog.find("a#order-confirm").off("click").click(function(){
 		// TODO: check duplicated itemID in orderItems
-		// TODO: support item customization
+		// TODO: support item request
 		var orderItem = createNewOrderItem(itemID);
+
+		var quantity = $quantityRangeInput.val();
+		if (quantity && quantity > 1) {
+			orderItem.quantity = quantity;
+		}
+
+		var request = $requestInput.val().trim();
+		if (request && request.length > 0) {
+			orderItem.request = request;
+		}
+
 		var orderItemHTML = generateOrderItemHTML(orderItem);
 
 		$(orderItemHTML).insertBefore('#new-order');
@@ -167,6 +193,8 @@ function removeOrder(orderItemID) {
 
 	var orderItem = orderItems[orderItemID];
 
+	// TODO: confirm dialog
+	// TODO: remove the href:javascript and onclick event, before the animation
 	// animate the item out
 	$('#order-item-' + orderItemID).animate(
 		{ height:0, opacity:0 },
@@ -188,12 +216,18 @@ function generateOrderItemHTML(orderItem) {
 	}
 
 	if (orderItem.item.name) {
-		orderItemHTML += '<h2>' + orderItem.item.name + '</h2>';
+		orderItemHTML += '<h2>' + orderItem.item.name;
+
+		if (orderItem.quantity && orderItem.quantity > 1) {
+			orderItemHTML += ' (&times;' + orderItem.quantity + ')';
+		}
+
+		orderItemHTML += '</h2>';
 	}
 
-	if (orderItem.customization) {
-		// show customization
-		orderItemHTML += '<p>' + orderItem.customization + '</p>';
+	if (orderItem.request) {
+		// show request
+		orderItemHTML += '<p>' + orderItem.request + '</p>';
 	}
 
 	orderItemHTML += '<span class="ui-li-count">sending..</span>';
