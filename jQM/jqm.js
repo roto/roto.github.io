@@ -180,7 +180,7 @@ function menuNewOrder(itemID) {
 
 		$(orderItemHTML).insertBefore('#new-order');
 		$('ul#order-list[data-role="listview"]').listview().listview("refresh");
-		$.mobile.changePage('#order');
+		window.history.go(-2);
 		$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
 	});
 

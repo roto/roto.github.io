@@ -55,11 +55,33 @@
 
 <body>
 	<!-- Home Page -->
+	<div id="home" data-role="page" data-theme="a">
+		<div data-role="header" data-position="fixed">
+			<!--a href="#anylink" data-icon="arrow-l">Home</a-->
+			<h1>GoiDat.vn</h1>
+			<!--a href="#menu" data-icon="bars">Menu</a-->
+		</div>
+
+		<div role="main" data-role="main" class="ui-content">
+			<ul id="service-list" data-role="listview" data-inset="false">
+				<li>
+					<a href='#order'>Cơm Trưa</a>
+				</li>
+			</ul>
+		</div>
+
+		<div data-role="footer" data-position="fixed">
+			<!--a href="#" class="ui-btn ui-icon-location ui-btn-icon-left">Table</a-->
+			<div style="float:right">
+				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
+			</div>
+		</div>
+	</div>
 
 	<!-- Order Page -->
 	<div id="order" data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed">
-			<a href="#anylink" data-icon="arrow-l">Home</a>
+			<a href="javascript:history.back()" data-icon="arrow-l">Home</a>
 			<h1>ORDER</h1>
 			<a href="#menu" data-icon="bars">Menu</a>
 		</div>
@@ -81,7 +103,7 @@
 	<!-- Menu Page -->
 	<div id="menu" data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed">
-			<a href="#order" data-icon="arrow-l">Order</a>
+			<a href="javascript:history.back()" data-icon="arrow-l">Order</a>
 			<h1>MENU</h1>
 			<!--a href="#menu" data-icon="search">Search</a-->
 		</div>
