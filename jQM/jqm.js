@@ -1,4 +1,15 @@
 $(document).ready(function(){
+	$(document).on('swiperight', function () {
+		$.mobile.back();
+	});
+
+	$('#order').on('swipeleft', function () {
+		$.mobile.changePage('#menu', {
+			transition: "slidefade",
+			changeHash: true,
+		});
+	});
+
 	populateOrder();
 	populateMenu();
 
@@ -223,7 +234,9 @@ function menuNewOrder(itemID) {
 
 		$(orderItemHTML).insertBefore('#new-order');
 		$('ul#order-list[data-role="listview"]').listview().listview("refresh");
-		window.history.go(-2);
+		//window.history.go(-2);
+		$.mobile.back();
+		$.mobile.back();
 		$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
 	});
 
