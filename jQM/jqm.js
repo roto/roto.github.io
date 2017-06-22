@@ -122,7 +122,7 @@ function populateOrder() {
 	delete initialOrderItems;
 
 	// add an big plus sign to add new order
-	orderItemsHTML += '<li id="new-order"><a href="#menu"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
+	orderItemsHTML += '<li id="new-order"><a href="#menu" data-transition="slidefade"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
 
 	$('ul#order-list[data-role="listview"]').empty().append($(orderItemsHTML)).listview().listview("refresh");
 }
