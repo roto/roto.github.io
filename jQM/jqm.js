@@ -1,3 +1,8 @@
+$(window).load(function() {
+	// fake fullscreen by auto-hide the address bar
+	window.scrollTo(0, 1);
+});
+
 $(document).ready(function(){
 	$(document).on('swiperight', function () {
 		$.mobile.back();
@@ -12,9 +17,6 @@ $(document).ready(function(){
 
 	populateOrder();
 	populateMenu();
-
-	// fake fullscreen by auto-hide the address bar
-	window.scrollTo(0,1);
 
 	/* Geolocation */
 	function initGeolocation() {
