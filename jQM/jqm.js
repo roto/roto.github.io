@@ -234,9 +234,7 @@ function menuNewOrder(itemID) {
 
 		$(orderItemHTML).insertBefore('#new-order');
 		$('ul#order-list[data-role="listview"]').listview().listview("refresh");
-		//window.history.go(-2);
-		$.mobile.back();
-		$.mobile.back();
+		window.history.go(-2);
 		$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
 	});
 
