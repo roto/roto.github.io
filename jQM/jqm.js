@@ -1,6 +1,9 @@
 $(window).load(function() {
 	// fake fullscreen by auto-hide the address bar
-	window.scrollTo(0, 1);
+	setTimeout(function(){
+		// Hide the address bar!
+		window.scrollTo(0, 1);
+	}, 0);
 });
 
 $(document).ready(function(){
