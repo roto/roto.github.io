@@ -55,7 +55,7 @@ div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
 }
 
 /* Notification */
-[data-role="notification"] {
+.notification {
     width: 16px;
     height: 16px;
     font-size: 13px;
@@ -73,7 +73,7 @@ div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
     background: #009933;
 }
 
-[data-role="notification"]:before {
+.notification:before {
     position: absolute; display: block; content: '';
     border: 1px solid white;
     border-radius: 50%;
@@ -81,7 +81,7 @@ div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
     box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
 }
 
-[notification-level="error"] {
+.notification.error {
     border-color: red;
     background: red; /* For browsers that do not support gradients */
     background: -webkit-linear-gradient(#ff8080, red); /* For Safari 5.1 to 6.0 */
@@ -90,7 +90,7 @@ div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
     background: linear-gradient(#ff8080, red); /* Standard syntax */
 }
 
-[notification-level="warning"] {
+.notification.warning {
     border-color: #ff8000;
     background: #ff8000; /* For browsers that do not support gradients */
     background: -webkit-linear-gradient(#ffa64d, #b35900); /* For Safari 5.1 to 6.0 */
@@ -99,7 +99,7 @@ div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
     background: linear-gradient(#ffa64d, #b35900); /* Standard syntax */
 }
 
-[notification-level="notice"] {
+.notification.notice {
     border-color: #0099ff;
     background: #0099ff;
     background: -webkit-linear-gradient(#66c2ff, #007acc); /* For Safari 5.1 to 6.0 */
@@ -108,7 +108,7 @@ div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
     background: linear-gradient(#66c2ff, #007acc); /* Standard syntax */
 }
 
-[notification-level="info"] {
+.notification.info {
     border-color: #009933;
     background: #009933;
     background: -webkit-linear-gradient(#00ff00, #00802b); /* For Safari 5.1 to 6.0 */
