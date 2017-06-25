@@ -74,19 +74,17 @@ function generateOrderItemHTML(orderItem) {
 	}
 
 	if (orderItem.item.name) {
-		orderItemHTML += '<h2>' + orderItem.item.name;
-
-		if (orderItem.quantity && orderItem.quantity > 1) {
-			orderItemHTML += ' (&times;' + orderItem.quantity + ')';
-		}
-
-		orderItemHTML += '</h2>';
+		orderItemHTML += '<h2>' + orderItem.item.name + '</h2>';
 	}
 
 	if (orderItem.request) {
 		// show request
 		orderItemHTML += '<p>' + orderItem.request + '</p>';
 	}
+
+    if (orderItem.quantity && orderItem.quantity > 1) {
+        orderItemHTML += '<span class="ui-li-quantity ui-body-inherit">' + orderItem.quantity + ' &times;</span>';
+    }
 
 	orderItemHTML += '<span class="ui-li-count">sending..</span>';
 	orderItemHTML += '</a><a href="javascript:removeOrder(\'' + orderItem.id + '\')" class="ui-btn ui-icon-edit">Edit</a></li>';
