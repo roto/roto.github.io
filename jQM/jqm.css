@@ -40,7 +40,8 @@ li#new-order > a > div.ui-li-thumb > img {
     margin: 5px;
 }
 
-#menuNewOrderDialog-popup {
+/* Popup dialog wrapper */
+[id$='-popup'] {
     width: 90%;
 }
 

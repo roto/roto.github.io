@@ -154,6 +154,28 @@ function generateOrderItemID(itemID) {
 	return itemID + '-' + (++item.orderCount);
 }
 
+function menuShowDetail(itemID) {
+	var menuItem = menuItems[itemID];
+	var $dialog = $("#menuDetailDialog");
+	var $main = $dialog.children('[data-role="main"]');
+
+	$dialog.find('h1').text(menuItem.name);
+	$main.children('img').attr('src', menuItem.image);
+	$main.children('p').text(menuItem.desc ? menuItem.desc : '');
+
+	$main.find('a').off('click').on('click', function() {
+		$dialog.on('popupafterclose', function() {
+			setTimeout(function() {
+				menuNewOrder(itemID);
+			}, 0);
+		});
+		$dialog.popup('close');
+	});
+
+	$dialog.off('popupafterclose');
+	$dialog.popup('open');
+}
+
 function menuNewOrder(itemID) {
 	var $dialog = $("#menuNewOrderDialog");
 
@@ -407,10 +429,6 @@ function generateMenuItemHTML(item) {
 	}
 
 	return itemHTML;
-}
-
-function menuShowDetail(itemID) {
-	alert("Show detail: " + itemID);
 }
 
 function switchTheme() {
