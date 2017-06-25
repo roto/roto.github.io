@@ -414,9 +414,7 @@ function menuShowDetail(itemID) {
 }
 
 function switchTheme() {
-	var $pages = $("[data-role='page']");
-
-	$pages.each(function (idx, page) {
+	$("[data-role='page']").each(function (idx, page) {
 		var $page = $(page);
 		var clsToRemove;
 		if ($page.attr("data-theme") === "b") {
@@ -427,12 +425,21 @@ function switchTheme() {
 			clsToRemove = /\b[\w-]+?-a\b/g;
 		}
 
-		$page.each(function (idx, element) {
-			var $element = $(element);
-			var cls = $element.attr("class");
-			if (cls) {
-				cls = cls.replace(clsToRemove, '');
-				$element.attr("class", cls);
+		var cls = $page.attr("class");
+		if (cls) {
+			cls = cls.replace(clsToRemove, '');
+			$page.attr("class", cls);
+		}
+
+		/* revert popup overlay style */
+		$page.find('.ui-popup-screen').each(function (idx, overlay) {
+			var $overlay = $(overlay);
+
+			var cls = $overlay.attr('class');
+			if (cls.indexOf('ui-overlay-b') >= 0) {
+				$overlay.attr('class', cls.replace('ui-overlay-b', 'ui-overlay-a'));
+			} else {
+				$overlay.attr('class', cls.replace('ui-overlay-a', 'ui-overlay-b'));
 			}
 		});
 
