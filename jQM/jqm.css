@@ -40,6 +40,11 @@ li#new-order > a > div.ui-li-thumb > img {
     margin: 5px;
 }
 
+/* Order status */
+.ui-li-count {
+    top: 35%;
+}
+
 /* Popup dialog wrapper */
 [id$='-popup'] {
     width: 90%;
