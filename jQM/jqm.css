@@ -85,6 +85,12 @@ div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
     border-color: lightgray;
 }
 
+/* Widen the dialog title space */
+.ui-header .ui-title {
+    margin-right: 10%;
+    margin-left: 10%;
+}
+
 /* Notification */
 .notification {
     width: 16px;
