@@ -17,9 +17,9 @@ function populateMenu() {
 	$('ul#menu-list[data-role="listview"]').empty().append($(groupsHTML)).listview().listview("refresh");
 }
 
-function menuShowDetail(itemID) {
+function menuDialogDetail(itemID) {
 	var menuItem = menuItems[itemID];
-	var $dialog = $("#menuDetailDialog");
+	var $dialog = $("#menu-detail-dialog");
 	var $main = $dialog.children('[data-role="main"]');
 
 	$dialog.find('h1').text(menuItem.name);
@@ -29,98 +29,29 @@ function menuShowDetail(itemID) {
 	$main.find('a').off('click').on('click', function() {
 		$dialog.on('popupafterclose', function() {
 			setTimeout(function() {
-				menuNewOrder(itemID);
+				menuDialogNewOrder(itemID);
 			}, 0);
 		});
-		$dialog.popup('close');
+		$.mobile.back();
 	});
 
 	$dialog.off('popupafterclose');
 	$dialog.popup('open');
 }
 
-function menuNewOrder(itemID) {
-	var $dialog = $("#menuNewOrderDialog");
-
+function menuDialogNewOrder(itemID) {
+	var $dialog = $("#menu-new-order-dialog");
 	$dialog.find('h1[role="heading"]').text(menuItems[itemID].name);
 
-	/* Request */
-	// pre-compose the request values of the same item ordered.
-	var orderedRequests = '|';
-	for (var i in orderItems) {
-		var orderItem = orderItems[i];
-		if (orderItem.item.id === itemID) {
-			if (orderItem.request) {
-				orderedRequests += orderItem.request.trim().toLowerCase();
-			}
-			orderedRequests += '|';
-		}
-	}
-
-	var $requestInput = $dialog.find('input[name="request"]');
-	$requestInput.off("input");
-	var $dupWarn = $dialog.find('#warn-duplicate');
-	$dupWarn.hide();
-	if (orderedRequests.length > 1) {
-		// there are orders of the same item, monitor the input event
-		$requestInput.on("input", function() {
-			if (0 <= orderedRequests.indexOf('|' + $requestInput.val().trim().toLowerCase() + '|')) {
-				// identical order exists, show warning
-				$dupWarn.show();
-			} else {
-				$dupWarn.hide();
-			}
-		});
-	}
-	$requestInput.val('').trigger("input");
-
-	/* Quantity */
-	var $quantityRangeInput = $dialog.find('input[name="quantity"]');
-	$quantityRangeInput.val('1');
-
-	function resetRangeSlider() {
-		$quantityRangeInput.attr("max", 10);
-		$quantityRangeInput.slider("refresh");
-		$dialog.find('div[role="application"]').show();
-	}
-
-	$quantityRangeInput.off("focus").on("focus", function() {
-		$quantityRangeInput.removeAttr("max");
-	});
-
-	$quantityRangeInput.off("blur").on("blur", function() {
-		if ($quantityRangeInput.val() > 10) {
-			$dialog.find('div[role="application"]').hide();
-		} else {
-			resetRangeSlider();
-		}
-	});
-	/* End of Quantity */
+	loadRequestInputEvents($dialog, itemID);
+	loadQuantityInputEvents($dialog);
 
 	$dialog.find("form#new-order-form").off("submit").submit(function(){
-		// TODO: check duplicated itemID in orderItems
-		// TODO: support item request
 		var orderItem = createNewOrderItem(itemID);
-
-		var quantity = $quantityRangeInput.val();
-		if (quantity && quantity > 1) {
-			orderItem.quantity = quantity;
-		}
-
-		var request = $requestInput.val().trim();
-		if (request && request.length > 0) {
-			orderItem.request = request;
-		}
-
-		var orderItemHTML = generateOrderItemHTML(orderItem);
-
-		$(orderItemHTML).insertBefore('#new-order');
-		$('ul#order-list[data-role="listview"]').listview().listview("refresh");
-		window.history.go(-2);
-		$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+		fetchOrderInputs(orderItem, $dialog);
+		orderAddNew(orderItem);
 	});
 
-	resetRangeSlider();
 	$dialog.popup("open");
 }
 
@@ -188,7 +119,7 @@ function generateMenuItemFilterText(item, allowFilter) {
 }
 
 function generateMenuItemHTML(item) {
-	var itemHTML = '<a href="javascript:menuShowDetail(\'' + item.id + '\')">';
+	var itemHTML = '<a href="javascript:menuDialogDetail(\'' + item.id + '\')">';
 
 	if (item.image) {
 		itemHTML += '<img style="border-radius: 50%" src="' + item.image + '">';
@@ -206,7 +137,7 @@ function generateMenuItemHTML(item) {
 		itemHTML += '<span class="ui-li-count">' + formatPrice(item.price) + '</span>';
 	}
 
-	itemHTML += '</a><a href="javascript:menuNewOrder(\'' + item.id + '\');" class="ui-btn ui-icon-plus">Order</a></li>';
+	itemHTML += '</a><a href="javascript:menuDialogNewOrder(\'' + item.id + '\');" class="ui-btn ui-icon-plus">Order</a></li>';
 
 	if (item.filterText.length > 0) {
 		itemHTML = '<li id="item-' + item.id + '" data-filtertext="' + item.filterText + '">' + itemHTML;

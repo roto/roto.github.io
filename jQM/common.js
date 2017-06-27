@@ -2,6 +2,95 @@
 /*                          Common Shared For All Pages                      */
 /*****************************************************************************/
 
+/* Find the duplicate order */
+function isRequestOrdered(itemID, request, excludeOrderItemID) {
+	for (var i in orderItems) {
+		if (excludeOrderItemID === i) {
+			continue;
+		}
+
+		var orderItem = orderItems[i];
+		if (orderItem.item.id === itemID) {
+			if (!request && !orderItem.request) {
+				return true;
+			}
+
+			if (request && orderItem.request ) {
+				if (request.trim().toLowerCase() === orderItem.request.trim().toLowerCase()) {
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+function loadRequestInputEvents($dialog, itemID, orderItemID) {
+	var $requestInput = $dialog.find('input[name="request"]');
+	$requestInput.off("input");
+	var $dupWarn = $dialog.find('#warn-duplicate');
+
+	// there are orders of the same item, monitor the input event
+	$requestInput.on("input", function() {
+		if (isRequestOrdered(itemID, $requestInput.val(), orderItemID)) {
+			// identical order exists, show warning
+			$dupWarn.show();
+		} else {
+			$dupWarn.hide();
+		}
+	});
+
+	if (orderItemID && orderItems[orderItemID] && orderItems[orderItemID].request) {
+		$requestInput.val(orderItems[orderItemID].request).trigger("input");
+	} else {
+		$requestInput.val('').trigger("input");
+	}
+}
+
+function loadQuantityInputEvents($dialog, quantity) {
+	var $quantityRangeInput = $dialog.find('input[name="quantity"]');
+	$quantityRangeInput.val(quantity ? quantity : 1);
+
+	function resetRangeSlider() {
+		$quantityRangeInput.attr("max", 10);
+		$quantityRangeInput.slider("refresh");
+		$dialog.find('div[role="application"]').show();
+	}
+
+	$quantityRangeInput.off("focus").on("focus", function() {
+		$quantityRangeInput.removeAttr("max");
+	});
+
+	$quantityRangeInput.off("blur").on("blur", function() {
+		if ($quantityRangeInput.val() > 10) {
+			$dialog.find('div[role="application"]').hide();
+		} else {
+			resetRangeSlider();
+		}
+	});
+
+	resetRangeSlider();
+}
+
+function fetchOrderInputs(orderItem, $dialog) {
+	var quantity = $dialog.find('input[name="quantity"]').val();
+	if (quantity && quantity > 1) {
+		orderItem.quantity = quantity;
+	} else {
+		delete orderItem.quantity;
+	}
+
+	var request = $dialog.find('input[name="request"]').val().trim();
+	if (request && request.length > 0) {
+		orderItem.request = request;
+	} else {
+		delete orderItem.request;
+	}
+
+	return orderItem;
+}
+
 function getFilterText(text) {
 	var normalizedText = removeDiacritics(text);
 	if (normalizedText === text) {
