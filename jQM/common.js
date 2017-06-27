@@ -11,39 +11,44 @@ function getFilterText(text) {
 }
 
 function switchTheme() {
-	$("[data-role='page']").each(function (idx, page) {
+	$('[data-role="page"]').each(function (idx, page) {
 		var $page = $(page);
+		var theme = $page.attr('data-theme');
 		var clsToRemove;
-		if ($page.attr("data-theme") === "b") {
-			$page.attr("data-theme", "a");
+		if (theme === 'b') {
+			$page.attr('data-theme', 'a');
 			clsToRemove = /\b[\w-]+?-b\b/g;
 		} else {
-			$page.attr("data-theme", "b");
+			$page.attr('data-theme', 'b');
 			clsToRemove = /\b[\w-]+?-a\b/g;
 		}
 
-		var cls = $page.attr("class");
+		var cls = $page.attr('class');
 		if (cls) {
 			cls = cls.replace(clsToRemove, '');
-			$page.attr("class", cls);
+			$page.attr('class', cls);
 		}
 
 		/* revert popup overlay style */
-		$page.find('.ui-popup-screen').each(function (idx, overlay) {
-			var $overlay = $(overlay);
+		$page.find('[data-role="popup"]').each(function (idx, popup) {
+			var $popup = $(popup);
+			$popup.attr('data-overlay-theme', theme);
 
-			var cls = $overlay.attr('class');
-			if (cls.indexOf('ui-overlay-b') >= 0) {
-				$overlay.attr('class', cls.replace('ui-overlay-b', 'ui-overlay-a'));
-			} else {
-				$overlay.attr('class', cls.replace('ui-overlay-a', 'ui-overlay-b'));
+			try {
+				$popup.popup('destroy');
+			} catch (err) {
+				if (err.message.indexOf('prior to initialization') >= 0) {
+					// popup might not be initilized, ignore and continue
+				} else {
+					throw err;
+				}
 			}
 		});
 
 		try {
-			$page.page("destroy");
+			$page.page('destroy');
 		} catch (err) {
-			if (err.message.indexOf("prior to initialization") >= 0) {
+			if (err.message.indexOf('prior to initialization') >= 0) {
 				// page might not be initilized, ignore and continue
 			} else {
 				throw err;
