@@ -27,12 +27,11 @@ function menuDialogDetail(itemID) {
 	$main.children('p').text(menuItem.desc ? menuItem.desc : '');
 
 	$main.find('a').off('click').on('click', function() {
-		$dialog.on('popupafterclose', function() {
+		$dialog.off('popupafterclose').on('popupafterclose', function() {
 			setTimeout(function() {
 				menuDialogNewOrder(itemID);
 			}, 0);
 		});
-		$.mobile.back();
 	});
 
 	$dialog.off('popupafterclose');
