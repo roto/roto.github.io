@@ -29,7 +29,7 @@ function menuDialogDetail(itemID) {
 	$main.find('a').off('click').on('click', function() {
 		$dialog.on('popupafterclose', function() {
 			if(navigator.userAgent.match('CriOS')) {
-				window.history.pushState(null, "MENU", "#menu");
+				History.pushState(null, "MENU", "#menu");
 			}
 			menuDialogNewOrder(itemID);
 		});
