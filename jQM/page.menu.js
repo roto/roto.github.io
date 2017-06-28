@@ -28,10 +28,13 @@ function menuDialogDetail(itemID) {
 
 	$main.find('a').off('click').on('click', function() {
 		$dialog.on('popupafterclose', function() {
-			if(navigator.userAgent.match('CriOS')) {
-				History.pushState(null, "MENU", "#menu");
-			}
-			menuDialogNewOrder(itemID);
+			setTimeout(function() {
+				/*if(!navigator.userAgent.match('CriOS')) {
+					//History.pushState(null, "MENU", "#menu");
+					$.mobile.changePage('#menu', { changeHash: true });
+				}*/
+				menuDialogNewOrder(itemID);
+			}, 1000);
 		});
 		$.mobile.back();
 	});
