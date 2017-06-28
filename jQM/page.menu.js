@@ -28,6 +28,9 @@ function menuDialogDetail(itemID) {
 
 	$main.find('a').off('click').on('click', function() {
 		$dialog.on('popupafterclose', function() {
+			if(navigator.userAgent.match('CriOS')) {
+				history.pushState(undefined, "iOS Chrome missing history state", "#menu");
+			}
 			menuDialogNewOrder(itemID);
 		});
 		$.mobile.back();
@@ -38,14 +41,6 @@ function menuDialogDetail(itemID) {
 }
 
 function menuDialogNewOrder(itemID) {
-	var backLevel = -2;
-	// workaround for Chrome on iOS
-	if (arguments.callee.caller && navigator.userAgent.match('CriOS')) {
-		// has a callee, is chained from menuDialogDetail
-		backLevel = -1;
-	}
-	alert(backLevel + ': ' + navigator.userAgent.match('CriOS') + ': ' + arguments.callee.caller);
-
 	var $dialog = $("#menu-new-order-dialog");
 	$dialog.find('h1[role="heading"]').text(menuItems[itemID].name);
 
@@ -58,7 +53,7 @@ function menuDialogNewOrder(itemID) {
 		var orderItemHTML = generateOrderItemHTML(orderItem);
 		$(orderItemHTML).insertBefore('#new-order');
 		$('ul#order-list[data-role="listview"]').listview().listview("refresh");
-		window.history.go(backLevel);
+		window.history.go(-2);
 		$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
 	});
 
