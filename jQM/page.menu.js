@@ -27,11 +27,13 @@ function menuDialogDetail(itemID) {
 	$main.children('p').text(menuItem.desc ? menuItem.desc : '');
 
 	$main.find('a').off('click').on('click', function(e) {
+		e.preventDefault();
+
 		$dialog.off('popupafterclose').on('popupafterclose', function() {
-			setTimeout(function() {
-				menuDialogNewOrder(itemID);
-			}, 0);
+			menuDialogNewOrder(itemID);
 		}).popup('close');
+
+		return false;
 	});
 
 	$dialog.off('popupafterclose');
@@ -45,7 +47,9 @@ function menuDialogNewOrder(itemID) {
 	loadRequestInputEvents($dialog, itemID);
 	loadQuantityInputEvents($dialog);
 
-	$dialog.find("form#new-order-form").off("submit").on('submit', function(){
+	$dialog.find("form#new-order-form").off("submit").on('submit', function(e){
+		e.preventDefault();
+
 		var orderItem = createNewOrderItem(itemID);
 		fetchOrderInputs(orderItem, $dialog);
 
@@ -57,6 +61,8 @@ function menuDialogNewOrder(itemID) {
 			$.mobile.back();
 			$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
 		}).popup('close');
+
+		return false;
 	});
 
 	$dialog.popup("open");
