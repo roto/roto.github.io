@@ -58,7 +58,7 @@ function menuDialogNewOrder(itemID) {
 		$('ul#order-list[data-role="listview"]').listview().listview("refresh");
 
 		$dialog.off('popupafterclose').on('popupafterclose', function() {
-			//$.mobile.back();
+			$.mobile.back();
 			$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
 		}).popup('close');
 
@@ -132,7 +132,7 @@ function generateMenuItemFilterText(item, allowFilter) {
 }
 
 function generateMenuItemHTML(item) {
-	var itemHTML = '<a href="javascript:menuDialogDetail(\'' + item.id + '\')">';
+	var itemHTML = '<a href="javascript:menuDialogDetail(\'' + item.id + '\')" data-rel="popup">';
 
 	if (item.image) {
 		itemHTML += '<img style="border-radius: 50%" src="' + item.image + '">';
@@ -150,7 +150,7 @@ function generateMenuItemHTML(item) {
 		itemHTML += '<span class="ui-li-count">' + formatPrice(item.price) + '</span>';
 	}
 
-	itemHTML += '</a><a href="javascript:menuDialogNewOrder(\'' + item.id + '\');" class="ui-btn ui-icon-plus">Order</a></li>';
+	itemHTML += '</a><a href="javascript:menuDialogNewOrder(\'' + item.id + '\');" data-rel="popup" class="ui-btn ui-icon-plus">Order</a></li>';
 
 	if (item.filterText.length > 0) {
 		itemHTML = '<li id="item-' + item.id + '" data-filtertext="' + item.filterText + '">' + itemHTML;

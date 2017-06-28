@@ -124,7 +124,7 @@ function generateOrderItemHTML(orderItem) {
 	orderItemHTML += generateOrderQuantityHTML(orderItem);
 
 	orderItemHTML += '<span class="ui-li-count">sending..</span>';
-	orderItemHTML += '</a><a href="javascript:orderEditDialog(\'' + orderItem.id + '\')" class="ui-btn ui-icon-edit">Edit</a></li>';
+	orderItemHTML += '</a><a href="javascript:orderEditDialog(\'' + orderItem.id + '\')" data-rel="popup" class="ui-btn ui-icon-edit">Edit</a></li>';
 
 	return orderItemHTML;
 }
