@@ -48,7 +48,15 @@ function menuDialogNewOrder(itemID) {
 	$dialog.find("form#new-order-form").off("submit").on('submit', function(){
 		var orderItem = createNewOrderItem(itemID);
 		fetchOrderInputs(orderItem, $dialog);
-		orderAddNew(orderItem);
+
+		var orderItemHTML = generateOrderItemHTML(orderItem);
+		$(orderItemHTML).insertBefore('#new-order');
+		$('ul#order-list[data-role="listview"]').listview().listview("refresh");
+
+		$dialog.off('popupafterclose').on('popupafterclose', function() {
+			$.mobile.back();
+			$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+		}).popup('close');
 	});
 
 	$dialog.popup("open");
