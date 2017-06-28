@@ -27,9 +27,9 @@ function menuDialogDetail(itemID) {
 	$main.children('p').text(menuItem.desc ? menuItem.desc : '');
 
 	$main.find('a').off('click').on('click', function() {
-		setTimeout(function() {
+		$dialog.off('popupafterclose').on('popupafterclose', function() {
 			menuDialogNewOrder(itemID);
-		}, 1000);
+		});
 		$.mobile.back();
 	});
 
