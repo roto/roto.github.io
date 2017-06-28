@@ -28,8 +28,8 @@ function menuDialogDetail(itemID) {
 
 	$main.find('a').off('click').on('click', function() {
 		$dialog.on('popupafterclose', function() {
-			if(navigator.userAgent.match('CriOS')) {
-				history.pushState(undefined, "iOS Chrome missing history state", "#menu");
+			if(!navigator.userAgent.match('CriOS')) {
+				window.history.pushState(null, "MENU", "#menu");
 			}
 			menuDialogNewOrder(itemID);
 		});
