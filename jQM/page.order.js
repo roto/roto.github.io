@@ -109,14 +109,6 @@ function orderEditDialog(orderItemID) {
 	});
 }
 
-function orderAddNew(orderItem) {
-	var orderItemHTML = generateOrderItemHTML(orderItem);
-	$(orderItemHTML).insertBefore('#new-order');
-	$('ul#order-list[data-role="listview"]').listview().listview("refresh");
-	window.history.go(-2);
-	$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
-}
-
 function generateOrderItemHTML(orderItem) {
 	var orderItemHTML = '<li id="order-item-' + orderItem.id + '"><a href="#">';
 

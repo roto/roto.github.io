@@ -28,9 +28,7 @@ function menuDialogDetail(itemID) {
 
 	$main.find('a').off('click').on('click', function() {
 		$dialog.on('popupafterclose', function() {
-			setTimeout(function() {
-				menuDialogNewOrder(itemID);
-			}, 0);
+			menuDialogNewOrder(itemID);
 		});
 		$.mobile.back();
 	});
@@ -49,7 +47,11 @@ function menuDialogNewOrder(itemID) {
 	$dialog.find("form#new-order-form").off("submit").submit(function(){
 		var orderItem = createNewOrderItem(itemID);
 		fetchOrderInputs(orderItem, $dialog);
-		orderAddNew(orderItem);
+		var orderItemHTML = generateOrderItemHTML(orderItem);
+		$(orderItemHTML).insertBefore('#new-order');
+		$('ul#order-list[data-role="listview"]').listview().listview("refresh");
+		window.history.go(-2);
+		$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
 	});
 
 	$dialog.popup("open");
