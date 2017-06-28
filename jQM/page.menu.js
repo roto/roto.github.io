@@ -26,12 +26,15 @@ function menuDialogDetail(itemID) {
 	$main.children('img').attr('src', menuItem.image);
 	$main.children('p').text(menuItem.desc ? menuItem.desc : '');
 
-	$main.find('a').off('click').on('click', function() {
+	$main.find('a').off('click').on('click', function(e) {
+		e.preventDefault();
 		$dialog.off('popupafterclose').on('popupafterclose', function() {
 			setTimeout(function() {
 				menuDialogNewOrder(itemID);
 			}, 0);
 		});
+		$.mobile.back();
+		return false;
 	});
 
 	$dialog.off('popupafterclose');
