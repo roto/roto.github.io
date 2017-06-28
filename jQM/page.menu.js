@@ -38,6 +38,13 @@ function menuDialogDetail(itemID) {
 }
 
 function menuDialogNewOrder(itemID) {
+	var backLevel = -2;
+	// workaround for Chrome on iOS
+	if (arguments.callee.caller && navigator.userAgent.match('CriOS')) {
+		// has a callee, is chained from menuDialogDetail
+		backLevel = -1;
+	}
+
 	var $dialog = $("#menu-new-order-dialog");
 	$dialog.find('h1[role="heading"]').text(menuItems[itemID].name);
 
@@ -50,7 +57,7 @@ function menuDialogNewOrder(itemID) {
 		var orderItemHTML = generateOrderItemHTML(orderItem);
 		$(orderItemHTML).insertBefore('#new-order');
 		$('ul#order-list[data-role="listview"]').listview().listview("refresh");
-		window.history.go(-2);
+		window.history.go(backLevel);
 		$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
 	});
 
