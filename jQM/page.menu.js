@@ -56,8 +56,11 @@ function menuDialogNewOrder(itemID) {
 		var orderItemHTML = generateOrderItemHTML(orderItem);
 		$(orderItemHTML).insertBefore('#new-order');
 		$('ul#order-list[data-role="listview"]').listview().listview("refresh");
-		window.history.go(-2);
-		$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+
+		$dialog.off('popupafterclose').on('popupafterclose', function() {
+			$.mobile.back();
+			$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+		}).popup('close');
 
 		return false;
 	});
