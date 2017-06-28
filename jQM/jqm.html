@@ -95,9 +95,9 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-			<!--a href="#" class="ui-btn ui-icon-location ui-btn-icon-left">Table</a-->
+			<!--a class="ui-btn ui-icon-location ui-btn-icon-left">Table</a-->
 			<div style="float:right">
-				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
+				<a class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
 			</div>
 		</div>
 	</div>
@@ -105,7 +105,7 @@
 	<!-- Order Page -->
 	<div id="order" data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed">
-			<a href="#" data-rel="back" data-icon="arrow-l" data-transition="slidefade" data-direction="reverse">Home</a>
+			<a data-rel="back" data-icon="arrow-l" data-transition="slidefade" data-direction="reverse">Home</a>
 			<h1>ORDER</h1>
 			<a href="#menu" data-icon="bars" data-transition="slidefade">Menu</a>
 		</div>
@@ -117,30 +117,30 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-			<a href="#" class="ui-btn ui-icon-location ui-btn-icon-left">
+			<a class="ui-btn ui-icon-location ui-btn-icon-left">
 				Table
 				<span class="notification error">!</span>
 			</a>
 			<div style="float:right">
-				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
+				<a class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
 			</div>
 		</div>
 
 		<div data-role="popup" id="order-detail-dialog" data-overlay-theme="b">
-			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<a data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 			<div data-role="header"><h1>Detail</h1></div>
 			<div data-role="main" class="ui-content">
 				<img style='width: 100%' src=''>
 				<p></p>
 				<div style="text-align: center;">
-					<a href='#' class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-right">Order</a>
+					<a class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-right">Order</a>
 				</div>
 			</div>
 			<!--div data-role="footer"><h1>Footer Text..</h1></div-->
 		</div>
 
 		<div data-role="popup" id="order-edit-dialog" data-overlay-theme="b">
-			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<a data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 			<div data-role="header"><h1>New Order</h1></div>
 			<div data-role="main" class="ui-content">
 				<form id="order-edit-form" action="javascript:void(0);">
@@ -153,7 +153,7 @@
 					</div>
 					<div class="ui-grid-a">
 						<div class="ui-block-a" style="text-align: left;">
-							<a href='#' id="order-delete" data-rel="back" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-right">Delete</a>
+							<a id="order-delete" data-rel="back" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-right">Delete</a>
 						</div>
 						<div class="ui-block-b" style="text-align: right;">
 							<input type="submit" name="Update" value="Update" data-role="button" data-inline="true" data-icon="check" data-iconpos="right">
@@ -168,7 +168,7 @@
 	<!-- Menu Page -->
 	<div id="menu" data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed">
-			<a href="#" data-rel="back" data-icon="arrow-l" data-transition="slidefade" data-direction="reverse">Order</a>
+			<a data-rel="back" data-icon="arrow-l" data-transition="slidefade" data-direction="reverse">Order</a>
 			<h1>MENU</h1>
 			<!--a href="#menu" data-icon="search">Search</a-->
 		</div>
@@ -186,25 +186,25 @@
 
 		<div data-role="footer" data-position="fixed">
 			<div style="float:right">
-				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
+				<a class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
 			</div>
 		</div>
 
 		<div data-role="popup" id="menu-detail-dialog" data-overlay-theme="b">
-			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<a data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 			<div data-role="header"><h1>Detail</h1></div>
 			<div data-role="main" class="ui-content">
 				<img style='width: 100%' src=''>
 				<p></p>
 				<div style="text-align: center;">
-					<a href='#' class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-right">Order</a>
+					<a class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-plus ui-btn-icon-right">Order</a>
 				</div>
 			</div>
 			<!--div data-role="footer"><h1>Footer Text..</h1></div-->
 		</div>
 
 		<div data-role="popup" id="menu-new-order-dialog" data-overlay-theme="b">
-			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<a data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 			<div data-role="header"><h1>New Order</h1></div>
 			<div data-role="main" class="ui-content">
 				<form id="new-order-form" action="javascript:void(0);">
