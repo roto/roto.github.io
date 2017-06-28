@@ -58,7 +58,7 @@ function menuDialogNewOrder(itemID) {
 		$('ul#order-list[data-role="listview"]').listview().listview("refresh");
 
 		$dialog.off('popupafterclose').on('popupafterclose', function() {
-			$.mobile.back();
+			//$.mobile.back();
 			$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
 		}).popup('close');
 
