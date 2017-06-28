@@ -44,6 +44,7 @@ function menuDialogNewOrder(itemID) {
 		// has a callee, is chained from menuDialogDetail
 		backLevel = -1;
 	}
+	alert(backLevel + ': ' + navigator.userAgent.match('CriOS') + ': ' + arguments.callee.caller);
 
 	var $dialog = $("#menu-new-order-dialog");
 	$dialog.find('h1[role="heading"]').text(menuItems[itemID].name);
