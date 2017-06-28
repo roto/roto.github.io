@@ -31,7 +31,7 @@ function menuDialogDetail(itemID) {
 			setTimeout(function() {
 				menuDialogNewOrder(itemID);
 			}, 0);
-		});
+		}).popup('close');
 	});
 
 	$dialog.off('popupafterclose');
