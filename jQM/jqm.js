@@ -1,22 +1,16 @@
 $(document).ready(function(){
-	$(document).on('swiperight', function () {
-		if ($.mobile.activePage.find('[data-role="popup"]').parent().hasClass("ui-popup-active")){
-			// TODO: better process mouse drag select
-			return false;
-		}
-		$.mobile.back();
-	});
-
-	$('#order').on('swipeleft', function () {
-		if ($.mobile.activePage.find('[data-role="popup"]').parent().hasClass("ui-popup-active")){
-			// TODO: better process mouse drag select
-			return false;
-		}
-		$.mobile.changePage('#menu', {
-			transition: "slidefade",
-			changeHash: true,
+	if (is_touch_device()) {
+		$(document).on('swiperight', function () {
+			$.mobile.back();
 		});
-	});
+
+		$('#order').on('swipeleft', function () {
+			$.mobile.changePage('#menu', {
+				transition: "slidefade",
+				changeHash: true,
+			});
+		});
+	}
 
 	populateOrder();
 	populateMenu();

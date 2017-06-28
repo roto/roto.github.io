@@ -2,6 +2,11 @@
 /*                             Common Utilities                              */
 /*****************************************************************************/
 
+function is_touch_device() {
+	return 'ontouchstart' in window				// for most browsers 
+			|| !!(navigator.maxTouchPoints);	// for IE10/11 and Surface
+};
+
 function formatPrice(price) {
 	if (price % 1000000000 == 0) {
 		return addThousandSeparators(price / 1000000000) + "b";
