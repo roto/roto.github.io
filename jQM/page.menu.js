@@ -27,15 +27,9 @@ function menuDialogDetail(itemID) {
 	$main.children('p').text(menuItem.desc ? menuItem.desc : '');
 
 	$main.find('a').off('click').on('click', function() {
-		$dialog.on('popupafterclose', function() {
-			setTimeout(function() {
-				/*if(!navigator.userAgent.match('CriOS')) {
-					//History.pushState(null, "MENU", "#menu");
-					$.mobile.changePage('#menu', { changeHash: true });
-				}*/
-				menuDialogNewOrder(itemID);
-			}, 1000);
-		});
+		setTimeout(function() {
+			menuDialogNewOrder(itemID);
+		}, 1000);
 		$.mobile.back();
 	});
 
