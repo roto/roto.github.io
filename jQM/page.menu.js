@@ -27,14 +27,11 @@ function menuDialogDetail(itemID) {
 	$main.children('p').text(menuItem.desc ? menuItem.desc : '');
 
 	$main.find('a').off('click').on('click', function(e) {
-		e.preventDefault();
 		$dialog.off('popupafterclose').on('popupafterclose', function() {
 			setTimeout(function() {
 				menuDialogNewOrder(itemID);
 			}, 0);
 		});
-		$.mobile.back();
-		return false;
 	});
 
 	$dialog.off('popupafterclose');
@@ -48,7 +45,7 @@ function menuDialogNewOrder(itemID) {
 	loadRequestInputEvents($dialog, itemID);
 	loadQuantityInputEvents($dialog);
 
-	$dialog.find("form#new-order-form").off("submit").submit(function(){
+	$dialog.find("form#new-order-form").off("submit").on('submit', function(){
 		var orderItem = createNewOrderItem(itemID);
 		fetchOrderInputs(orderItem, $dialog);
 		orderAddNew(orderItem);
