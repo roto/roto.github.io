@@ -43,70 +43,79 @@ function generateOrderItemID(itemID) {
 	return itemID + '-' + (++item.orderCount);
 }
 
-function orderEditDialog(orderItemID) {
-	var orderItem = orderItems[orderItemID];
-
+function openOrderDialog(type, orderItemID) {
 	if (!orderItems.hasOwnProperty(orderItemID)) {
 		console.warn('Order item "' + orderItemID + '" is not in the order');
 		return;
 	}
 
-	var $dialog = $("#order-edit-dialog");
+	var orderItem = orderItems[orderItemID];
+	var $dialog = $('#dialog-order');
 	$dialog.find('h1[role="heading"]').text(orderItem.item.name);
 
-	loadRequestInputEvents($dialog, orderItem.item.id, orderItemID);
-	loadQuantityInputEvents($dialog, orderItem.quantity);
+	var $main = $dialog.children('[data-role="main"]');
+	$main.children('div').hide();	// hide all children
 
+	showOrderContent('edit');
 	$dialog.popup("open");
 
-	var $form = $dialog.find("form#order-edit-form");
-	$form.find('a#order-delete').off("click").on("click", function() {
-		delete orderItems[orderItemID];
+	function showOrderContent(type) {
+		var $div = $main.children('#dialog-order-' + type);
 
-		var $orderElement = $('#order-item-' + orderItemID);
-		$orderElement.children('a').off('click').attr('href', undefined);
-		// animate the item out
-		$orderElement.animate(
-			{ height:0, opacity:0 },
-			'slow', 'swing',
-			function() {
-				// remove the item's DOM when animation complete
-				$(this).remove();
-			}
-		);
-	});
+		loadRequestInputEvents($div, orderItem.item.id, orderItemID);
+		loadQuantityInputEvents($div, orderItem.quantity);
 
-	$form.off("submit").submit(function() {
-		fetchOrderInputs(orderItem, $dialog);
-		$.mobile.back();
-		var $orderElement = $('#order-item-' + orderItemID);
+		var $form = $div.find("form");
+		$form.find('a#order-delete').off("click").click(function() {
+			delete orderItems[orderItemID];
 
-		function updateOrderInputElements(property, selector, htmlGeneratorFunc, valuePostfix) {
-			var $el = $orderElement.find(selector);
-			if ($el.length > 0) {
-				if (orderItem[property]) {
-					var valueWithPF = valuePostfix ? orderItem[property] + valuePostfix : orderItem[property];
-					if ($el.text() != valueWithPF) {
-						$el.text(valueWithPF);
-						$el.fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+			var $orderElement = $('#order-item-' + orderItemID);
+			$orderElement.children('a').off('click').attr('href', undefined);
+			// animate the item out
+			$orderElement.animate(
+				{ height:0, opacity:0 },
+				'slow', 'swing',
+				function() {
+					// remove the item's DOM when animation complete
+					$(this).remove();
+				}
+			);
+		});
+
+		$form.off("submit").submit(function() {
+			fetchOrderInputs(orderItem, $div);
+			$.mobile.back();
+			var $orderElement = $('#order-item-' + orderItemID);
+
+			function updateOrderInputElements(property, selector, htmlGeneratorFunc, valuePostfix) {
+				var $el = $orderElement.find(selector);
+				if ($el.length > 0) {
+					if (orderItem[property]) {
+						var valueWithPF = valuePostfix ? orderItem[property] + valuePostfix : orderItem[property];
+						if ($el.text() != valueWithPF) {
+							$el.text(valueWithPF);
+							$el.fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+						}
+					} else {
+						$el.fadeOut(1000, function() {
+							// remove the item's DOM when animation complete
+							$(this).remove();
+						});
 					}
 				} else {
-					$el.fadeOut(1000, function() {
-						// remove the item's DOM when animation complete
-						$(this).remove();
-					});
-				}
-			} else {
-				if (orderItem[property]) {
-					$(htmlGeneratorFunc(orderItem)).insertAfter('#order-item-' + orderItemID + ' > a > h2').hide().fadeIn(1000);
+					if (orderItem[property]) {
+						$(htmlGeneratorFunc(orderItem)).insertAfter('#order-item-' + orderItemID + ' > a > h2').hide().fadeIn(1000);
+					}
 				}
 			}
-		}
 
-		// update order request
-		updateOrderInputElements('request', 'p', generateOrderRequestHTML);
-		updateOrderInputElements('quantity', '.ui-li-quantity', generateOrderQuantityHTML, ' ×');
-	});
+			// update order request
+			updateOrderInputElements('request', 'p', generateOrderRequestHTML);
+			updateOrderInputElements('quantity', '.ui-li-quantity', generateOrderQuantityHTML, ' ×');
+		});
+
+		$div.show();
+	}
 }
 
 function generateOrderItemHTML(orderItem) {
@@ -124,7 +133,7 @@ function generateOrderItemHTML(orderItem) {
 	orderItemHTML += generateOrderQuantityHTML(orderItem);
 
 	orderItemHTML += '<span class="ui-li-count">sending..</span>';
-	orderItemHTML += '</a><a href="javascript:orderEditDialog(\'' + orderItem.id + '\')" class="ui-btn ui-icon-edit">Edit</a></li>';
+	orderItemHTML += '</a><a href="javascript:openOrderDialog(\'edit\', \'' + orderItem.id + '\')" class="ui-btn ui-icon-edit">Edit</a></li>';
 
 	return orderItemHTML;
 }

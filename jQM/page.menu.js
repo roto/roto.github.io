@@ -19,7 +19,7 @@ function populateMenu() {
 
 function openMenuDialog(type, itemID) {
 	var menuItem = menuItems[itemID];
-	var $dialog = $("#dialog-menu");
+	var $dialog = $('#dialog-menu');
 	$dialog.find('h1').text(menuItem.name);
 
 	var $main = $dialog.children('[data-role="main"]');
@@ -44,7 +44,7 @@ function openMenuDialog(type, itemID) {
 			loadRequestInputEvents($div, itemID);
 			loadQuantityInputEvents($div);
 
-			$div.find("form#new-order-form").off("submit").submit(function(){
+			$div.find('form').off('submit').submit(function(){
 				var orderItem = createNewOrderItem(itemID);
 				fetchOrderInputs(orderItem, $div);
 				var orderItemHTML = generateOrderItemHTML(orderItem);
