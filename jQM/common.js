@@ -26,10 +26,10 @@ function isRequestOrdered(itemID, request, excludeOrderItemID) {
 	return false;
 }
 
-function loadRequestInputEvents($dialog, itemID, orderItemID) {
-	var $requestInput = $dialog.find('input[name="request"]');
+function loadRequestInputEvents($div, itemID, orderItemID) {
+	var $requestInput = $div.find('input[name="request"]');
 	$requestInput.off("input");
-	var $dupWarn = $dialog.find('#warn-duplicate');
+	var $dupWarn = $div.find('#warn-duplicate');
 
 	// there are orders of the same item, monitor the input event
 	$requestInput.on("input", function() {
@@ -48,14 +48,14 @@ function loadRequestInputEvents($dialog, itemID, orderItemID) {
 	}
 }
 
-function loadQuantityInputEvents($dialog, quantity) {
-	var $quantityRangeInput = $dialog.find('input[name="quantity"]');
+function loadQuantityInputEvents($div, quantity) {
+	var $quantityRangeInput = $div.find('input[name="quantity"]');
 	$quantityRangeInput.val(quantity ? quantity : 1);
 
 	function resetRangeSlider() {
 		$quantityRangeInput.attr("max", 10);
 		$quantityRangeInput.slider("refresh");
-		$dialog.find('div[role="application"]').show();
+		$div.find('div[role="application"]').show();
 	}
 
 	$quantityRangeInput.off("focus").on("focus", function() {
@@ -64,7 +64,7 @@ function loadQuantityInputEvents($dialog, quantity) {
 
 	$quantityRangeInput.off("blur").on("blur", function() {
 		if ($quantityRangeInput.val() > 10) {
-			$dialog.find('div[role="application"]').hide();
+			$div.find('div[role="application"]').hide();
 		} else {
 			resetRangeSlider();
 		}
@@ -73,15 +73,15 @@ function loadQuantityInputEvents($dialog, quantity) {
 	resetRangeSlider();
 }
 
-function fetchOrderInputs(orderItem, $dialog) {
-	var quantity = $dialog.find('input[name="quantity"]').val();
+function fetchOrderInputs(orderItem, $div) {
+	var quantity = $div.find('input[name="quantity"]').val();
 	if (quantity && quantity > 1) {
 		orderItem.quantity = quantity;
 	} else {
 		delete orderItem.quantity;
 	}
 
-	var request = $dialog.find('input[name="request"]').val().trim();
+	var request = $div.find('input[name="request"]').val().trim();
 	if (request && request.length > 0) {
 		orderItem.request = request;
 	} else {

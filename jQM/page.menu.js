@@ -17,44 +17,48 @@ function populateMenu() {
 	$('ul#menu-list[data-role="listview"]').empty().append($(groupsHTML)).listview().listview("refresh");
 }
 
-function menuDialogDetail(itemID) {
+function openMenuDialog(type, itemID) {
 	var menuItem = menuItems[itemID];
-	var $dialog = $("#menu-detail-dialog");
-	var $main = $dialog.children('[data-role="main"]');
-
+	var $dialog = $("#dialog-menu");
 	$dialog.find('h1').text(menuItem.name);
-	$main.children('img').attr('src', menuItem.image);
-	$main.children('p').text(menuItem.desc ? menuItem.desc : '');
 
-	$main.find('a').off('click').on('click', function() {
-		$dialog.on('popupafterclose', function() {
-			menuDialogNewOrder(itemID);
-		});
-		$.mobile.back();
-	});
+	var $main = $dialog.children('[data-role="main"]');
+	$main.children('div').hide();	// hide all children
 
-	$dialog.off('popupafterclose');
+	showMenuContent(type);
 	$dialog.popup('open');
-}
+	return;
 
-function menuDialogNewOrder(itemID) {
-	var $dialog = $("#menu-new-order-dialog");
-	$dialog.find('h1[role="heading"]').text(menuItems[itemID].name);
+	function showMenuContent(type) {
+		var $div = $main.children('#dialog-menu-' + type);
 
-	loadRequestInputEvents($dialog, itemID);
-	loadQuantityInputEvents($dialog);
+		if (type === 'detail') {
+			$div.children('img').attr('src', menuItem.image);
+			$div.children('p').text(menuItem.desc ? menuItem.desc : '');
+			$div.find('a').off('click').click(function() {
+				$div.hide();
+				showMenuContent('new');
+				$dialog.popup("reposition", {});
+			});
+		} else if (type === 'new') {
+			loadRequestInputEvents($div, itemID);
+			loadQuantityInputEvents($div);
 
-	$dialog.find("form#new-order-form").off("submit").submit(function(){
-		var orderItem = createNewOrderItem(itemID);
-		fetchOrderInputs(orderItem, $dialog);
-		var orderItemHTML = generateOrderItemHTML(orderItem);
-		$(orderItemHTML).insertBefore('#new-order');
-		$('ul#order-list[data-role="listview"]').listview().listview("refresh");
-		window.history.go(-2);
-		$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
-	});
-
-	$dialog.popup("open");
+			$div.find("form#new-order-form").off("submit").submit(function(){
+				var orderItem = createNewOrderItem(itemID);
+				fetchOrderInputs(orderItem, $div);
+				var orderItemHTML = generateOrderItemHTML(orderItem);
+				$(orderItemHTML).insertBefore('#new-order');
+				$('ul#order-list[data-role="listview"]').listview().listview("refresh");
+				window.history.go(-2);
+				$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+			});
+		} else {
+			throw 'Invalid menu dialog type: "' + type + "'";
+		}
+		
+		$div.show();
+	}
 }
 
 function generateMenuGroupHTML(group) {
@@ -121,7 +125,7 @@ function generateMenuItemFilterText(item, allowFilter) {
 }
 
 function generateMenuItemHTML(item) {
-	var itemHTML = '<a href="javascript:menuDialogDetail(\'' + item.id + '\')">';
+	var itemHTML = '<a href="javascript:openMenuDialog(\'detail\', \'' + item.id + '\')">';
 
 	if (item.image) {
 		itemHTML += '<img style="border-radius: 50%" src="' + item.image + '">';
@@ -139,7 +143,7 @@ function generateMenuItemHTML(item) {
 		itemHTML += '<span class="ui-li-count">' + formatPrice(item.price) + '</span>';
 	}
 
-	itemHTML += '</a><a href="javascript:menuDialogNewOrder(\'' + item.id + '\');" class="ui-btn ui-icon-plus">Order</a></li>';
+	itemHTML += '</a><a href="javascript:openMenuDialog(\'new\', \'' + item.id + '\');" class="ui-btn ui-icon-plus">Order</a></li>';
 
 	if (item.filterText.length > 0) {
 		itemHTML = '<li id="item-' + item.id + '" data-filtertext="' + item.filterText + '">' + itemHTML;
