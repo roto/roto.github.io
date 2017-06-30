@@ -104,17 +104,13 @@ function getFilterText(text) {
 }
 
 function switchTheme() {
+	var theme = $('#home').attr('data-theme');
+	var newTheme = theme === 'b' ? 'a' : 'b';
+	var clsToRemove = theme === 'b' ? /\b[\w-]+?-b\b/g : /\b[\w-]+?-a\b/g;
+
 	$('[data-role="page"]').each(function (idx, page) {
 		var $page = $(page);
-		var theme = $page.attr('data-theme');
-		var clsToRemove;
-		if (theme === 'b') {
-			$page.attr('data-theme', 'a');
-			clsToRemove = /\b[\w-]+?-b\b/g;
-		} else {
-			$page.attr('data-theme', 'b');
-			clsToRemove = /\b[\w-]+?-a\b/g;
-		}
+		$page.attr('data-theme', newTheme);
 
 		var cls = $page.attr('class');
 		if (cls) {
@@ -150,4 +146,6 @@ function switchTheme() {
 
 		$page.page();
 	});
+
+	local_save('theme', newTheme);
 }

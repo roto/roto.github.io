@@ -1,4 +1,17 @@
 $(document).ready(function(){
+	if (typeof(Storage) === "undefined") {
+		// browser not support storage
+		local_load = local_remove = local_save = $.noop;
+	}
+
+	populateOrder();
+	populateMenu();
+
+	// not sure why, but this has to be done after menu is populated
+	if (local_load('theme') === 'b') {
+		switchTheme();
+	}
+
 	if (is_touch_device()) {
 		$(document).on('swiperight', function () {
 			$.mobile.back();
@@ -14,9 +27,6 @@ $(document).ready(function(){
 		// change swipe speed sensitivity
 		$.event.special.swipe.durationThreshold = 100;
 	}
-
-	populateOrder();
-	populateMenu();
 
 	/* Geolocation */
 	function initGeolocation() {
