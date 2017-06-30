@@ -22,7 +22,7 @@ li#new-order > a {
 }
 
 /* Remove the default right icon button */
-li#new-order > a::after {
+li#new-order > a:after {
     background-image: none;
     background-color: transparent;
 }
@@ -77,12 +77,12 @@ li#new-order > a > div.ui-li-thumb > img {
 
 /* Highlight the dialog buttons in theme a */
 div[data-theme="a"] [data-role="popup"] > [data-role="main"] .ui-btn {
-    border-color: gray;
+    border-color: grey;
 }
 
 /* Highlight the dialog buttons in theme b */
 div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
-    border-color: lightgray;
+    border-color: lightgrey;
 }
 
 /* Widen the dialog title space */
@@ -110,46 +110,46 @@ div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
     background: #009933;
 }
 
-.notification:before {
-    position: absolute; display: block; content: '';
-    border: 1px solid white;
-    border-radius: 50%;
-    height: 100%; width: 100%;
-    box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
-}
+    .notification:before {
+        position: absolute; display: block; content: '';
+        border: 1px solid white;
+        border-radius: 50%;
+        height: 100%; width: 100%;
+        box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
+    }
 
-.notification.error {
-    border-color: red;
-    background: red; /* For browsers that do not support gradients */
-    background: -webkit-linear-gradient(#ff8080, red); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#ff8080, red); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#ff8080, red); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#ff8080, red); /* Standard syntax */
-}
+    .notification.error {
+        border-color: red;
+        background: red; /* For browsers that do not support gradients */
+        background: -webkit-linear-gradient(#ff8080, red); /* For Safari 5.1 to 6.0 */
+        background: -o-linear-gradient(#ff8080, red); /* For Opera 11.1 to 12.0 */
+        background: -moz-linear-gradient(#ff8080, red); /* For Firefox 3.6 to 15 */
+        background: linear-gradient(#ff8080, red); /* Standard syntax */
+    }
 
-.notification.warning {
-    border-color: #ff8000;
-    background: #ff8000; /* For browsers that do not support gradients */
-    background: -webkit-linear-gradient(#ffa64d, #b35900); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#ffa64d, #b35900); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#ffa64d, #b35900); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#ffa64d, #b35900); /* Standard syntax */
-}
+    .notification.warning {
+        border-color: #ff8000;
+        background: #ff8000; /* For browsers that do not support gradients */
+        background: -webkit-linear-gradient(#ffa64d, #b35900); /* For Safari 5.1 to 6.0 */
+        background: -o-linear-gradient(#ffa64d, #b35900); /* For Opera 11.1 to 12.0 */
+        background: -moz-linear-gradient(#ffa64d, #b35900); /* For Firefox 3.6 to 15 */
+        background: linear-gradient(#ffa64d, #b35900); /* Standard syntax */
+    }
 
-.notification.notice {
-    border-color: #0099ff;
-    background: #0099ff;
-    background: -webkit-linear-gradient(#66c2ff, #007acc); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#66c2ff, #007acc); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#66c2ff, #007acc); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#66c2ff, #007acc); /* Standard syntax */
-}
+    .notification.notice {
+        border-color: #0099ff;
+        background: #0099ff;
+        background: -webkit-linear-gradient(#66c2ff, #007acc); /* For Safari 5.1 to 6.0 */
+        background: -o-linear-gradient(#66c2ff, #007acc); /* For Opera 11.1 to 12.0 */
+        background: -moz-linear-gradient(#66c2ff, #007acc); /* For Firefox 3.6 to 15 */
+        background: linear-gradient(#66c2ff, #007acc); /* Standard syntax */
+    }
 
-.notification.info {
-    border-color: #009933;
-    background: #009933;
-    background: -webkit-linear-gradient(#00ff00, #00802b); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(#00ff00, #00802b); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(#00ff00, #00802b); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(#00ff00, #00802b); /* Standard syntax */
-}
+    .notification.info {
+        border-color: #009933;
+        background: #009933;
+        background: -webkit-linear-gradient(#00ff00, #00802b); /* For Safari 5.1 to 6.0 */
+        background: -o-linear-gradient(#00ff00, #00802b); /* For Opera 11.1 to 12.0 */
+        background: -moz-linear-gradient(#00ff00, #00802b); /* For Firefox 3.6 to 15 */
+        background: linear-gradient(#00ff00, #00802b); /* Standard syntax */
+    }
