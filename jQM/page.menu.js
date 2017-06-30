@@ -27,6 +27,8 @@ function openMenuDialog(type, itemID) {
 
 	showMenuContent(type);
 	$dialog.popup('open');
+	disableScrolling($dialog);
+
 	return;
 
 	function showMenuContent(type) {
