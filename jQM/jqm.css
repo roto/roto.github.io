@@ -91,6 +91,14 @@ div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
     margin-left: 10%;
 }
 
+/* Icon Color */
+div[data-theme="a"] .ui-icon-delete:not(.ui-btn-icon-notext):after {
+    background-color: #F66;
+}
+div[data-theme="b"] .ui-icon-delete:not(.ui-btn-icon-notext):after {
+    background-color: #900;
+}
+
 /* Notification */
 .notification {
     width: 16px;
