@@ -10,6 +10,9 @@ $(document).ready(function(){
 				changeHash: true,
 			});
 		});
+
+		// change swipe speed sensitivity
+		$.event.special.swipe.durationThreshold = 200;
 	}
 
 	populateOrder();
