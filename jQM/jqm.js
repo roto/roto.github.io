@@ -12,7 +12,7 @@ $(document).ready(function(){
 		});
 
 		// change swipe speed sensitivity
-		$.event.special.swipe.durationThreshold = 200;
+		$.event.special.swipe.durationThreshold = 100;
 	}
 
 	populateOrder();
