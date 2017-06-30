@@ -1,8 +1,5 @@
 $(document).ready(function(){
-	if (typeof(Storage) === "undefined") {
-		// browser not support storage
-		local_load = local_remove = local_save = $.noop;
-	}
+	initialize_local_storage();
 
 	populateOrder();
 	populateMenu();
