@@ -58,6 +58,7 @@ function openOrderDialog(type, orderItemID) {
 
 	showOrderContent('edit');
 	$dialog.popup("open");
+	return;
 
 	function showOrderContent(type) {
 		var $div = $main.children('#dialog-order-' + type);

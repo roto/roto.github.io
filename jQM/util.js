@@ -33,6 +33,8 @@ function local_remove(key) {
 	localStorage.removeItem(key);
 }
 
+/*****************************************************************************/
+
 function is_touch_device() {
 	return 'ontouchstart' in window				// for most browsers 
 			|| !!(navigator.maxTouchPoints);	// for IE10/11 and Surface
