@@ -2,13 +2,6 @@
 /*                          Common Shared For All Pages                      */
 /*****************************************************************************/
 
-function disableScrolling($dialog) {
-	$('body').css('overflow', 'hidden');
-	$dialog.on('popupafterclose', function() {
-		$('body').css('overflow', 'auto');
-	});
-}
-
 /* Find the duplicate order */
 function isRequestOrdered(itemID, request, excludeOrderItemID) {
 	for (var i in orderItems) {
