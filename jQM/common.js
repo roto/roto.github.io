@@ -50,27 +50,31 @@ function loadRequestInputEvents($div, itemID, orderItemID) {
 
 function loadQuantityInputEvents($div, quantity) {
 	var $quantityRangeInput = $div.find('input[name="quantity"]');
-	$quantityRangeInput.val(quantity ? quantity : 1);
-
-	function resetRangeSlider() {
-		$quantityRangeInput.attr("max", 10);
-		$quantityRangeInput.slider("refresh");
-		$div.find('div[role="application"]').show();
-	}
+	var $slider = $div.find('div[role="application"]');
+	updateRangeSlider(quantity ? quantity : 1);
 
 	$quantityRangeInput.off("focus").on("focus", function() {
 		$quantityRangeInput.removeAttr("max");
 	});
 
-	$quantityRangeInput.off("blur").on("blur", function() {
-		if ($quantityRangeInput.val() > 10) {
-			$div.find('div[role="application"]').hide();
-		} else {
-			resetRangeSlider();
-		}
-	});
+	$quantityRangeInput.off("blur").on("blur", updateRangeSlider);
 
-	resetRangeSlider();
+	function updateRangeSlider(quantity) {
+		if (quantity && !isNaN(quantity)) {
+			if (quantity > 10) {
+				$quantityRangeInput.removeAttr("max");
+			}
+			$quantityRangeInput.val(quantity);
+		}
+
+		if ($quantityRangeInput.val() > 10) {
+			$slider.hide();
+		} else {
+			$quantityRangeInput.attr("max", 10);
+			$quantityRangeInput.slider("refresh");
+			$slider.show();
+		}
+	}
 }
 
 function fetchOrderInputs(orderItem, $div) {
