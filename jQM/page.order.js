@@ -56,71 +56,84 @@ function openOrderDialog(type, orderItemID) {
 	var $main = $dialog.children('[data-role="main"]');
 	$main.children('div').hide();	// hide all children
 
-	showOrderContent('edit');
+	showOrderContent(type);
 	$dialog.popup("open");
 	return;
 
 	function showOrderContent(type) {
 		var $div = $main.children('#dialog-order-' + type);
 
-		loadRequestInputEvents($div, orderItem.item.id, orderItemID);
-		loadQuantityInputEvents($div, orderItem.quantity);
+		if (type === 'detail') {
+			$div.children('img').attr('src', orderItem.item.image);
+			$div.children('p').html(orderItem.request ? orderItem.request : '');
+			
+			$div.find('a.ui-icon-edit').off('click').click(function() {
+				$div.hide();
+				showOrderContent('edit');
+				$dialog.popup("reposition", {});
+			});
+		} else if (type === 'edit') {
+			loadRequestInputEvents($div, orderItem.item.id, orderItemID);
+			loadQuantityInputEvents($div, orderItem.quantity);
 
-		var $form = $div.find("form");
-		$form.find('a#order-delete').off("click").click(function() {
-			delete orderItems[orderItemID];
+			var $form = $div.find("form");
+			$form.find('a#order-delete').off("click").click(function() {
+				delete orderItems[orderItemID];
 
-			var $orderElement = $('#order-item-' + orderItemID);
-			$orderElement.children('a').off('click').attr('href', undefined);
-			// animate the item out
-			$orderElement.animate(
-				{ height:0, opacity:0 },
-				'slow', 'swing',
-				function() {
-					// remove the item's DOM when animation complete
-					$(this).remove();
-				}
-			);
-		});
+				var $orderElement = $('#order-item-' + orderItemID);
+				$orderElement.children('a').off('click').attr('href', undefined);
+				// animate the item out
+				$orderElement.animate(
+					{ height:0, opacity:0 },
+					'slow', 'swing',
+					function() {
+						// remove the item's DOM when animation complete
+						$(this).remove();
+					}
+				);
+			});
 
-		$form.off("submit").submit(function() {
-			fetchOrderInputs(orderItem, $div);
-			$.mobile.back();
-			var $orderElement = $('#order-item-' + orderItemID);
+			$form.off("submit").submit(function() {
+				fetchOrderInputs(orderItem, $div);
+				$.mobile.back();
+				var $orderElement = $('#order-item-' + orderItemID);
 
-			function updateOrderInputElements(property, selector, htmlGeneratorFunc, valuePostfix) {
-				var $el = $orderElement.find(selector);
-				if ($el.length > 0) {
-					if (orderItem[property]) {
-						var valueWithPF = valuePostfix ? orderItem[property] + valuePostfix : orderItem[property];
-						if ($el.text() != valueWithPF) {
-							$el.text(valueWithPF);
-							$el.fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+				function updateOrderInputElements(property, selector, htmlGeneratorFunc, valuePostfix) {
+					var $el = $orderElement.find(selector);
+					if ($el.length > 0) {
+						if (orderItem[property]) {
+							var valueWithPF = valuePostfix ? orderItem[property] + valuePostfix : orderItem[property];
+							if ($el.text() != valueWithPF) {
+								$el.text(valueWithPF);
+								$el.fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+							}
+						} else {
+							$el.fadeOut(1000, function() {
+								// remove the item's DOM when animation complete
+								$(this).remove();
+							});
 						}
 					} else {
-						$el.fadeOut(1000, function() {
-							// remove the item's DOM when animation complete
-							$(this).remove();
-						});
-					}
-				} else {
-					if (orderItem[property]) {
-						$(htmlGeneratorFunc(orderItem)).insertAfter('#order-item-' + orderItemID + ' > a > h2').hide().fadeIn(1000);
+						if (orderItem[property]) {
+							$(htmlGeneratorFunc(orderItem)).insertAfter('#order-item-' + orderItemID + ' > a > h2').hide().fadeIn(1000);
+						}
 					}
 				}
-			}
 
-			// update order request
-			updateOrderInputElements('request', 'p', generateOrderRequestHTML);
-			updateOrderInputElements('quantity', '.ui-li-quantity', generateOrderQuantityHTML, ' ×');
-		});
+				// update order request
+				updateOrderInputElements('request', 'p', generateOrderRequestHTML);
+				updateOrderInputElements('quantity', '.ui-li-quantity', generateOrderQuantityHTML, ' ×');
+			});
+		} else {
+			throw 'Invalid order dialog type: "' + type + "'";
+		}
 
 		$div.show();
 	}
 }
 
 function generateOrderItemHTML(orderItem) {
-	var orderItemHTML = '<li id="order-item-' + orderItem.id + '"><a href="#">';
+	var orderItemHTML = '<li id="order-item-' + orderItem.id + '"><a href="javascript:openOrderDialog(\'detail\', \'' + orderItem.id + '\')">';
 
 	if (orderItem.item.image) {
 		orderItemHTML += '<img style="border-radius: 50%" src="' + orderItem.item.image + '">';

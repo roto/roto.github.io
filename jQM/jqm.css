@@ -1,163 +1,180 @@
 /* vertical centralize the list iamge */
 ul[data-role="listview"] > li > a > img {
-    border-radius: 50%; /* somehow, still need a property in the HTML img tag */
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: 5px;
-    object-fit: cover;
-    width:  70px;
-    height: 70px;
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.3);
+	border-radius: 50%; /* somehow, still need a property in the HTML img tag */
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	margin: 5px;
+	object-fit: cover;
+	width:  70px;
+	height: 70px;
+	box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.3);
 }
 
 ul[data-role="listview"] > li > a {
-    top: 0;
-    bottom: 0;
+	top: 0;
+	bottom: 0;
 }
 
 /* Remove the padding around the big + button */
 li#new-order > a {
-    padding: 0px;
+	padding: 0px;
 }
 
 /* Remove the default right icon button */
 li#new-order > a:after {
-    background-image: none;
-    background-color: transparent;
+	background-image: none;
+	background-color: transparent;
 }
 
 /* Set the height for list item */
 li#new-order > a > div.ui-li-thumb {
-    height: 80px;
-    text-align: center;
+	height: 80px;
+	text-align: center;
 }
 
 /* Set the size and centerize the image */
 li#new-order > a > div.ui-li-thumb > img {
-    width:  70px;
-    height: 70px;
-    margin: 5px;
+	width:  70px;
+	height: 70px;
+	margin: 5px;
 }
 
 /* Order status */
 #order .ui-li-count {
-    top: 65%;
+	top: 65%;
+}
+
+/* Order detail dialog */
+#dialog-order-detail > img{
+	max-height: 5em;
+	max-width: 5em;
+    margin: 0em 1em 0em 0em;
+    object-fit: cover;
+    width: 70px;
+    height: 70px;
+	box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.3);
+	float: left;
+}
+
+#dialog-order-detail > p {
+	margin: .45em 0;
+	display: block;
 }
 
 /* Menu price tag */
 #menu .ui-li-count {
-    top: 35%;
+	top: 35%;
 }
 
 /* Order quantity */
 /* Clone from .ui-li-count (jQueryMobile) */
 .ui-li-quantity {
-    position: absolute;
-    font-size: 12.5px;
-    font-weight: 700;
-    text-align: center;
-    border-width: 1px;
-    border-style: solid;
-    padding: 0 .48em;
-    line-height: 1.6em;
-    min-height: 1.6em;
-    min-width: .64em;
-    left: 60px;
-    /*right: .8em;*/
-    top: 25%;
-    margin-top: -.88em;
-    border-radius: 10px;
+	position: absolute;
+	font-size: 12.5px;
+	font-weight: 700;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	padding: 0 .48em;
+	line-height: 1.6em;
+	min-height: 1.6em;
+	min-width: .64em;
+	left: 60px;
+	/*right: .8em;*/
+	top: 25%;
+	margin-top: -.88em;
+	border-radius: 10px;
 }
 
 /* Popup dialog wrapper */
 [id$='-popup'] {
-    width: 90%;
+	width: 90%;
 }
 
 /* Highlight the dialog buttons in theme a */
 div[data-theme="a"] [data-role="popup"] > [data-role="main"] .ui-btn {
-    border-color: grey;
+	border-color: grey;
 }
 
 /* Highlight the dialog buttons in theme b */
 div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
-    border-color: lightgrey;
+	border-color: lightgrey;
 }
 
 /* Widen the dialog title space */
 .ui-header .ui-title {
-    margin-right: 10%;
-    margin-left: 10%;
+	margin-right: 10%;
+	margin-left: 10%;
 }
 
 /* Icon Color */
 div[data-theme="a"] .ui-icon-delete:not(.ui-btn-icon-notext):after {
-    background-color: #F66;
+	background-color: #F66;
 }
 div[data-theme="b"] .ui-icon-delete:not(.ui-btn-icon-notext):after {
-    background-color: #900;
+	background-color: #900;
 }
 
 /* Notification */
 .notification {
-    width: 16px;
-    height: 16px;
-    font-size: 13px;
-    text-align: center;
-    vertical-align: middle;
-    position: absolute;
-    z-index: 9999;
-    top: 5%;
-    right: 2%;
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 50%;
-    color: white;
-    text-shadow: none;
-    background: #009933;
+	width: 16px;
+	height: 16px;
+	font-size: 13px;
+	text-align: center;
+	vertical-align: middle;
+	position: absolute;
+	z-index: 9999;
+	top: 5%;
+	right: 2%;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 50%;
+	color: white;
+	text-shadow: none;
+	background: #009933;
 }
 
-    .notification:before {
-        position: absolute; display: block; content: '';
-        border: 1px solid white;
-        border-radius: 50%;
-        height: 100%; width: 100%;
-        box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
-    }
+	.notification:before {
+		position: absolute; display: block; content: '';
+		border: 1px solid white;
+		border-radius: 50%;
+		height: 100%; width: 100%;
+		box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
+	}
 
-    .notification.error {
-        border-color: red;
-        background: red; /* For browsers that do not support gradients */
-        background: -webkit-linear-gradient(#ff8080, red); /* For Safari 5.1 to 6.0 */
-        background: -o-linear-gradient(#ff8080, red); /* For Opera 11.1 to 12.0 */
-        background: -moz-linear-gradient(#ff8080, red); /* For Firefox 3.6 to 15 */
-        background: linear-gradient(#ff8080, red); /* Standard syntax */
-    }
+	.notification.error {
+		border-color: red;
+		background: red; /* For browsers that do not support gradients */
+		background: -webkit-linear-gradient(#ff8080, red); /* For Safari 5.1 to 6.0 */
+		background: -o-linear-gradient(#ff8080, red); /* For Opera 11.1 to 12.0 */
+		background: -moz-linear-gradient(#ff8080, red); /* For Firefox 3.6 to 15 */
+		background: linear-gradient(#ff8080, red); /* Standard syntax */
+	}
 
-    .notification.warning {
-        border-color: #ff8000;
-        background: #ff8000; /* For browsers that do not support gradients */
-        background: -webkit-linear-gradient(#ffa64d, #b35900); /* For Safari 5.1 to 6.0 */
-        background: -o-linear-gradient(#ffa64d, #b35900); /* For Opera 11.1 to 12.0 */
-        background: -moz-linear-gradient(#ffa64d, #b35900); /* For Firefox 3.6 to 15 */
-        background: linear-gradient(#ffa64d, #b35900); /* Standard syntax */
-    }
+	.notification.warning {
+		border-color: #ff8000;
+		background: #ff8000; /* For browsers that do not support gradients */
+		background: -webkit-linear-gradient(#ffa64d, #b35900); /* For Safari 5.1 to 6.0 */
+		background: -o-linear-gradient(#ffa64d, #b35900); /* For Opera 11.1 to 12.0 */
+		background: -moz-linear-gradient(#ffa64d, #b35900); /* For Firefox 3.6 to 15 */
+		background: linear-gradient(#ffa64d, #b35900); /* Standard syntax */
+	}
 
-    .notification.notice {
-        border-color: #0099ff;
-        background: #0099ff;
-        background: -webkit-linear-gradient(#66c2ff, #007acc); /* For Safari 5.1 to 6.0 */
-        background: -o-linear-gradient(#66c2ff, #007acc); /* For Opera 11.1 to 12.0 */
-        background: -moz-linear-gradient(#66c2ff, #007acc); /* For Firefox 3.6 to 15 */
-        background: linear-gradient(#66c2ff, #007acc); /* Standard syntax */
-    }
+	.notification.notice {
+		border-color: #0099ff;
+		background: #0099ff;
+		background: -webkit-linear-gradient(#66c2ff, #007acc); /* For Safari 5.1 to 6.0 */
+		background: -o-linear-gradient(#66c2ff, #007acc); /* For Opera 11.1 to 12.0 */
+		background: -moz-linear-gradient(#66c2ff, #007acc); /* For Firefox 3.6 to 15 */
+		background: linear-gradient(#66c2ff, #007acc); /* Standard syntax */
+	}
 
-    .notification.info {
-        border-color: #009933;
-        background: #009933;
-        background: -webkit-linear-gradient(#00ff00, #00802b); /* For Safari 5.1 to 6.0 */
-        background: -o-linear-gradient(#00ff00, #00802b); /* For Opera 11.1 to 12.0 */
-        background: -moz-linear-gradient(#00ff00, #00802b); /* For Firefox 3.6 to 15 */
-        background: linear-gradient(#00ff00, #00802b); /* Standard syntax */
-    }
+	.notification.info {
+		border-color: #009933;
+		background: #009933;
+		background: -webkit-linear-gradient(#00ff00, #00802b); /* For Safari 5.1 to 6.0 */
+		background: -o-linear-gradient(#00ff00, #00802b); /* For Opera 11.1 to 12.0 */
+		background: -moz-linear-gradient(#00ff00, #00802b); /* For Firefox 3.6 to 15 */
+		background: linear-gradient(#00ff00, #00802b); /* Standard syntax */
+	}
