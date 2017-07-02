@@ -62,6 +62,24 @@ li#new-order > a > div.ui-li-thumb > img {
 	display: block;
 }
 
+/* Order detail dialog's Progress bar */
+.ui-slider > input[name="progress"] {
+	display: none;
+}
+.ui-slider > div[role="application"] {
+	margin-left: 80px;
+	text-align: center;
+}
+.ui-slider > div[role="application"] > a[role="slider"] {
+	display: none;
+}
+.ui-slider > div[role="application"]:before {
+	content: "13%";
+	position: absolute;
+	text-align: center;
+	font-size: 85%;
+}
+
 /* Menu price tag */
 #menu .ui-li-count {
 	top: 35%;

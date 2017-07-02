@@ -66,7 +66,8 @@ function openOrderDialog(type, orderItemID) {
 		if (type === 'detail') {
 			$div.children('img').attr('src', orderItem.item.image);
 			$div.children('p').html(orderItem.request ? orderItem.request : '');
-			
+			$div.find('input[name="progress"]').slider('disable');
+
 			$div.find('a.ui-icon-edit').off('click').click(function() {
 				$div.hide();
 				showOrderContent('edit');
