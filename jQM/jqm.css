@@ -62,18 +62,6 @@ li#new-order > a > div.ui-li-thumb > img {
 	display: block;
 }
 
-/* Order detail Progress */
-ul[name="progress"] {
-	list-style: none;
-}
-ul[name="progress"] > li {
-	display: inline;
-}
-ul[name="progress"] > li:before {
-	content: "⇨";
-	padding-right: 5px;
-}
-
 /* Menu price tag */
 #menu .ui-li-count {
 	top: 35%;
