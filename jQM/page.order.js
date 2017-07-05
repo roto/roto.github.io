@@ -65,6 +65,11 @@ function openOrderDialog(type, orderItemID) {
 
 		if (type === 'status') {
 			$div.children('img').attr('src', orderItem.item.image);
+			if (orderItem.quantity) {
+				$div.children('span').text(orderItem.quantity + ' ×').show();
+			} else {
+				$div.children('span').hide();
+			}
 			$div.children('#dialog-order-status-request').html(orderItem.request ? orderItem.request : '');
 			$div.children('#dialog-order-status-status').html(orderItem.status ? orderItem.status : 'Queueing');
 			
