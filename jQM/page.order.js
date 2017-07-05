@@ -63,13 +63,28 @@ function openOrderDialog(type, orderItemID) {
 	function showOrderContent(type) {
 		var $div = $main.children('#dialog-order-' + type);
 
-		if (type === 'detail') {
+		if (type === 'status') {
 			$div.children('img').attr('src', orderItem.item.image);
-			$div.children('p').html(orderItem.request ? orderItem.request : '');
+			$div.children('#dialog-order-status-request').html(orderItem.request ? orderItem.request : '');
+			$div.children('#dialog-order-status-status').html(orderItem.status ? orderItem.status : 'Queueing');
 			
 			$div.find('a.ui-icon-edit').off('click').click(function() {
 				$div.hide();
 				showOrderContent('edit');
+				$dialog.popup("reposition", {});
+			});
+
+			$div.find('a.ui-icon-info').off('click').click(function() {
+				$div.hide();
+				showOrderContent('info');
+				$dialog.popup("reposition", {});
+			});
+		} else if (type === 'info') {
+			$div.children('img').attr('src', orderItem.item.image);
+			$div.children('p').text(orderItem.item.desc ? orderItem.item.desc : '');
+			$div.find('a').off('click').click(function() {
+				$div.hide();
+				showOrderContent('status');
 				$dialog.popup("reposition", {});
 			});
 		} else if (type === 'edit') {
@@ -133,7 +148,7 @@ function openOrderDialog(type, orderItemID) {
 }
 
 function generateOrderItemHTML(orderItem) {
-	var orderItemHTML = '<li id="order-item-' + orderItem.id + '"><a href="javascript:openOrderDialog(\'detail\', \'' + orderItem.id + '\')">';
+	var orderItemHTML = '<li id="order-item-' + orderItem.id + '"><a href="javascript:openOrderDialog(\'status\', \'' + orderItem.id + '\')">';
 
 	if (orderItem.item.image) {
 		orderItemHTML += '<img style="border-radius: 50%" src="' + orderItem.item.image + '">';

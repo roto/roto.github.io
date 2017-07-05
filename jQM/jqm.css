@@ -45,8 +45,8 @@ li#new-order > a > div.ui-li-thumb > img {
 	top: 65%;
 }
 
-/* Order detail dialog */
-#dialog-order-detail > img{
+/* Order status dialog */
+#dialog-order-status > img{
 	max-height: 5em;
 	max-width: 5em;
     margin: 0em 1em 0em 0em;
@@ -57,7 +57,7 @@ li#new-order > a > div.ui-li-thumb > img {
 	float: left;
 }
 
-#dialog-order-detail > p {
+#dialog-order-status > p {
 	margin: .45em 0;
 	display: block;
 }
