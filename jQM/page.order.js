@@ -61,7 +61,7 @@ function openOrderDialog(type, orderItemID) {
 	return;
 
 	function showOrderContent(type) {
-		var $div = $main.children('#dialog-order-' + type);
+		var $div = $main.children('#dialog-order-' + type).hide();
 
 		if (type === 'status') {
 			$div.children('img').attr('src', orderItem.item.image);
