@@ -117,7 +117,7 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-			<a href="#dialog-delivery" data-rel="popup" class="ui-btn ui-icon-location ui-btn-icon-left">
+			<a href="#dialog-delivery" id="footer-button-delivery" data-rel="popup" data-position-to="#footer-button-delivery" class="ui-btn ui-icon-location ui-btn-icon-left">
 				Delivery
 				<span class="notification error">!</span>
 			</a>
@@ -130,29 +130,17 @@
 			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 			<div data-role="header"><h1>Delivery Location</h1></div>
 			<div data-role="main" class="ui-content">
-				<div id="dialog-delivery-table">
-					<div name="content">
+				<div data-role="tabs" id="delivery-tabs">
+					<div data-role="navbar">
+						<ul>
+							<li><a href="#tab-table" class="ui-btn-active">Table</a></li>
+							<li><a href="#tab-book">Booking</a></li>
+							<li><a href="#tab-ship">Shipping</a></li>
+						</ul>
 					</div>
-					<div style="text-align: center;">
-						<a href='#' class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-edit ui-btn-icon-right">Ship to you</a>
-						<a href='#' class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-info ui-btn-icon-right">Not arrive?</a>
-					</div>
-				</div>
-				<div id="dialog-delivery-book">
-					<div name="content">
-					</div>
-					<div style="text-align: center;">
-						<a href='#' class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-edit ui-btn-icon-right">Edit</a>
-						<a href='#' class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-info ui-btn-icon-right">Info</a>
-					</div>
-				</div>
-				<div id="dialog-delivery-ship">
-					<div name="content">
-					</div>
-					<div style="text-align: center;">
-						<a href='#' class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-edit ui-btn-icon-right">Edit</a>
-						<a href='#' class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-info ui-btn-icon-right">Info</a>
-					</div>
+					<div id="tab-table"></div>
+					<div id="tab-book"></div>
+					<div id="tab-ship"></div>
 				</div>
 			</div>
 		</div>

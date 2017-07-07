@@ -129,6 +129,11 @@ div[data-theme="b"] .ui-icon-delete:not(.ui-btn-icon-notext):after {
 	margin: 1px
 }
 
+#dialog-delivery-popup {
+	top: auto;
+    bottom: 0;
+}
+
 /* Notification */
 .notification {
 	width: 16px;
