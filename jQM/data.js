@@ -75,3 +75,44 @@ var menuItems = {
 		price:	"5000",
 	},
 };
+
+var deliveryData = {
+	1: {
+		name: "Tầng 1",
+		seats: [
+			{ name: "1", displayName: "101" },
+			{ name: "2", displayName: "102", taken: true },
+			{ name: "3", displayName: "103" },
+			{ name: "4", displayName: "104" },
+			{ name: "5", displayName: "105" },
+			{ name: "6", displayName: "106", taken: true },
+			{ name: "7", displayName: "107", taken: true },
+			{ name: "8", displayName: "108" },
+			{ name: "9", displayName: "109" },
+			{ name: "10", displayName: "110", taken: true },
+			{ name: "11", displayName: "111" },
+		],
+	},
+	2: {
+		name: "Tầng 2",
+		seats: [
+			{ name: "1", displayName: "201", taken: true },
+			{ name: "2", displayName: "202", taken: true },
+			{ name: "3", displayName: "203", taken: true },
+			{ name: "4", displayName: "204" },
+			{ name: "5", displayName: "205" },
+			{ name: "6", displayName: "206", taken: true },
+		],
+	},
+	3: {
+		name: "Tầng 3",
+		seats: [
+			{ name: "A", displayName: "3A" },
+			{ name: "B", displayName: "3B" },
+			{ name: "C", displayName: "3C" },
+			{ name: "D", displayName: "3D", taken: true },
+			{ name: "E", displayName: "3E", taken: true },
+			{ name: "F", displayName: "3F", taken: true },
+		],
+	},
+};

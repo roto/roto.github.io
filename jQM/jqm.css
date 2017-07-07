@@ -121,6 +121,14 @@ div[data-theme="b"] .ui-icon-delete:not(.ui-btn-icon-notext):after {
 	background-color: #900;
 }
 
+#dialog-delivery .ui-checkbox.ui-controlgroup-controls .ui-btn-corner-all,
+#dialog-delivery .ui-controlgroup-controls .ui-btn.ui-corner-all {
+    border-radius: 6px;
+	border-width: 1px;
+	padding: 8px;
+	margin: 1px
+}
+
 /* Notification */
 .notification {
 	width: 16px;
