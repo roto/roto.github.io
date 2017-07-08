@@ -22,7 +22,11 @@ function onDeliveryPopupClose(event, ui) {
 		dest = 'Ship: ';
 	}
 
-	$('a#footer-button-delivery').text(dest);
+	var $link = $('a#footer-button-delivery');
+	if ($link.text() !== dest) {
+		$link.text(dest);
+		$link.fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+	}
 }
 
 function onDeliveryTabActivate(event, ui) {
