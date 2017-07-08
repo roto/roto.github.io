@@ -58,3 +58,10 @@ $(document).ready(function(){
 		// on filter input change
 	});*/
 })
+
+$(window).load(function() {
+	window.setTimeout(function() {
+		// background loading jobs
+		loadDeliveryTable();
+	}, 100);
+});
