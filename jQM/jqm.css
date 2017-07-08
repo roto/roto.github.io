@@ -135,6 +135,15 @@ div[data-theme="b"] .ui-icon-delete:not(.ui-btn-icon-notext):after {
 	padding: 8px;
 	margin: 1px;
 }
+div[data-theme="a"] #dialog-delivery .seat-taken {
+	background-color: lightgrey;
+}
+div[data-theme="b"] #dialog-delivery .seat-taken {
+	background-color: grey;
+}
+#dialog-delivery .seat-taken.ui-checkbox-on {
+	background-color: red !important;
+}
 
 /* Notification */
 .notification {

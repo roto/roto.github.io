@@ -33,7 +33,11 @@ function loadDeliveryTable() {
 				var seat = floor.seats[j];
 				var seatName = 'seat-' + i + '-' + j;
 				floorHTML += '<input type="checkbox" id="' + seatName + '">';
-				floorHTML += '<label for="' + seatName + '">' + seat.displayName + '</label>'
+				floorHTML += '<label for="' + seatName + '"';
+				if (seat.taken) {
+					floorHTML += ' class="seat-taken"';
+				}
+				floorHTML += '>' + seat.displayName + '</label>'
 			}
 
 			floorHTML += '</fieldset>';
