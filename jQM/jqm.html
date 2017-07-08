@@ -55,12 +55,13 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script>!window.jQuery && document.write('<script src="lib/jquery.min.js"><\/script>')</script>
 
-	<!-- jQuery Finger -->
-	<!--script src="lib/jquery.finger.js"></script-->
-
 	<!-- jQuery Mobile -->
 	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+	<!-- jQuery Mobile DateBox -->
+	<link href="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.2.2/jtsage-datebox.min.css" rel="stylesheet" type="text/css">
+	<script src="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.2.2/jtsage-datebox.min.js" type="text/javascript"></script>
 
 	<!-- common utilities -->
 	<script src="util.js"></script>
@@ -133,7 +134,15 @@
 			<div data-role="main" class="ui-content">
 				<div data-role="tabs" id="delivery-tabs">
 					<div id="tab-table"></div>
-					<div id="tab-book"></div>
+					<div id="tab-book">
+						<label for="quantity">Number of customer:</label>
+						<input name="quantity" type="range" min="1" max="10" value="1" data-highlight="true">
+						<div>
+							<label for="notifTime">Estimated time of arival:</label>
+							<input name="notifTime" id="notifTime" type="text" data-role="datebox"
+									data-options='{"mode":"timebox", "useNewStyle":true, "overrideTimeFormat": 24,"themeButton": "b", "themeInput": "b", "theme": "b", "themeHeader": "b", "themeSetButton": true, "useInlineBlind": true}' />
+						</div>
+					</div>
 					<div id="tab-ship"></div>
 					<div data-role="navbar">
 						<ul>

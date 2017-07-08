@@ -150,6 +150,22 @@ div[data-theme="b"] #dialog-delivery .seat-taken {
 	background-color: red !important;
 }
 
+/* Time Picker */
+#tab-book .ui-input-has-clear > div {
+	display: inline-block;
+}
+#tab-book .ui-input-has-clear > a {
+	display: inline-block;
+	position: absolute;
+	margin: .5em;
+}
+#tab-book .ui-datebox-container {
+	width: 50%;
+	left: 10%;
+	right: auto;
+	border-width: 0px;
+}
+
 /* Notification */
 .notification {
 	width: 16px;
