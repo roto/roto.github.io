@@ -127,6 +127,11 @@ div[data-theme="b"] .ui-icon-delete:not(.ui-btn-icon-notext):after {
     bottom: 20px !important;
 }
 
+/* Separate the tabbar and content */
+#dialog-delivery .ui-navbar {
+	margin-top: 1em;
+}
+
 /* Delivery table format */
 #dialog-delivery .ui-checkbox.ui-controlgroup-controls .ui-btn-corner-all,
 #dialog-delivery .ui-controlgroup-controls .ui-btn.ui-corner-all {
