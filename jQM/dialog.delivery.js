@@ -4,6 +4,27 @@ function onDeliveryPopupOpen(event, ui) {
 	$('#dialog-delivery .ui-tabs-active > a').addClass('ui-btn-active');
 }
 
+function onDeliveryPopupClose(event, ui) {
+	var $dialog = $(event.target);
+	$tabs = $dialog.find('#delivery-tabs');
+
+	var $activeTab = $tabs.tabs("option", "active");
+	var dest;
+
+	if ($activeTab == 0) {			// table
+		var table = $dialog.find('div#tab-table label.ui-checkbox-on').first().text();
+		if (table) {
+			dest = 'Table: ' + table;
+		}
+	} else if ($activeTab == 1) {	// book
+		dest = 'ETA: ';
+	} else if ($activeTab == 2) {	// ship
+		dest = 'Ship: ';
+	}
+
+	$('a#footer-button-delivery').text(dest);
+}
+
 function onDeliveryTabActivate(event, ui) {
 	var $activeTab = $(this).tabs("option", "active");
 

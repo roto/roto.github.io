@@ -21,7 +21,8 @@ $(document).ready(function(){
 	// delivery popup
 	$('#delivery-tabs').tabs({ activate: onDeliveryTabActivate });
 	$('#dialog-delivery').one('popupbeforeposition', loadDeliveryTable)
-			.on('popupafteropen', onDeliveryPopupOpen);
+			.on('popupafteropen', onDeliveryPopupOpen)
+			.on('popupafterclose', onDeliveryPopupClose);
 
 	if (is_touch_device()) {
 		$(document).on('swiperight', function () {
