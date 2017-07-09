@@ -153,6 +153,8 @@ div[data-theme="b"] #dialog-delivery .seat-taken {
 /* Time Picker */
 #tab-book .ui-input-has-clear > div {
 	display: inline-block;
+	margin: .25em;
+	width: 60px;
 }
 #tab-book .ui-input-has-clear > a {
 	display: inline-block;
@@ -164,6 +166,9 @@ div[data-theme="b"] #dialog-delivery .seat-taken {
 	left: 10%;
 	right: auto;
 	border-width: 0px;
+}
+#tab-book .ui-datebox-datebox-button {
+	height: 30px;
 }
 
 /* Notification */

@@ -1,4 +1,35 @@
 
+function loadDeliveryPopup() {
+	$('#delivery-tabs').tabs({ activate: onDeliveryTabActivate });
+	$('#dialog-delivery').one('popupbeforeposition', loadDeliveryTable)
+			.on('popupafteropen', onDeliveryPopupOpen)
+			.on('popupafterclose', onDeliveryPopupClose);
+
+	loadETADatePicker();
+}
+
+function loadETADatePicker() {
+	var $clockButton = $('#tab-book .ui-input-has-clear > a');
+	var $datebox = $('#tab-book .ui-datebox-container');
+
+	$clockButton.on('click', function(event, ui) {
+		if ($datebox.is(':visible')) {
+			window.setTimeout(function() {
+				$datebox.find('a').click();
+			}, 0);
+		}
+	});
+
+	// open the picker on input click
+	$('#tab-book .ui-input-has-clear > div').on('click', function(event, ui) {
+		if (!$datebox.is(':visible')) {
+			event.preventDefault();
+			$clockButton.click();
+			return false;
+		}
+	});
+}
+
 function onDeliveryPopupOpen(event, ui) {
 	// highlight the current tab
 	$('#dialog-delivery .ui-tabs-active > a').addClass('ui-btn-active');

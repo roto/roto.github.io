@@ -18,11 +18,7 @@ $(document).ready(function(){
 		$('body').css('overflow', 'auto').off('touchmove');
 	});
 
-	// delivery popup
-	$('#delivery-tabs').tabs({ activate: onDeliveryTabActivate });
-	$('#dialog-delivery').one('popupbeforeposition', loadDeliveryTable)
-			.on('popupafteropen', onDeliveryPopupOpen)
-			.on('popupafterclose', onDeliveryPopupClose);
+	loadDeliveryPopup();
 
 	if (is_touch_device()) {
 		$(document).on('swiperight', function () {
