@@ -45,10 +45,11 @@ function onDeliveryPopupClose(event, ui) {
 	if ($activeTab == 0) {			// table
 		var table = $dialog.find('div#tab-table label.ui-checkbox-on').first().text();
 		if (table) {
-			dest = 'Table: ' + table;
+			dest = 'Table ' + table;
 		}
 	} else if ($activeTab == 1) {	// book
-		dest = 'ETA: ';
+		var etaDate = $('#eta-time').datebox('getTheDate');
+		dest = 'ETA: ' + etaTime(etaDate);
 	} else if ($activeTab == 2) {	// ship
 		dest = 'Ship: ';
 	}
