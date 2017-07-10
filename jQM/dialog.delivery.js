@@ -65,7 +65,7 @@ function onDeliveryPopupClose(event, ui) {
 		dest = 'ETA: ' + etaTime(etaDate);
 
 		onDeliveryPopupClose.etaInterval = window.setInterval(function() {
-			$link.fadeOut('fast');
+			$link.fadeOut();
 			$link.text('ETA: ' + etaTime(etaDate));
 			$link.fadeIn('slow');
 		}, 1000 * 60);
@@ -75,7 +75,7 @@ function onDeliveryPopupClose(event, ui) {
 
 	if ($link.text() !== dest) {
 		$link.text(dest);
-		$link.fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+		$link.fadeOut().fadeIn('slow').fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
 	}
 }
 

@@ -125,7 +125,7 @@ function openOrderDialog(type, orderItemID) {
 							var valueWithPF = valuePostfix ? orderItem[property] + valuePostfix : orderItem[property];
 							if ($el.text() != valueWithPF) {
 								$el.text(valueWithPF);
-								$el.fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+								$el.fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
 							}
 						} else {
 							$el.fadeOut(1000, function() {

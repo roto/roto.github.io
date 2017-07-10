@@ -51,7 +51,7 @@ function openMenuDialog(type, itemID) {
 				$(orderItemHTML).insertBefore('#new-order');
 				$('ul#order-list[data-role="listview"]').listview().listview("refresh");
 				window.history.go(-2);
-				$('#order-item-' + orderItem.id).fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
+				$('#order-item-' + orderItem.id).fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
 			});
 		} else {
 			throw 'Invalid menu dialog type: "' + type + "'";
