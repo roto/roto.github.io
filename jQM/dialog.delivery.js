@@ -48,6 +48,12 @@ function onDeliveryPopupClose(event, ui) {
 			dest = 'Table ' + table;
 		}
 	} else if ($activeTab == 1) {	// book
+		// save the current datebox time
+		var $datebox = $('#tab-book .ui-datebox-container');
+		if ($datebox.is(':visible')) {
+			$datebox.find('a').click();
+		}
+
 		var etaDate = $('#eta-time').datebox('getTheDate');
 		dest = 'ETA: ' + etaTime(etaDate);
 	} else if ($activeTab == 2) {	// ship
