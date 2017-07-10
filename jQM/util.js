@@ -45,15 +45,24 @@ function etaTime(time) {
 		time.setFullYear(now.getFullYear());
 	}
 
+	var timePassed = false;
 	var eta = time - now;
-	if (eta < 0) {
-		return "no time";
+
+	if (eta === 0) {
+		return 'now';
+	} else if (eta < 0) {
+		timePassed = true;
+		eta = Math.abs(eta);
 	}
 
 	var etaString = getETAString(eta);
 	if (etaString.startsWith('1 ')) {
 		// trim the last plural 's'
-		return etaString.substring(0, etaString.length - 1);
+		etaString = etaString.substring(0, etaString.length - 1);
+	}
+
+	if (timePassed) {
+		return etaString + ' ago';
 	} else {
 		return etaString;
 	}
