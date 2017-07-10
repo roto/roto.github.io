@@ -39,8 +39,15 @@ function onDeliveryPopupClose(event, ui) {
 	var $dialog = $(event.target);
 	$tabs = $dialog.find('#delivery-tabs');
 
+	var $link = $('a#footer-button-delivery');
 	var $activeTab = $tabs.tabs("option", "active");
 	var dest;
+
+	// clear the booking delivery personal interval
+	if (!onDeliveryPopupClose.etaInterval) {
+		window.clearInterval(onDeliveryPopupClose.etaInterval);
+		delete onDeliveryPopupClose.etaInterval;
+	}
 
 	if ($activeTab == 0) {			// table
 		var table = $dialog.find('div#tab-table label.ui-checkbox-on').first().text();
@@ -56,11 +63,16 @@ function onDeliveryPopupClose(event, ui) {
 
 		var etaDate = $('#eta-time').datebox('getTheDate');
 		dest = 'ETA: ' + etaTime(etaDate);
+
+		onDeliveryPopupClose.etaInterval = window.setInterval(function() {
+			$link.fadeOut('fast');
+			$link.text('ETA: ' + etaTime(etaDate));
+			$link.fadeIn('slow');
+		}, 1000 * 60);
 	} else if ($activeTab == 2) {	// ship
 		dest = 'Ship: ';
 	}
 
-	var $link = $('a#footer-button-delivery');
 	if ($link.text() !== dest) {
 		$link.text(dest);
 		$link.fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow').fadeOut('slow').fadeIn('slow');
