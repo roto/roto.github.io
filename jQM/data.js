@@ -43,7 +43,7 @@ var menuItems = {
 	
 	'com-rang-dua-bo': {
 		name:	"Cơm Rang Dưa Bò",
-		image:  "https://nau.vn/wp-content/uploads/2014/12/com-rang-dua-bo.jpg",
+		image:  "https://i.ytimg.com/vi/e9h2xmSoyLo/maxresdefault.jpg",
 		price:	"25000",
 	},
 
@@ -64,7 +64,7 @@ var menuItems = {
 	"pho-ngan": {
 		name:   "Phở Ngan",
 		desc:   "Măng, tiết..",
-		image:  "https://www.vietravel.com/Images/NewsPicture/mien-gan.jpg",
+		image:  "https://media.foody.vn/res/g4/36737/prof/s576x330/foody-mobile-quan-pho-ngan-bac-giang.jpg",
 		price:	"3500000",
 	},
 	
