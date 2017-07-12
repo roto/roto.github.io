@@ -9,22 +9,23 @@ function loadDeliveryPopup() {
 }
 
 function loadETADatePicker() {
+	var $dateboxInput = $('#tab-book #eta-time');
+	var $dateboxPicker = $('#tab-book .ui-datebox-container');
 	var $clockButton = $('#tab-book .ui-input-has-clear > a');
-	var $datebox = $('#tab-book .ui-datebox-container');
 
-	$clockButton.on('click', function(event, ui) {
-		if ($datebox.is(':visible')) {
-			window.setTimeout(function() {
-				$datebox.find('a').click();
-			}, 0);
+	$clockButton.click('click', function(event, ui) {
+		if ($dateboxPicker.css('display') !== 'none') {
+			event.preventDefault();
+			$dateboxInput.datebox('close');
+			return false;
 		}
 	});
 
 	// open the picker on input click
 	$('#tab-book .ui-input-has-clear > div').on('click', function(event, ui) {
-		if (!$datebox.is(':visible')) {
+		if ($dateboxPicker.css('display') === 'none') {
 			event.preventDefault();
-			$('#eta-time').datebox('open');
+			$dateboxInput.datebox('open');
 			return false;
 		}
 	});
@@ -56,12 +57,16 @@ function onDeliveryPopupClose(event, ui) {
 		}
 	} else if ($activeTab == 1) {	// book
 		// save the current datebox time
-		var $datebox = $('#tab-book .ui-datebox-container');
-		if ($datebox.is(':visible')) {
-			$datebox.find('a').click();
+		var $dateboxPicker = $('#tab-book .ui-datebox-container');
+		if ($dateboxPicker.css('display') !== 'none') {
+			$dateboxPicker.find('a').click();
 		}
 
-		var etaDate = $('#eta-time').datebox('getTheDate');
+		var etaDate = Date.parse($('#tab-book #eta-time').val(), 'HH:mm');
+		if (!etaDate) {
+			return; // false to parse the ETA date input
+		}
+
 		dest = 'ETA: ' + etaTime(etaDate);
 
 		onDeliveryPopupClose.etaInterval = window.setInterval(function() {
