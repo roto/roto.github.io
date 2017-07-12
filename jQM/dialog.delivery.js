@@ -13,7 +13,7 @@ function loadETADatePicker() {
 	var $dateboxPicker = $('#tab-book .ui-datebox-container');
 	var $clockButton = $('#tab-book .ui-input-has-clear > a');
 
-	$clockButton.click('click', function(event, ui) {
+	$clockButton.on('click', function(event, ui) {
 		if ($dateboxPicker.css('display') !== 'none') {
 			event.preventDefault();
 			$dateboxInput.datebox('close');
