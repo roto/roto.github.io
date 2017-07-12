@@ -175,6 +175,7 @@ div[data-theme="b"] #dialog-delivery .seat-taken {
 .notification {
 	width: 16px;
 	height: 16px;
+	line-height: 17px; /* lower the text 1px */
 	font-size: 13px;
 	text-align: center;
 	vertical-align: middle;
