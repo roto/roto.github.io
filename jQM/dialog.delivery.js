@@ -24,7 +24,7 @@ function loadETADatePicker() {
 	$('#tab-book .ui-input-has-clear > div').on('click', function(event, ui) {
 		if (!$datebox.is(':visible')) {
 			event.preventDefault();
-			$clockButton.click();
+			$('#eta-time').datebox('open');
 			return false;
 		}
 	});
