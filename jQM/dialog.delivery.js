@@ -21,7 +21,7 @@ function onDeliveryPopupClose(event, ui) {
 	var dest;
 
 	// clear the booking delivery personal interval
-	if (!onDeliveryPopupClose.etaInterval) {
+	if (onDeliveryPopupClose.etaInterval) {
 		window.clearInterval(onDeliveryPopupClose.etaInterval);
 		delete onDeliveryPopupClose.etaInterval;
 	}
