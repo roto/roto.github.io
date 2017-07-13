@@ -5,30 +5,6 @@ function loadDeliveryPopup() {
 			.on('popupafteropen', onDeliveryPopupOpen)
 			.on('popupafterclose', onDeliveryPopupClose);
 
-	loadETADatePicker();
-}
-
-function loadETADatePicker() {
-	var $dateboxInput = $('#tab-book #eta-time');
-	var $dateboxPicker = $('#tab-book .ui-datebox-container');
-	var $clockButton = $('#tab-book .ui-input-has-clear > a');
-
-	$clockButton.on('click', function(event, ui) {
-		if ($dateboxPicker.css('display') !== 'none') {
-			event.preventDefault();
-			$dateboxInput.datebox('close');
-			return false;
-		}
-	});
-
-	// open the picker on input click
-	$('#tab-book .ui-input-has-clear > div').on('click', function(event, ui) {
-		if ($dateboxPicker.css('display') === 'none') {
-			event.preventDefault();
-			$dateboxInput.datebox('open');
-			return false;
-		}
-	});
 }
 
 function onDeliveryPopupOpen(event, ui) {
@@ -56,17 +32,7 @@ function onDeliveryPopupClose(event, ui) {
 			dest = 'Table ' + table;
 		}
 	} else if ($activeTab == 1) {	// book
-		// save the current datebox time
-		var $dateboxPicker = $('#tab-book .ui-datebox-container');
-		if ($dateboxPicker.css('display') !== 'none') {
-			$dateboxPicker.find('a').click();
-		}
-
-		var etaDate = Date.parse($('#tab-book #eta-time').val(), 'HH:mm');
-		if (!etaDate) {
-			return; // false to parse the ETA date input
-		}
-
+        var etaDate = $('#eta-time').datebox('getTheDate');
 		dest = 'ETA: ' + etaTime(etaDate);
 
 		onDeliveryPopupClose.etaInterval = window.setInterval(function() {
@@ -131,9 +97,26 @@ function loadDeliveryTable() {
 }
 
 function loadDeliveryBook() {
-	var $dialog = $('#dialog-delivery');
-	var $main = $dialog.children('[data-role="main"]');
-	var $div = $main.children('div#delivery-tabs').children('div#tab-book');
+	var $dateboxInput = $('#eta-time');
+
+	if ($dateboxInput.attr('data-role') !== 'datebox') {
+		// initialize the datebox for the firstime
+		var databoxOptions = '{"mode":"timeflipbox",' +
+				'"overrideTimeFormat": 24,' +
+				'"theme": "b",' +
+				'"themeDate": "b",' +
+				'"themeClearButton": "b",' +
+				'"useInline": true,' +
+				'"useKinetic": true,' +
+				'"useImmediate": true,' +
+				'"useSetButton": false,' +
+				'"useClearButton": true,' +
+				'"overrideClearButton": "Now"}';
+
+		$dateboxInput.attr('data-role', 'datebox');
+		$dateboxInput.attr('data-options', databoxOptions);
+		$dateboxInput.datebox();
+	}
 }
 
 function loadDeliveryShip() {

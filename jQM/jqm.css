@@ -114,10 +114,10 @@ div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
 }
 
 /* Icon Color */
-div[data-theme="a"] .ui-icon-delete:not(.ui-btn-icon-notext):after {
+div[data-theme="a"] #dialog-order-edit .ui-icon-delete:not(.ui-btn-icon-notext):after {
 	background-color: #F66;
 }
-div[data-theme="b"] .ui-icon-delete:not(.ui-btn-icon-notext):after {
+div[data-theme="b"] #dialog-order-edit .ui-icon-delete:not(.ui-btn-icon-notext):after {
 	background-color: #900;
 }
 
@@ -151,24 +151,9 @@ div[data-theme="b"] #dialog-delivery .seat-taken {
 }
 
 /* Time Picker */
-#tab-book .ui-input-has-clear > div {
-	display: inline-block;
-	margin: .25em;
-	width: 60px;
-}
-#tab-book .ui-input-has-clear > a {
-	display: inline-block;
-	position: absolute;
-	margin: .5em;
-}
-#tab-book .ui-datebox-container {
-	width: 50%;
-	left: 10%;
-	right: auto;
-	border-width: 0px;
-}
-#tab-book .ui-datebox-datebox-button {
-	height: 30px;
+/* Hide the original input, and picker icon */
+#tab-book .ui-input-has-clear {
+	display: none;
 }
 
 /* Notification */
