@@ -4,7 +4,6 @@ function loadDeliveryPopup() {
 	$('#dialog-delivery').one('popupbeforeposition', loadDeliveryTable)
 			.on('popupafteropen', onDeliveryPopupOpen)
 			.on('popupafterclose', onDeliveryPopupClose);
-
 }
 
 function onDeliveryPopupOpen(event, ui) {
