@@ -50,7 +50,7 @@ var menuItems = {
 	"pho-bo": {
 		name:   "Phở bò",
 		desc:   "Tái, chín, lăn, gàu...",
-		image:  "http://media.phunutoday.vn/files/upload_images/2016/02/16/cach-nau-pho-bo-tai-gau-1-phunutoday_vn.jpg",
+		image:  "http://vaobepnauan.com/wp-content/uploads/2014/08/cach-nau-pho-bo-gia-truyen-2.jpg",
 		price:	"30000",
 	},
 	
