@@ -83,23 +83,20 @@
 	<!-- Home Page -->
 	<div id="home" data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed">
-			<!--a href="#anylink" data-icon="arrow-l">Home</a-->
 			<h1>GoiDat.vn</h1>
-			<!--a href="#menu" data-icon="bars">Menu</a-->
 		</div>
 
 		<div role="main" data-role="main" class="ui-content">
-			<ul id="service-list" data-role="listview" data-inset="false">
-				<li>
-					<a href='#order' data-transition="slidefade">Cơm Trưa</a>
-				</li>
-			</ul>
-		</div>
+			<form id="service-search-form" align=center>
+				<input type="search" name="service-search" id="service-search" value="Tìm kiếm"/>
+				<p>Near 521 Kim Mã</p>
+				<a href=# name="Locate" value="Not your place?">not your location?</a>
+				<input type="submit" name="Search" value="Search">
+			<form>
 
-		<div data-role="footer" data-position="fixed">
-			<!--a href="#" class="ui-btn ui-icon-location ui-btn-icon-left">Table</a-->
-			<div style="float:right">
-				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
+			<div id="active-service">
+				<a href='#order' data-role="button" data-inline="true" data-transition="slidefade">Bún Ngan Ngã Tư</a>
+				<a href='#order' data-role="button" data-inline="true" data-transition="slidefade">Cơm Gà KCC</a>
 			</div>
 		</div>
 	</div>

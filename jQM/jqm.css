@@ -1,3 +1,26 @@
+/* Home Page */
+/* https://stackoverflow.com/questions/21552308/set-content-height-100-jquery-mobile/27617438#27617438 */
+html, body, #home { /* specify page */
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+#home, #home * {
+	-webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+#home .ui-content {
+  height: inherit; /* inherit height without padding nor border */
+}
+
+/* Put the active services to the bottom of the home page */
+#active-service {
+	position: fixed;
+	right: 0px;
+	bottom: 0px;
+}
+
 /* vertical centralize the list iamge */
 ul[data-role="listview"] > li > a > img {
 	border-radius: 50%; /* somehow, still need a property in the HTML img tag */
