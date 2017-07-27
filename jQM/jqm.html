@@ -63,7 +63,12 @@
 	<link href="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.2.2/jtsage-datebox.min.css" rel="stylesheet" type="text/css">
 	<script src="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.2.2/jtsage-datebox.min.js" type="text/javascript"></script>
 
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBK6RZUWW8hLbain_RfRpOENBJ7Val6mGg&callback=initMap" type="text/javascript"></script>
+	<!--script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBK6RZUWW8hLbain_RfRpOENBJ7Val6mGg&callback=initMap"></script-->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBK6RZUWW8hLbain_RfRpOENBJ7Val6mGg"></script>
+
+	<!-- jQuery Location Picker Plugin -->
+	<!-- http://logicify.github.io/jquery-locationpicker-plugin/ -->
+	<script src="lib/locationpicker.jquery.js"></script>
 
 	<!-- common utilities -->
 	<script src="util.js"></script>
@@ -93,9 +98,14 @@
 				<input type="search" name="service-search" id="service-search" value="Tìm kiếm"/>
 				<p id="p-address"></p>
 				<a href=# name="locate" id="locate">locating..</a>
+				<div id="map" style="display: none">
+					<input name="PickerAddress" id="picker-address">
+					<input name="PickerRadius" id="picker-radius">
+					<div id="picker"></div>
+				</div>
 				<input type="submit" name="Search" value="Search">
-				<input type="hidden" name="Latitute" id="latitute">
-				<input type="hidden" name="Longtitute" id="longtitute">
+				<input type="hidden" name="Latitude" id="latitude">
+				<input type="hidden" name="Longitude" id="longitude">
 				<input type="hidden" name="Address" id="address">
 			<form>
 
