@@ -2,69 +2,68 @@ function populateHome() {
 	populateAddress();
 
 	function populateAddress() {
-		initGeolocation();
+		var location = initGeolocation();
 
 		var $pAddress = $('#p-address');
 		var $hdnAddress = $('#address');
 		var $linkLocate = $('#locate');
 
 		// TODO: save for a week and each part of the day
-		var lastAddress = local_load('lastAddress');
-		if (lastAddress) {
-			setAddress(local_load('lastlatitude'), local_load('lastlongitude'), lastAddress);
+		if (location && location.address) {
+			setAddress(location);
 		}
 
-		function setAddress(lat, lng, addr, located) {
-			if ($hdnAddress.val() !== addr) {
+		initMapPicker();
+		return; // only local function from here
+
+		function setAddress(location, located) {
+			if ($hdnAddress.val() !== location.address) {
 				$pAddress.fadeOut(function () {
-					$pAddress.text('Near ' + addr).fadeIn('slow');
+					$pAddress.text('Near ' + location.address).fadeIn('slow');
 				});
 
-				$hdnAddress.val(addr);
+				$hdnAddress.val(location.address);
 			}
 
-			$('#latitude').val(lat);
-			$('#longitude').val(lng);
+			$('#latitude').val(location.lat);
+			$('#longitude').val(location.lng);
 
 			if (located) {
 				// only save when located
-				local_save('lastAddress', addr);
-				local_save('lastlatitude', lat);
-				local_save('lastlongitude', lng);
-
-				initMapPicker();
-			} else {
-				$linkLocate.text('Locating..');
+				location_save(location);
 			}
 		}
 
 		/* Geolocation */
 		function initGeolocation() {
-			if (navigator && navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(function (position) {
-					console.log('Geolocation is allowed. Current location is ' + position.coords.latitude + ' ' + position.coords.longitude);
-					var latlng = {
-						lat: position.coords.latitude,
-						lng: position.coords.longitude,
-					};
-					var geocoder = new google.maps.Geocoder;
-					geocoder.geocode({ 'location': latlng }, function (results, status) {
-						if (status === 'OK') {
-							var formatted_address = results[1].formatted_address;
-							setAddress(latlng.lat, latlng.lng, formatted_address, true);
-						} else {
-							initMapPicker();
-							console.warn('Geocoder failed due to: ' + status);
-						}
+			var location = location_load();
+
+			if (location.used) {
+				if (navigator && navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(function (position) {
+						console.log('Geolocation is allowed. Current location is ' + position.coords.latitude + ' ' + position.coords.longitude);
+						var latlng = {
+							lat: position.coords.latitude,
+							lng: position.coords.longitude,
+						};
+						var geocoder = new google.maps.Geocoder;
+						geocoder.geocode({ 'location': latlng }, function (results, status) {
+							if (status === 'OK') {
+								var formatted_address = results[1].formatted_address;
+								setAddress(latlng.lat, latlng.lng, formatted_address, true);
+							} else {
+								console.warn('Geocoder failed due to: ' + status);
+							}
+						});
+					}, function () {
+						console.warn('Geolocation is blocked.');
 					});
-				}, function () {
-					initMapPicker();
-					console.warn('Geolocation is blocked.');
-				});
-			} else {
-				initMapPicker();
-				console.warn('Geolocation is not supported');
+				} else {
+					console.warn('Geolocation is not supported');
+				}
 			}
+
+			return location;
 		}
 
 		function initMapPicker() {
@@ -106,6 +105,18 @@ function populateHome() {
 	}
 }
 
-function initMap() {
-	// Google Map is initialized
+function location_load() {
+	var locationJSON = local_load('location');
+	return locationJSON ? JSON.parse(locationJSON) : {}
+}
+
+function location_save(location, used, lat, lng, address) {
+	if (used) { location.used = used; }
+	if (lat) { location.lat = lat; }
+	if (lng) { location.lng = lng; }
+	if (address) { location.address = address; }
+
+	if (location) {
+		local_save('location', JSON.stringify(location));
+	}
 }
