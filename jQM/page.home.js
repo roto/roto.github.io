@@ -2,11 +2,26 @@ function populateHome() {
 	populateAddress();
 
 	function populateAddress() {
-		var location = initGeolocation();
-
 		var $pAddress = $('#p-address');
 		var $hdnAddress = $('#address');
 		var $linkLocate = $('#locate');
+
+		var location = initGeolocation(function(position) {
+			console.log('Geolocation is allowed. Current location is ' + position.coords.latitude + ' ' + position.coords.longitude);
+			var location = {
+				lat: position.coords.latitude,
+				lng: position.coords.longitude,
+			};
+			var geocoder = new google.maps.Geocoder;
+			geocoder.geocode({ 'location': location }, function (results, status) {
+				if (status === 'OK') {
+					location.address = results[1].formatted_address;
+					setAddress(location, true);
+				} else {
+					console.warn('Geocoder failed due to: ' + status);
+				}
+			});
+		});
 
 		// TODO: save for a week and each part of the day
 		if (location && location.address) {
@@ -35,27 +50,12 @@ function populateHome() {
 		}
 
 		/* Geolocation */
-		function initGeolocation() {
+		function initGeolocation(callback_located) {
 			var location = location_load();
 
 			if (location.used) {
 				if (navigator && navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(function (position) {
-						console.log('Geolocation is allowed. Current location is ' + position.coords.latitude + ' ' + position.coords.longitude);
-						var latlng = {
-							lat: position.coords.latitude,
-							lng: position.coords.longitude,
-						};
-						var geocoder = new google.maps.Geocoder;
-						geocoder.geocode({ 'location': latlng }, function (results, status) {
-							if (status === 'OK') {
-								var formatted_address = results[1].formatted_address;
-								setAddress(latlng.lat, latlng.lng, formatted_address, true);
-							} else {
-								console.warn('Geocoder failed due to: ' + status);
-							}
-						});
-					}, function () {
+					navigator.geolocation.getCurrentPosition(callback_located, function () {
 						console.warn('Geolocation is blocked.');
 					});
 				} else {
