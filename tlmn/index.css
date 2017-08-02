@@ -1,14 +1,10 @@
-body {
+table {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
 	width: 640px;
 	max-width: 100%;
 	margin-left: auto;
 	margin-right: auto;
-}
-
-table {
-	font-family: arial, sans-serif;
-	border-collapse: collapse;
-	width: 100%;
 }
 
 td, th {
