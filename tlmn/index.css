@@ -1,20 +1,15 @@
-body {
-	width: 720px;
+table {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
 	max-width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-table {
-	font-family: arial, sans-serif;
-	border-collapse: collapse;
-	width: 100%;
-}
-
 td, th {
 	border: 1px solid #aaaaaa;
 	text-align: center;
-	padding: 8px;
+	padding: 2px;
 }
 
 th {
@@ -22,7 +17,7 @@ th {
 	background-color: gray;
 }
 
-tr:nth-child(odd) {
+tr:nth-child(odd) input {
 	background-color: #dddddd;
 }
 
@@ -32,14 +27,17 @@ tr[name="total"] * {
 }
 
 tr[name="players"] input {
-	width: 100%;
-	background-color: lightgray;
+	width: 10ex;
+	background-color: gray;
+	color: white;
+	font-weight: bold;
 }
 
 tr input {
-	width: 5em;
+	width: 10ex;
 	text-align: center;
 	font-size: inherit;
+	border: 0px;
 }
 
 .control {
