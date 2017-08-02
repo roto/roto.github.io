@@ -1,7 +1,7 @@
 table {
 	font-family: arial, sans-serif;
 	border-collapse: collapse;
-	max-width: 100%;
+	width: 100%;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -27,14 +27,14 @@ tr[name="total"] * {
 }
 
 tr[name="players"] input {
-	width: 60px;
+	width: 100%;
 	color: white;
 	background-color: gray;
 	font-weight: bold;
 }
 
 tr input {
-	width: 60px;
+	width: 100%;
 	text-align: center;
 	font-size: inherit;
 	border: 0px;
