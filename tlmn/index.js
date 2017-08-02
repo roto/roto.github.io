@@ -1,7 +1,4 @@
 $(document).ready(function(){
-	//loadPlayers(players);
-	loadScores(scores);
-
 	$('tr[name="players"] input').on('input', function () {
 		var $input = $(this);
 		var columnIdx = $input.parent().attr('index');
@@ -21,7 +18,15 @@ $(document).ready(function(){
 		var $row = $input.parent().parent();
 		var $cells = $row.children('td');
 		calculateLastValue();
-		$cells.children('input').css('color', isZeroSum() ? 'inherit' : 'red');
+
+		var values = getCellValues($cells);
+		if (isZeroSum(values)) {
+			$cells.children('input').css('color', 'inherit');
+		} else {
+			$cells.children('input').css('color', 'red');
+		}
+
+		calculateTotals();
 
 		function calculateLastValue() {
 			var emptyIndex = -1;
@@ -50,71 +55,65 @@ $(document).ready(function(){
 				if ($row.attr('name')) {
 					$row.removeAttr('name');
 					var newRowHTML = '<tr name="new"><td><input type=number></td><td><input type=number></td><td><input type=number></td><td><input type=number></td></tr>';
-					$(newRowHTML).insertAfter($row);
-					$('tr[name="new"] input').on('input', onScoreInput);
+					$(newRowHTML).insertAfter($row).find('input').on('input', onScoreInput);
 				}	
 			}
-		}
-
-		function isZeroSum() {
-			var sum = 0;
-			for (var i = 0; i < $cells.length; ++i) {
-				var $cell = $cells.get(i);
-				var $input = $cell.children[0];
-				var val = $input.value;
-				if ($.isNumeric(val)) {
-					sum += Number(val);
-				} else {
-					return false;
-				}
-			}
-
-			return sum == 0;
 		}
 	}
 
 	$('button[name="reset"]').click(function () {
-		if (window.confirm('Are you sure to reset all the scores?')) {
-			resetScores();
+		if ($('table tr:not([name])').length > 0) {
+			if (window.confirm('Are you sure to reset all the scores?')) {
+				resetScores();
+			}
 		}
 	});
 });
 
-/*function loadPlayers(players) {
-	var $table = $('table');
-	var $headerRows = $table.find('tr[name="header"]');
-
-	for (var i = 0; i < $headerRows.length; ++i) {
-		for (var j = 0; j < players.length; ++j) {
-			$headerRows.get(i).cells[j].innerHTML = players[j];
+function isZeroSum(values) {
+	var sum = 0;
+	for (var i = 0; i < values.length; ++i) {
+		var val = values[i];
+		if (val === NaN) {
+			return false;
+		} else {
+			sum += val;
 		}
 	}
-}*/
+	return sum == 0;
+}
+
+function getCellValues($cells) {
+	var values = [];
+	for (var i = 0; i < $cells.length; ++i) {
+		var val = $cells.get(i).children[0].value;
+		values[i] = $.isNumeric(val) ? Number(val) : NaN;
+	}
+	return values;
+}
+
+function calculateTotals() {
+	var totals = [ 0, 0, 0, 0 ];
+	var $rows = $('table tr:not([name])');
+
+	for (var r = 0; r < $rows.length; ++r) {
+		$row = $($rows.get(r));
+		var $cells = $row.children('td');
+		var values = getCellValues($cells);
+		if (isZeroSum(values)) {
+			for (var i = 0; i < totals.length; ++i) {
+				totals[i] += values[i];
+			}
+		}
+	}
+
+	var $totalEs = $('table tr[name="total"] th');
+	for (var i = 0; i < $totalEs.length; ++i) {
+		$totalEs.get(i).innerHTML = totals[i];
+	}
+}
 
 function resetScores() {
-	$('table tr:not([name])').remove()
+	$('table tr:not([name])').remove();
+	calculateTotals();
 }
-
-function loadScores(scores) {
-	var html = '';
-	for (var i = 0; i < scores.length; ++i) {
-		var score = scores[i];
-		html += '<tr>';
-		for (var j = 0; j < score.length; ++j) {
-			html += '<td index=' + j +'>' + score[j] + '</td>';
-		}
-		html += '</tr>'
-	}
-
-	resetScores();
-	$(html).insertBefore($('table tr[name="new"]'));
-}
-
-/*var players = [
-	'Phạm', 'Tùng', 'Mèo', 'Mông',
-];*/
-
-var scores = [
-	[1, 2, 3, 4],
-	[5, 6, 7, 8],
-];
