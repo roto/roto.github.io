@@ -1,0 +1,40 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #aaaaaa;
+    text-align: center;
+    padding: 8px;
+}
+
+th {
+    color: white;
+    background-color: gray;
+}
+
+tr:nth-child(odd) {
+    background-color: #dddddd;
+}
+
+tr[name="players"] input {
+    width: 100%;
+    background-color: lightgray;
+}
+
+tr input {
+    width: 5em;
+    text-align: center;
+    font-size: inherit;
+}
+
+.control {
+    text-align: center;
+}
+
+.control button {
+    margin: 1em;
+    padding: .5em 2em;
+}
