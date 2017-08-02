@@ -27,14 +27,14 @@ tr[name="total"] * {
 }
 
 tr[name="players"] input {
-	width: 60px;
+	width: 50px;
 	background-color: gray;
 	color: white;
 	font-weight: bold;
 }
 
 tr input {
-	width: 60px;
+	width: 50px;
 	text-align: center;
 	font-size: inherit;
 	border: 0px;
