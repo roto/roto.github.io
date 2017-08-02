@@ -21,11 +21,7 @@ $(document).ready(function(){
 		var $row = $input.parent().parent();
 		var $cells = $row.children('td');
 		calculateLastValue();
-		if (isZeroSum()) {
-			$cells.children('input').css('border-color', 'inherit');
-		} else {
-			$cells.children('input').css('border-color', 'red');
-		}
+		$cells.children('input').css('color', isZeroSum() ? 'inherit' : 'red');
 
 		function calculateLastValue() {
 			var emptyIndex = -1;
