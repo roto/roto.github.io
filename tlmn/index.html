@@ -2,29 +2,32 @@
 <html lang="en" class="">
 
 <head>
-    <meta charset="utf-8">
+	<meta charset="utf-8">
 
-    <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+   	<!-- www.phpied.com/conditional-comments-block-downloads/ -->
+	<!--[if IE]><![endif]-->
+
+	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
 			 Remove this if you use the .htaccess -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <!-- Allow user to add the page to home screen as Web App -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="TLMN">
-    <meta name="apple-mobile-web-app-status-bar-style" content="gray">
-    <!--link rel="apple-touch-startup-image" href="startup.png"-->
-    <link rel="apple-touch-icon" href="https://d30y9cdsu7xlg0.cloudfront.net/png/15599-200.png" />
-    <link rel="apple-touch-icon-precomposed" sizes="128x128" href="https://d30y9cdsu7xlg0.cloudfront.net/png/15599-200.png" />
+	<!-- Allow user to add the page to home screen as Web App -->
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-title" content="TLMN">
+	<meta name="apple-mobile-web-app-status-bar-style" content="gray">
+	<!--link rel="apple-touch-startup-image" href="startup.png"-->
+	<link rel="apple-touch-icon" href="https://d30y9cdsu7xlg0.cloudfront.net/png/15599-200.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="128x128" href="https://d30y9cdsu7xlg0.cloudfront.net/png/15599-200.png" />
 
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="TLMN">
-    <meta name="theme-color" content="gray">
-    <link rel="shortcut icon" sizes="196x196" href="https://d30y9cdsu7xlg0.cloudfront.net/png/15599-200.png" />
-    <link rel="shortcut icon" sizes="128x128" href="https://d30y9cdsu7xlg0.cloudfront.net/png/15599-200.png" />
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="application-name" content="TLMN">
+	<meta name="theme-color" content="gray">
+	<link rel="shortcut icon" sizes="196x196" href="https://d30y9cdsu7xlg0.cloudfront.net/png/15599-200.png" />
+	<link rel="shortcut icon" sizes="128x128" href="https://d30y9cdsu7xlg0.cloudfront.net/png/15599-200.png" />
 
-    <title>TLMN</title>
-    <meta name="description" content="TLMN Score Sheet">
-    <meta name="author" content="RotO">
+	<title>TLMN</title>
+	<meta name="description" content="TLMN Score Sheet">
+	<meta name="author" content="RotO">
 
 	<!-- Fill the page -->
 	<style>
@@ -33,48 +36,48 @@
 	</style>
 
 	<!-- Prevent page zooming -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
-    <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>!window.jQuery && document.write('<script src="../jQM/lib/jquery.min.js"><\/script>')</script>
+	<!-- Grab Google CDN's jQuery. fall back to local if necessary -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script>!window.jQuery && document.write('<script src="../jQM/lib/jquery.min.js"><\/script>')</script>
 
-    <link rel="stylesheet" href="index.css">
-    <script src="index.js"></script>
+	<link rel="stylesheet" href="index.css">
+	<script src="index.js"></script>
 </head>
 
 <body>
-    <table>
-        <tr name="players">
-            <th index=0><input></td>
-            <th index=1><input></td>
-            <th index=2><input></td>
-            <th index=3><input></td>
-        </tr>
-        <tr name="new">
-            <td><input type=number></td>
-            <td><input type=number></td>
-            <td><input type=number></td>
-            <td><input type=number></td>
-        </tr>
-        <tr name="header">
-            <th>A</th>
-            <th>B</th>
-            <th>C</th>
-            <th>D</th>
-        </tr>
-        <tr name="total">
-            <th>0</th>
-            <th>0</th>
-            <th>0</th>
-            <th>0</th>
-        </tr>
-    </table>
+	<table>
+		<tr name="players">
+			<th index=0><input></td>
+			<th index=1><input></td>
+			<th index=2><input></td>
+			<th index=3><input></td>
+		</tr>
+		<tr name="new">
+			<td><input type=number></td>
+			<td><input type=number></td>
+			<td><input type=number></td>
+			<td><input type=number></td>
+		</tr>
+		<tr name="header">
+			<th>A</th>
+			<th>B</th>
+			<th>C</th>
+			<th>D</th>
+		</tr>
+		<tr name="total">
+			<th>0</th>
+			<th>0</th>
+			<th>0</th>
+			<th>0</th>
+		</tr>
+	</table>
 
-    <div class="control">
-        <button name="reset">Reset</button>
-        <!--button name="save" disabled>Save</button-->
-    </div>
+	<div class="control">
+		<button name="reset">Reset</button>
+		<!--button name="save" disabled>Save</button-->
+	</div>
 </body>
 
 </html>
