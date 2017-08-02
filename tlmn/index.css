@@ -33,7 +33,7 @@ tr[name="players"] input {
 }
 
 tr input {
-	width: 3em;
+	width: 5em;
 	text-align: center;
 	font-size: inherit;
 }
