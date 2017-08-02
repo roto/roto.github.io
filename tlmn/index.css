@@ -9,7 +9,7 @@ table {
 td, th {
 	border: 1px solid #aaaaaa;
 	text-align: center;
-	padding: 8px;
+	padding: 2px;
 }
 
 th {
@@ -17,7 +17,7 @@ th {
 	background-color: gray;
 }
 
-tr:nth-child(odd) {
+tr:nth-child(odd) input {
 	background-color: #dddddd;
 }
 
@@ -27,15 +27,18 @@ tr[name="total"] * {
 }
 
 tr[name="players"] input {
-	width: 6em;
+	width: 100px;
 	max-width: 100%;
-	background-color: lightgray;
+	color: white;
+	background-color: gray;
+	font-weight: bold;
 }
 
 tr input {
-	width: 5em;
+	width: 100px;
 	text-align: center;
 	font-size: inherit;
+	border: 0px;
 }
 
 .control {
