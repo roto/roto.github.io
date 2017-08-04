@@ -22,14 +22,27 @@ function populateHome() {
 			$linkLocate.off('click').click(function (event, ui) {
 				var $dialog = $('#dialog-location');
 				$dialog.find('#location-reject').off('click').click(function () {
-					//alert('reject');
+					location.state = LocationState.REJECTED;
+					location_save(location);
 				});
 				$dialog.find('#location-allow').off('click').click(function () {
-					//alert('accept');
+					geoLocate();
 				});
 				$dialog.popup('open');
 			});
 		} else {
+			geoLocate();
+		}
+
+		// TODO: save for a week and each part of the day
+		if (location && location.address) {
+			showLocation(location);
+		}
+
+		//initMapPicker();
+		return; // only local function from here
+
+		function geoLocate() {
 			if (navigator && navigator.geolocation) {
 				/* Geolocation */
 				navigator.geolocation.getCurrentPosition(function (position) {
@@ -57,29 +70,29 @@ function populateHome() {
 						}
 						location_save(location);
 					});
-				}, function () {
-					console.warn('Geolocation is blocked.');
-					location = {
-						state: LocationState.BLOCKED,
+				}, function (error) {
+					switch (error.code) {
+						case error.PERMISSION_DENIED:
+							// Note: this case include both Block, and Close action by user
+							console.warn('Geolocation is blocked.');
+							// TODO: show "accidently blocked" message
+							location.state = LocationState.BLOCKED;
+							location_save(location);
+							break;
+						case error.POSITION_UNAVAILABLE:
+							console.warn('Geolocation is unavailable.');
+							break;
+						case error.TIMEOUT:
+							console.warn('Timout while getting geolocation.');
+							break;
 					}
-					location_save(location);
 				});
 			} else {
-				console.warn('Geolocation is not supported');
-				location = {
-					state: LocationState.UNSUPPORTED,
-				}
+				console.warn('Geolocation is not supported by this browser.');
+				location.state = LocationState.UNSUPPORTED;
 				location_save(location);
 			}
 		}
-
-		// TODO: save for a week and each part of the day
-		if (location && location.address) {
-			showLocation(location);
-		}
-
-		//initMapPicker();
-		return; // only local function from here
 
 		function showLocation(location) {
 			if ($hdnAddress.val() !== location.address) {
