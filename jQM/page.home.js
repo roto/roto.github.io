@@ -1,3 +1,10 @@
+var LocationState = {
+	REJECTED: 'rejected',
+	BLOCKED: 'blocked',
+	ACCEPTED: 'accepted',
+	UNSUPPORTED: 'unsupported',
+}
+
 function populateHome() {
 	populateAddress();
 
@@ -9,7 +16,20 @@ function populateHome() {
 		// get the local saved location
 		var location = location_load();
 
-		if (location.used) {
+		if (!location.state || location.state === LocationState.REJECTED) {
+			// location is never asked before or rejected
+			$linkLocate.text('Use my location');
+			$linkLocate.off('click').click(function (event, ui) {
+				var $dialog = $('#dialog-location');
+				$dialog.find('#location-reject').off('click').click(function () {
+					//alert('reject');
+				});
+				$dialog.find('#location-allow').off('click').click(function () {
+					//alert('accept');
+				});
+				$dialog.popup('open');
+			});
+		} else {
 			if (navigator && navigator.geolocation) {
 				/* Geolocation */
 				navigator.geolocation.getCurrentPosition(function (position) {
@@ -17,9 +37,11 @@ function populateHome() {
 					console.log('Geolocation is allowed. Current location is ' + position.coords.latitude + ' ' + position.coords.longitude);
 
 					// update the location variable, without saving to local storage
-					location.lat = position.coords.latitude;
-					location.lng = position.coords.longitude;
-					location.address = null;
+					location = {
+						state: LocationState.ACCEPTED,
+						lat: position.coords.latitude,
+						lng: position.coords.longitude,
+					};
 
 					var latlng = {
 						lat: position.coords.latitude,
@@ -30,23 +52,25 @@ function populateHome() {
 						if (status === 'OK') {
 							location.address = results[1].formatted_address;
 							showLocation(location);
-							location_save(location);
 						} else {
 							console.warn('Geocoder failed due to: ' + status);
 						}
+						location_save(location);
 					});
 				}, function () {
 					console.warn('Geolocation is blocked.');
+					location = {
+						state: LocationState.BLOCKED,
+					}
+					location_save(location);
 				});
 			} else {
 				console.warn('Geolocation is not supported');
+				location = {
+					state: LocationState.UNSUPPORTED,
+				}
+				location_save(location);
 			}
-		} else {
-			// location is never asked before
-			$linkLocate.text('Use my location');
-			$linkLocate.off('click').click(function(event, ui) {
-				
-			});
 		}
 
 		// TODO: save for a week and each part of the day
