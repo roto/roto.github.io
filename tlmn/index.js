@@ -1,12 +1,12 @@
-$(document).ready(function(){
+var emptyColumns = [false, false, false, false];
+
+$(document).ready(function () {
 	$('tr[name="players"] input').on('input', function () {
 		var $input = $(this);
 		var columnIdx = $input.parent().attr('index');
-		var value = $input.val();
-		if (value.trim().length > 0) {
-			var $table = $('table');
-			$table.find('tr[name="header"]').get(0).cells[columnIdx].innerHTML = value;
-		}	
+		var value = $input.val().trim();
+		$('table').find('tr[name="header"]').get(0).cells[columnIdx].innerHTML = value;
+		emptyColumns[columnIdx] = value.length <= 0;
 	});
 
 	$('tr[name="new"] input').on('input', onScoreInput);
@@ -34,6 +34,11 @@ $(document).ready(function(){
 			for (var i = 0; i < $cells.length; ++i) {
 				var $cell = $cells.get(i);
 				var $input = $cell.children[0];
+				if (emptyColumns[i]) {
+					$input.value = '';
+					$input.disabled = true;
+					continue;
+				}
 				var val = $input.disabled ? undefined : $input.value;
 				if ($.isNumeric(val)) {
 					sum += Number(val);
@@ -73,6 +78,9 @@ $(document).ready(function(){
 function isZeroSum(values) {
 	var sum = 0;
 	for (var i = 0; i < values.length; ++i) {
+		if (emptyColumns[i]) {
+			continue;
+		}
 		var val = values[i];
 		if (val === NaN) {
 			return false;
@@ -86,6 +94,9 @@ function isZeroSum(values) {
 function getCellValues($cells) {
 	var values = [];
 	for (var i = 0; i < $cells.length; ++i) {
+		if (emptyColumns[i]) {
+			continue;
+		}
 		var val = $cells.get(i).children[0].value;
 		values[i] = $.isNumeric(val) ? Number(val) : NaN;
 	}
@@ -97,6 +108,9 @@ function calculateTotals() {
 	var $rows = $('table tr:not([name])');
 
 	for (var r = 0; r < $rows.length; ++r) {
+		if (emptyColumns[r]) {
+			continue;
+		}
 		$row = $($rows.get(r));
 		var $cells = $row.children('td');
 		var values = getCellValues($cells);
@@ -109,7 +123,7 @@ function calculateTotals() {
 
 	var $totalEs = $('table tr[name="total"] th');
 	for (var i = 0; i < $totalEs.length; ++i) {
-		$totalEs.get(i).innerHTML = totals[i];
+		$totalEs.get(i).innerHTML = emptyColumns[i] ? '' : totals[i];
 	}
 }
 
