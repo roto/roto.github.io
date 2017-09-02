@@ -2,39 +2,6 @@
 /*                             Common Utilities                              */
 /*****************************************************************************/
 
-/* Local Storage */
-function initialize_local_storage() {
-	if (!has_local_storage) {
-		// browser not support storage
-		local_load = local_remove = local_save = $.noop;
-	}
-
-	function has_local_storage() {
-		var mod = 'RotO';
-		try {
-			localStorage.setItem(mod, mod);
-			localStorage.removeItem(mod);
-			return true;
-		} catch(e) {
-			return false;
-		}
-	}
-}
-
-function local_save(key, value) {
-	localStorage.setItem(key, value);
-}
-
-function local_load(key) {
-	return localStorage.getItem(key);
-}
-
-function local_remove(key) {
-	localStorage.removeItem(key);
-}
-
-/*****************************************************************************/
-
 function etaTime(time) {
 	var now = new Date();
 
@@ -89,11 +56,6 @@ function etaTime(time) {
 		}
 	}
 }
-
-function is_touch_device() {
-	return 'ontouchstart' in window				// for most browsers 
-			|| !!(navigator.maxTouchPoints);	// for IE10/11 and Surface
-};
 
 function formatPrice(price) {
 	if (price % 1000000000 == 0) {
