@@ -35,6 +35,38 @@ function local_remove(key) {
 
 /*****************************************************************************/
 
+function disable_page_scroll_while_popup_shown() {
+	$(document).on('popupafteropen', '[data-role="popup"]', function(event, ui) {
+		$('body').css('overflow', 'hidden').on('touchmove', function(e) {
+			e.preventDefault();
+		});
+	}).on('popupafterclose', '[data-role="popup"]', function(event, ui) {
+		$('body').css('overflow', 'auto').off('touchmove');
+	});
+}
+
+function config_page_slide_for_touch_device(pages) {
+	if (!is_touch_device()) {
+		return;
+	}
+
+	$(document).on('swiperight', function () {
+		$.mobile.back();
+	});
+
+	for (var i = 0; i < pages.length - 1; ++i) {
+		$('#' + pages[i]).on('swipeleft', function () {
+			$.mobile.changePage('#' + pages[i+1], {
+				transition: "slidefade",
+				changeHash: true,
+			});
+		});
+	}
+
+	// change swipe speed sensitivity
+	$.event.special.swipe.durationThreshold = 750;
+}
+
 function is_touch_device() {
 	return 'ontouchstart' in window				// for most browsers 
 			|| !!(navigator.maxTouchPoints);	// for IE10/11 and Surface
