@@ -27,11 +27,20 @@ ul[data-role="listview"] > li > a > img {
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	margin: 10px;
+	margin: 5px;
 	object-fit: cover;
+	width:  70px;
+	height: 70px;
+	box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* vertical centralize the list initial */
+ul[data-role="listview"] > li > a > img.initial {
+	/* somehow, still need a property in the HTML img tag */
+	position: absolute;
+	margin: 10px;
 	width:  60px;
 	height: 60px;
-	box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.3);
 }
 
 ul[data-role="listview"] > li > a {
