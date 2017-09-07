@@ -156,7 +156,7 @@ function generateOrderItemHTML(orderItem) {
 	var orderItemHTML = '<li id="order-item-' + orderItem.id + '"><a href="javascript:openOrderDialog(\'status\', \'' + orderItem.id + '\')">';
 
 	if (orderItem.item.image) {
-		orderItemHTML += '<img style="border-radius: 50%" src="' + orderItem.item.image + '">';
+		orderItemHTML += '<img data-name="' + orderItem.item.initial + '" class="initial" style="border-radius: 50%">';
 	}
 
 	if (orderItem.item.name) {

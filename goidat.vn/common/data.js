@@ -39,12 +39,14 @@ var menuItems = {
 		desc:   "Cơm rang với đùi gà rán.",
 		image:  "https://media.foody.vn/res/g1/6682/prof/s480x300/foody-mobile-foody-a-hai-com-ga-x-869-635948407399671556.jpg",
 		price:	"35000",
+		initial:	"CG",
 	},
 	
 	'com-rang-dua-bo': {
 		name:	"Cơm Rang Dưa Bò",
 		image:  "https://i.ytimg.com/vi/e9h2xmSoyLo/maxresdefault.jpg",
 		price:	"25000",
+		initial:	"CRDB",
 	},
 
 	"pho-bo": {
@@ -52,6 +54,7 @@ var menuItems = {
 		desc:   "Tái, chín, lăn, gàu...",
 		image:  "http://vaobepnauan.com/wp-content/uploads/2014/08/cach-nau-pho-bo-gia-truyen-2.jpg",
 		price:	"30000",
+		initial:	"PB",
 	},
 	
 	"pho-ga": {
@@ -59,6 +62,7 @@ var menuItems = {
 		desc:   "Đùi, cánh..",
 		image:  "http://amthuchanoi.org/wp-content/uploads/2015/04/Diem-danh-nhung-quan-pho-ga-ngon-o-ha-noi6.jpg",
 		price:	"30000",
+		initial:	"PG",
 	},
 	
 	"pho-ngan": {
@@ -66,6 +70,7 @@ var menuItems = {
 		desc:   "Măng, tiết..",
 		image:  "https://media.foody.vn/res/g4/36737/prof/s576x330/foody-mobile-quan-pho-ngan-bac-giang.jpg",
 		price:	"3500000",
+		initial:	"PN",
 	},
 	
 	"pho-ngo": {
@@ -73,6 +78,7 @@ var menuItems = {
 		desc:   "Gọi trà đá ngồi ngó người ta ăn.",
 		image:  "http://media.tinmoi.vn/2015/09/04/ngo-sen-va-nhung-tac-dung-tuuyet-voi-it-biet.jpg",
 		price:	"5000",
+		initial:	"NGO",
 	},
 };
 
