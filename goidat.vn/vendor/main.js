@@ -9,13 +9,21 @@ $(document).ready(function(){
 		switchTheme();
 	}
 
-	// TODO: scale the fontSize base on data-name length
-	$('.initial').initial({
-		charCount: 4,
-		fontSize: 35,
+	$('.initial').each(function() {
+		initial($(this));
 	});
 
 	disable_page_scroll_while_popup_shown();
 
 	config_page_slide_for_touch_device(['order', 'menu']);
 })
+
+function initial($img) {
+	var charCount = $img.attr('data-name').length;
+	var foneSize = Math.min(100, ($img.width() * 2) / charCount);
+	$img.initial({
+		charCount: charCount,
+		fontSize: foneSize,
+		fontWeight: 700,
+	});
+}
