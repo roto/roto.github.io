@@ -166,11 +166,75 @@ function generateOrderItemHTML(orderItem) {
 
 	orderItemHTML += generateOrderRequestHTML(orderItem);
 	orderItemHTML += generateOrderQuantityHTML(orderItem);
+	orderItemHTML += generateOrderStateHTML(orderItem);
 
-	orderItemHTML += '<span class="ui-li-count">' + orderItem.state + '</span>';
-	orderItemHTML += '</a><a href="javascript:openOrderDialog(\'edit\', \'' + orderItem.id + '\')" class="ui-btn ui-icon-edit">Edit</a></li>';
+	orderItemHTML += '</a>';
+	orderItemHTML += generateOrderActionHTML(orderItem);
 
 	return orderItemHTML;
+}
+
+function processNext(orderItemID) {
+	if (!orderItems.hasOwnProperty(orderItemID)) {
+		console.warn('Order item "' + orderItemID + '" is not in the order');
+		return;
+	}
+
+	var orderItem = orderItems[orderItemID];
+	var newState = orderItem.state = getNextState(orderItem.state);
+
+	var $orderElement = $('#order-item-' + orderItemID);
+	var $actioNBtn = $orderElement.find('a[data-icon]');
+	// temporary disable the link until button animation finish
+	$actioNBtn.bind('click', false);
+
+	$actioNBtn.fadeOut(function() {
+		var nextState = getNextState(newState);
+		var action = getStateAction(nextState);
+		var icon = getIconNameForState(nextState);
+
+		$actioNBtn.attr('class', $actioNBtn.attr('class').replace(/ui-icon-[^\s\\]+/, 'ui-icon-' + icon));
+		$actioNBtn.attr('title', action);
+		$actioNBtn.fadeIn('slow', function() {
+			// button animation finish, re-enable the link
+			$actioNBtn.unbind('click', false);
+		});
+
+		var $stateEl = $orderElement.find('.ui-li-count');
+		if ($stateEl.text() != newState) {
+			$stateEl.fadeOut(function() {
+				$stateEl.text(newState);
+				$stateEl.fadeIn('slow').fadeOut().fadeIn('slow');
+			});
+		}
+	});
+}
+
+function getNextState(state) {
+	switch (state) {
+		case OrderState.QUEUEING:	return OrderState.PROCESSING;
+		case OrderState.PROCESSING:	return OrderState.SERVING;
+		case OrderState.SERVING:	return OrderState.FINISHED;
+	}
+}
+
+function getStateAction(state) {
+	switch (state) {
+		case OrderState.QUEUEING:	return "Queue";
+		case OrderState.PROCESSING:	return "Process";
+		case OrderState.SERVING:	return "Serve";
+		case OrderState.FINISHED:	return "Finish";
+	}
+}
+
+function getIconNameForState(state) {
+	switch (state) {
+		case OrderState.QUEUEING:	return "plus";
+		case OrderState.PROCESSING:	return "action";
+		case OrderState.SERVING:	return "navigation";
+		case OrderState.FINISHED:	return "check";
+		default:					return "forbidden";
+	}
 }
 
 function generateOrderRequestHTML(orderItem) {
@@ -185,4 +249,15 @@ function generateOrderQuantityHTML(orderItem) {
         return '<span class="ui-li-quantity ui-body-inherit">' + orderItem.quantity + '</span>';
     }
 	return '';
+}
+
+function generateOrderStateHTML(orderItem) {
+	return '<span class="ui-li-count">' + orderItem.state + '</span>';
+}
+
+function generateOrderActionHTML(orderItem) {
+	var nextState = getNextState(orderItem.state);
+	var action = getStateAction(nextState);
+	var icon = getIconNameForState(nextState);
+	return '<a href="javascript:processNext(\'' + orderItem.id + '\')" data-icon="' + icon +'">' + action + '</a></li>';
 }
