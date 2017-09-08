@@ -12,6 +12,7 @@ function populateOrder() {
 		if (initialOrderItem.quantity) {
 			orderItem.quantity = initialOrderItem.quantity;
 		}
+		orderItem.state = initialOrderItem.state ? initialOrderItem.state : OrderState.QUEUEING;
 		orderItemsHTML += generateOrderItemHTML(orderItem);
 	}
 
@@ -166,7 +167,7 @@ function generateOrderItemHTML(orderItem) {
 	orderItemHTML += generateOrderRequestHTML(orderItem);
 	orderItemHTML += generateOrderQuantityHTML(orderItem);
 
-	orderItemHTML += '<span class="ui-li-count">sending..</span>';
+	orderItemHTML += '<span class="ui-li-count">' + orderItem.state + '</span>';
 	orderItemHTML += '</a><a href="javascript:openOrderDialog(\'edit\', \'' + orderItem.id + '\')" class="ui-btn ui-icon-edit">Edit</a></li>';
 
 	return orderItemHTML;

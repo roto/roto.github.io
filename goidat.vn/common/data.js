@@ -1,3 +1,11 @@
+/* Data Models */
+OrderState = {
+	QUEUEING: 	"queueing",
+	PROCESSING:	"processing",
+	SERVING:	"serving",
+	FINISHED:	"finished",
+	REJECTED:	"rejected",
+}
 
 // temporary initial object
 var initialOrderItems = [{

@@ -77,6 +77,10 @@ li#new-order > a > div.ui-li-thumb > img {
 	top: 65%;
 }
 
+body[data-module="vendor"] #order .ui-li-count {
+	font-size: 16px;
+}
+
 /* Order status dialog */
 #dialog-order-status > img{
 	max-height: 5em;
