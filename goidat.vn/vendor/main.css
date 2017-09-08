@@ -103,7 +103,7 @@ li#new-order > a > div.ui-li-thumb > img {
 /* Clone from .ui-li-count (jQueryMobile) */
 .ui-li-quantity {
 	position: absolute;
-	font-size: 12.5px;
+	font-size: 18px;
 	font-weight: 700;
 	text-align: center;
 	border-width: 1px;
@@ -114,7 +114,7 @@ li#new-order > a > div.ui-li-thumb > img {
 	min-width: .64em;
 	left: 60px;
 	/*right: .8em;*/
-	top: 25%;
+	top: 20%;
 	margin-top: -.88em;
 	border-radius: 10px;
 }
