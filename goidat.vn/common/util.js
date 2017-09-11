@@ -55,8 +55,9 @@ function config_page_slide_for_touch_device(pages) {
 	});
 
 	for (var i = 0; i < pages.length - 1; ++i) {
+		var nextPage = pages[i+1];
 		$('#' + pages[i]).on('swipeleft', function () {
-			$.mobile.changePage('#' + pages[i+1], {
+			$.mobile.changePage('#' + nextPage, {
 				transition: "slidefade",
 				changeHash: true,
 			});
