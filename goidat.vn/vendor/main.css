@@ -77,10 +77,6 @@ li#new-order > a > div.ui-li-thumb > img {
 	top: 65%;
 }
 
-body[data-module="vendor"] #order .ui-li-count {
-	font-size: 16px;
-}
-
 /* Order status dialog */
 #dialog-order-status > img{
 	max-height: 5em;
@@ -107,7 +103,7 @@ body[data-module="vendor"] #order .ui-li-count {
 /* Clone from .ui-li-count (jQueryMobile) */
 .ui-li-quantity {
 	position: absolute;
-	font-size: 18px;
+	font-size: 12.5px;
 	font-weight: 700;
 	text-align: center;
 	border-width: 1px;
@@ -118,7 +114,7 @@ body[data-module="vendor"] #order .ui-li-count {
 	min-width: .64em;
 	left: 60px;
 	/*right: .8em;*/
-	top: 20%;
+	top: 25%;
 	margin-top: -.88em;
 	border-radius: 10px;
 }
