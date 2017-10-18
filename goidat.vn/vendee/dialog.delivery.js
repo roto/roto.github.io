@@ -26,9 +26,13 @@ function onDeliveryPopupClose(event, ui) {
 	}
 
 	if ($activeTab == 0) {			// table
-		var table = $dialog.find('div#tab-table label.ui-checkbox-on').first().text();
-		if (table) {
-			dest = 'Table ' + table;
+		var $tableElement = $dialog.find('div#tab-table label.ui-checkbox-on:not(.seat-taken)').first();
+		if (!$tableElement) {
+			$tableElement = $dialog.find('div#tab-table label.ui-checkbox-on').first();
+		}
+
+		if ($tableElement && $tableElement.text().length > 0) {
+			dest = 'Table ' + $tableElement.text();
 		}
 	} else if ($activeTab == 1) {	// book
         var etaDate = $('#eta-time').datebox('getTheDate');
