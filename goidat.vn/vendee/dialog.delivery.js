@@ -27,7 +27,7 @@ function onDeliveryPopupClose(event, ui) {
 
 	if ($activeTab == 0) {			// table
 		var $tableElement = $dialog.find('div#tab-table label.ui-checkbox-on:not(.seat-taken)').first();
-		if (!$tableElement) {
+		if (!$tableElement || $tableElement.length <= 0) {
 			$tableElement = $dialog.find('div#tab-table label.ui-checkbox-on').first();
 		}
 
