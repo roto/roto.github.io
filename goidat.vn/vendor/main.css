@@ -124,6 +124,24 @@ li#new-order > a > div.ui-li-thumb > img {
 	margin-left: 6px;
 }
 
+/* Order table */
+/* Clone from .ui-li-count (jQueryMobile) */
+.ui-li-table {
+	position: absolute;
+	font-size: 12.5px;
+	font-weight: bold;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	padding: 0 .48em;
+	line-height: 1.6em;
+	min-height: 1.6em;
+	min-width: .64em;
+	right: .8em;
+	top: 25%;
+	margin-top: -.88em;
+}
+
 /* Popup dialog wrapper */
 [id$='-popup'] {
 	width: 90%;

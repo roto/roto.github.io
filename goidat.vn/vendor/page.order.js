@@ -12,6 +12,9 @@ function populateOrder() {
 		if (initialOrderItem.quantity) {
 			orderItem.quantity = initialOrderItem.quantity;
 		}
+		if (initialOrderItem.table) {
+			orderItem.table = initialOrderItem.table;
+		}
 		orderItem.state = initialOrderItem.state ? initialOrderItem.state : OrderState.QUEUEING;
 		orderItemsHTML += generateOrderItemHTML(orderItem);
 	}
@@ -167,6 +170,7 @@ function generateOrderItemHTML(orderItem) {
 	orderItemHTML += generateOrderRequestHTML(orderItem);
 	orderItemHTML += generateOrderQuantityHTML(orderItem);
 	orderItemHTML += generateOrderStateHTML(orderItem);
+	orderItemHTML += generateOrderTableHTML(orderItem);
 
 	orderItemHTML += '</a>';
 	orderItemHTML += generateOrderActionHTML(orderItem);
@@ -260,4 +264,11 @@ function generateOrderActionHTML(orderItem) {
 	var action = getStateAction(nextState);
 	var icon = getIconNameForState(nextState);
 	return '<a href="javascript:processNext(\'' + orderItem.id + '\')" data-icon="' + icon +'">' + action + '</a></li>';
+}
+
+function generateOrderTableHTML(orderItem) {
+	if (orderItem.table) {
+		return '<span class="ui-li-table ui-body-inherit">' + orderItem.table + '</span>';
+	}
+	return '';
 }
