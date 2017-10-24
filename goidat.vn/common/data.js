@@ -7,20 +7,38 @@ OrderState = {
 	REJECTED:	"rejected",
 }
 
-// temporary initial object
-var initialOrderItems = [{
+initialAllOrderItems = [{
+		itemID: "pho-ngan",
+		request: "nhiều tiết",
+		quantity: 4,
+		table: "103",
+	}, {
 		itemID: "pho-bo",
 		request: "ít bún",
+		table: "206",
+	}, {
+		itemID: "com-rang-dua-bo",
+		table: "3B",
 	}, {
 		itemID: "com-ga",
 		quantity: 2,
+		table: "206",
+	}, {
+		itemID: "pho-bo",
+		quantity: 3,
+		table: "103",
 	},
+];
+
+// temporary initial object for table 206
+var initialOrderItems = [
+	initialAllOrderItems[1],
+	initialAllOrderItems[3],
 ];
 
 var orderItems = {};
 
-var menuGroups = [
-	{
+var menuGroups = [{
 		id: "hot",
 		name: "Hot",
 		nofilter: true,

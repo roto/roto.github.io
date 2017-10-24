@@ -105,3 +105,22 @@ function addThousandSeparators(number)
 	}
 	return (number < 0 ? "-" : "") + intPart + fracPart;
 }
+
+/*****************************************************************************/
+
+/**
+ * Java String.hashCode() implementation
+ */
+function hash_code(str){
+	if (str.length == 0)
+		return 0;
+
+    var hash = 0;
+    for (i = 0; i < str.length; i++) {
+        char = str.charCodeAt(i);
+        hash = ((hash<<5)-hash)+char;
+        hash = hash & hash; // Convert to 32bit integer
+	}
+
+    return hash;
+}
