@@ -185,20 +185,27 @@ div[data-theme="b"] #dialog-order-edit .ui-icon-delete:not(.ui-btn-icon-notext):
 }
 
 /* Delivery table format */
-#dialog-delivery .ui-checkbox.ui-controlgroup-controls .ui-btn-corner-all,
-#dialog-delivery .ui-controlgroup-controls .ui-btn.ui-corner-all {
+div[data-theme="a"] [data-role="delivery-table"] .ui-btn {
+	border-color: grey;
+}
+div[data-theme="b"] [data-role="delivery-table"] .ui-btn {
+	border-color: lightgrey;
+}
+
+[data-role="delivery-table"] .ui-checkbox.ui-controlgroup-controls .ui-btn-corner-all,
+[data-role="delivery-table"] .ui-controlgroup-controls .ui-btn.ui-corner-all {
     border-radius: 6px;
 	border-width: 1px;
-	padding: 8px;
-	margin: 1px;
+	padding: 10px;
+	margin: 3px;
 }
-div[data-theme="a"] #dialog-delivery .seat-taken {
+div[data-theme="a"] [data-role="delivery-table"] .seat-taken {
 	background-color: lightgrey;
 }
-div[data-theme="b"] #dialog-delivery .seat-taken {
+div[data-theme="b"] [data-role="delivery-table"] .seat-taken {
 	background-color: grey;
 }
-#dialog-delivery .seat-taken.ui-checkbox-on {
+[data-role="delivery-table"] .seat-taken.ui-checkbox-on {
 	background-color: red !important;
 }
 

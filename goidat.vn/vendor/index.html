@@ -70,6 +70,7 @@
 	<script src="common.js"></script>
 	<script src="page.home.js"></script>
 	<script src="page.order.js"></script>
+	<script src="page.delivery.js"></script>
 	<script src="main.js"></script>
 	<link rel="stylesheet" href="main.css">
 </head>
@@ -130,7 +131,7 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-			<a href="#dialog-delivery" id="footer-button-delivery" data-rel="popup" data-position-to="#footer-button-delivery" class="ui-btn ui-icon-location ui-btn-icon-left">
+			<a href="#delivery" data-icon="location" data-transition="fade">
 				Delivery
 				<span class="notification error">!</span>
 			</a>
@@ -203,6 +204,25 @@
 						</div>
 					</form>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Delivery Page -->
+	<div id="delivery" data-role="page" data-theme="a">
+		<div data-role="header" data-position="fixed">
+			<a href="#" data-rel="back" data-icon="arrow-l" data-transition="slidefade" data-direction="reverse">Back</a>
+			<h1>DELIVERY</h1>
+			<a href="#customer" data-icon="bars" data-transition="slidefade">Customer</a>
+		</div>
+
+		<div role="main" data-role="main" class="ui-content">
+			<div id="delivery-list" data-role="delivery-table"></div>
+		</div>
+
+		<div data-role="footer" data-position="fixed">
+			<div style="float:right">
+				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
 			</div>
 		</div>
 	</div>
