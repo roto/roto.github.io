@@ -78,7 +78,7 @@ function loadDeliveryTable() {
 			var floorHTML = '<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">';
 			floorHTML += '<legend>' + floor.name + '</legend>';
 
-			for (var j = 0; j < floor.seats.length; ++j) {
+			for (var j in floor.seats) {
 				var seat = floor.seats[j];
 				var seatName = 'seat-' + i + '-' + j;
 				floorHTML += '<input type="checkbox" id="' + seatName + '">';

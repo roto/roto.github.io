@@ -7,35 +7,6 @@ OrderState = {
 	REJECTED:	"rejected",
 }
 
-initialAllOrderItems = [{
-		itemID: "pho-ngan",
-		request: "nhiều tiết",
-		quantity: 4,
-		table: "103",
-	}, {
-		itemID: "pho-bo",
-		request: "ít bún",
-		table: "206",
-	}, {
-		itemID: "com-rang-dua-bo",
-		table: "3B",
-	}, {
-		itemID: "com-ga",
-		quantity: 2,
-		table: "206",
-	}, {
-		itemID: "pho-bo",
-		quantity: 3,
-		table: "103",
-	},
-];
-
-// temporary initial object for table 206
-var initialOrderItems = [
-	initialAllOrderItems[1],
-	initialAllOrderItems[3],
-];
-
 var orderItems = {};
 
 var menuGroups = [{
@@ -111,40 +82,128 @@ var menuItems = {
 var deliveryData = {
 	1: {
 		name: "Tầng 1",
-		seats: [
-			{ name: "1", displayName: "101" },
-			{ name: "2", displayName: "102", taken: true },
-			{ name: "3", displayName: "103" },
-			{ name: "4", displayName: "104" },
-			{ name: "5", displayName: "105" },
-			{ name: "6", displayName: "106", taken: true },
-			{ name: "7", displayName: "107", taken: true },
-			{ name: "8", displayName: "108" },
-			{ name: "9", displayName: "109" },
-			{ name: "10", displayName: "110", taken: true },
-			{ name: "11", displayName: "111" },
-		],
+		seats: {
+			1:	{ name: "1", displayName: "101" },
+			2: 	{ name: "2", displayName: "102" },
+			3:	{ name: "3", displayName: "103" },
+			4:	{ name: "4", displayName: "104" },
+			5:	{ name: "5", displayName: "105" },
+			6:	{ name: "6", displayName: "106" },
+			7:	{ name: "7", displayName: "107" },
+			8:	{ name: "8", displayName: "108" },
+			9:	{ name: "9", displayName: "109" },
+			10:	{ name: "10", displayName: "110" },
+			11:	{ name: "11", displayName: "111" },
+		},
 	},
 	2: {
 		name: "Tầng 2",
-		seats: [
-			{ name: "1", displayName: "201", taken: true },
-			{ name: "2", displayName: "202", taken: true },
-			{ name: "3", displayName: "203", taken: true },
-			{ name: "4", displayName: "204" },
-			{ name: "5", displayName: "205" },
-			{ name: "6", displayName: "206", taken: true },
-		],
+		seats: {
+			1:	{ name: "1", displayName: "201" },
+			2:	{ name: "2", displayName: "202" },
+			3:	{ name: "3", displayName: "203" },
+			4:	{ name: "4", displayName: "204" },
+			5:	{ name: "5", displayName: "205" },
+			6:	{ name: "6", displayName: "206" },
+		},
 	},
 	3: {
 		name: "Tầng 3",
-		seats: [
-			{ name: "A", displayName: "3A" },
-			{ name: "B", displayName: "3B" },
-			{ name: "C", displayName: "3C" },
-			{ name: "D", displayName: "3D", taken: true },
-			{ name: "E", displayName: "3E", taken: true },
-			{ name: "F", displayName: "3F", taken: true },
-		],
+		seats: {
+			A:	{ name: "A", displayName: "3A" },
+			B:	{ name: "B", displayName: "3B" },
+			C:	{ name: "C", displayName: "3C" },
+			D:	{ name: "D", displayName: "3D" },
+			E:	{ name: "E", displayName: "3E" },
+			F:	{ name: "F", displayName: "3F" },
+		},
 	},
 };
+
+/**
+ * Temporary Data
+ */
+
+initialBills = [{
+	guid: generate_quick_guid(),
+	tables: [ {floor: 1, seats: [3, 4, 5]} ],
+	orders: [{
+		created: (new Date).getTime() - 1000 * 60 * 10,
+		itemID: "pho-ngan",
+		request: "nhiều tiết",
+		quantity: 4,
+	}, {
+		created: (new Date).getTime() - 1000 * 60 * 3,
+		itemID: "pho-bo",
+		quantity: 3,
+	}],
+}, {
+	guid: generate_quick_guid(),
+	tables: [ {floor: 2, seats: [5, 6]} ],
+	orders: [{
+		created: (new Date).getTime() - 1000 * 60 * 9,
+		itemID: "pho-bo",
+		request: "ít bún",
+	}, {
+		created: (new Date).getTime() - 1000 * 60 * 5,
+		itemID: "com-ga",
+		quantity: 2,
+	}],
+}, {
+	guid: generate_quick_guid(),
+	tables: [ {floor: 3, seats: ['B', 'D']} ],
+	orders: [{
+		created: (new Date).getTime() - 1000 * 60 * 8,
+		itemID: "com-rang-dua-bo",
+	}],
+}];
+
+// construct the full order list from bill list
+initialAllOrderItems = [];
+for (var i = 0; i < initialBills.length; ++i) {
+	var tableToDisplay;
+	var tableSharedCount = Number.MAX_SAFE_INTEGER;
+
+	var bill = initialBills[i];
+
+	for (j in bill.tables) {
+		var floor = bill.tables[j].floor;
+		var floorData = deliveryData[floor];
+		if (!floorData) {
+			throw "Floor not exist: " + floor;
+		}
+
+		for (k in bill.tables[j].seats) {
+			var seat = bill.tables[j].seats[k];
+			var seatData = floorData.seats[seat];
+			if (!seatData) {
+				throw "Seat not exist: " + seat + " on floor " + floor;
+			}
+
+			if (!seatData.taken) {
+				seatData.taken = 1;
+			} else {
+				++seatData.taken;
+			}
+
+			if (tableSharedCount > seatData.taken) {
+				tableSharedCount = seatData.taken;
+				tableToDisplay = seatData.displayName;
+			}
+		}
+	}
+
+	for (j in bill.orders) {
+		var order = bill.orders[j];
+		order.table = tableToDisplay;
+	}
+
+	initialAllOrderItems = initialAllOrderItems.concat(bill.orders);
+}
+
+initialAllOrderItems.sort(function(a, b) {
+	return a.created - b.created;
+})
+
+// temporary initial object for table 206
+var initialOrderItems = initialBills[1].orders;
