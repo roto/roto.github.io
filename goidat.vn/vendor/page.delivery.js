@@ -15,8 +15,13 @@ function populateDelivery() {
 				var seatName = 'seat-' + i + '-' + j;
 				floorHTML += '<input type="checkbox" id="' + seatName + '">';
 				floorHTML += '<label for="' + seatName + '"';
-				if (seat.taken) {
-					floorHTML += ' class="seat-taken"';
+				if (seat.bills && seat.bills.length > 0) {
+					for (var k in seat.bills) {
+						// TODO: solve multiple bills
+						var billGUID = seat.bills[k];
+						// TODO: better random generated color
+						floorHTML += ' style="background-color:' + hash_to_rbg(hash_code(billGUID)) + '"';
+					}
 				}
 				floorHTML += '>' + seat.displayName + '</label>'
 			}

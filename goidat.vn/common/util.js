@@ -129,3 +129,10 @@ function generate_quick_guid() {
 	return Math.random().toString(36).substring(2, 15) +
 			Math.random().toString(36).substring(2, 15);
 }
+
+function hash_to_rbg(hash) {
+	var r = (hash & 0xFF0000) >> 16;
+	var g = (hash & 0x00FF00) >> 8;
+	var b = hash & 0x0000FF;
+	return 'rgb(' + r + ',' + g + ',' + b + ')';
+}

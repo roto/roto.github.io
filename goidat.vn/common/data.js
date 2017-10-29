@@ -156,7 +156,23 @@ initialBills = {
 			created: (new Date).getTime() - 1000 * 60 * 8,
 			itemID: "com-rang-dua-bo",
 		}],
-	}
+	},
+	[generate_quick_guid()] : {
+		tables: [ {floor: 1, seats: [5, 6]} ],
+		orders: [{
+			created: (new Date).getTime() - 1000 * 60 * 8,
+			itemID: "com-ga",
+			request: "không sốt",
+			quantity: 2,
+		}],
+	},
+	[generate_quick_guid()] : {
+		tables: [ {floor: 1, seats: [1, 2, 5]} ],
+		orders: [{
+			created: (new Date).getTime() - 1000 * 60 * 8,
+			itemID: "com-ga",
+		}],
+	},
 };
 
 // construct the full order list from bill list
@@ -181,14 +197,14 @@ for (var billGUID in initialBills) {
 				throw "Seat not exist: " + seat + " on floor " + floor;
 			}
 
-			if (!seatData.taken) {
-				seatData.taken = 1;
+			if (!seatData.bills) {
+				seatData.bills = [ billGUID ];
 			} else {
-				++seatData.taken;
+				seatData.bills.push(billGUID);
 			}
 
-			if (tableSharedCount > seatData.taken) {
-				tableSharedCount = seatData.taken;
+			if (tableSharedCount > seatData.bills.length) {
+				tableSharedCount = seatData.bills.length;
 				tableToDisplay = seatData.displayName;
 			}
 		}

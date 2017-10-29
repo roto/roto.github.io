@@ -83,7 +83,7 @@ function loadDeliveryTable() {
 				var seatName = 'seat-' + i + '-' + j;
 				floorHTML += '<input type="checkbox" id="' + seatName + '">';
 				floorHTML += '<label for="' + seatName + '"';
-				if (seat.taken) {
+				if (seat.bills && seat.bills.length > 0) {
 					floorHTML += ' class="seat-taken"';
 				}
 				floorHTML += '>' + seat.displayName + '</label>'

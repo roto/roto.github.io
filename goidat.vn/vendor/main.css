@@ -199,15 +199,6 @@ div[data-theme="b"] [data-role="delivery-table"] .ui-btn {
 	padding: 10px;
 	margin: 3px;
 }
-div[data-theme="a"] [data-role="delivery-table"] .seat-taken {
-	background-color: lightgrey;
-}
-div[data-theme="b"] [data-role="delivery-table"] .seat-taken {
-	background-color: grey;
-}
-[data-role="delivery-table"] .seat-taken.ui-checkbox-on {
-	background-color: red !important;
-}
 
 /* Time Picker */
 /* Hide the original input, and picker icon */
