@@ -124,47 +124,48 @@ var deliveryData = {
  * Temporary Data
  */
 
-initialBills = [{
-	guid: generate_quick_guid(),
-	tables: [ {floor: 1, seats: [3, 4, 5]} ],
-	orders: [{
-		created: (new Date).getTime() - 1000 * 60 * 10,
-		itemID: "pho-ngan",
-		request: "nhiều tiết",
-		quantity: 4,
-	}, {
-		created: (new Date).getTime() - 1000 * 60 * 3,
-		itemID: "pho-bo",
-		quantity: 3,
-	}],
-}, {
-	guid: generate_quick_guid(),
-	tables: [ {floor: 2, seats: [5, 6]} ],
-	orders: [{
-		created: (new Date).getTime() - 1000 * 60 * 9,
-		itemID: "pho-bo",
-		request: "ít bún",
-	}, {
-		created: (new Date).getTime() - 1000 * 60 * 5,
-		itemID: "com-ga",
-		quantity: 2,
-	}],
-}, {
-	guid: generate_quick_guid(),
-	tables: [ {floor: 3, seats: ['B', 'D']} ],
-	orders: [{
-		created: (new Date).getTime() - 1000 * 60 * 8,
-		itemID: "com-rang-dua-bo",
-	}],
-}];
+initialBills = {
+	[generate_quick_guid()] : {
+		tables: [ {floor: 1, seats: [3, 4, 5]} ],
+		orders: [{
+			created: (new Date).getTime() - 1000 * 60 * 10,
+			itemID: "pho-ngan",
+			request: "nhiều tiết",
+			quantity: 4,
+		}, {
+			created: (new Date).getTime() - 1000 * 60 * 3,
+			itemID: "pho-bo",
+			quantity: 3,
+		}],
+	},
+	[generate_quick_guid()] : {
+		tables: [ {floor: 2, seats: [5, 6]} ],
+		orders: [{
+			created: (new Date).getTime() - 1000 * 60 * 9,
+			itemID: "pho-bo",
+			request: "ít bún",
+		}, {
+			created: (new Date).getTime() - 1000 * 60 * 5,
+			itemID: "com-ga",
+			quantity: 2,
+		}],
+	},
+	[generate_quick_guid()] : {
+		tables: [ {floor: 3, seats: ['B', 'D']} ],
+		orders: [{
+			created: (new Date).getTime() - 1000 * 60 * 8,
+			itemID: "com-rang-dua-bo",
+		}],
+	}
+};
 
 // construct the full order list from bill list
 initialAllOrderItems = [];
-for (var i = 0; i < initialBills.length; ++i) {
+for (var billGUID in initialBills) {
 	var tableToDisplay;
 	var tableSharedCount = Number.MAX_SAFE_INTEGER;
 
-	var bill = initialBills[i];
+	var bill = initialBills[billGUID];
 
 	for (j in bill.tables) {
 		var floor = bill.tables[j].floor;
@@ -206,4 +207,5 @@ initialAllOrderItems.sort(function(a, b) {
 })
 
 // temporary initial object for table 206
-var initialOrderItems = initialBills[1].orders;
+// https://stackoverflow.com/questions/4044845/retrieving-a-property-of-a-json-object-by-index/31103463#31103463
+var initialOrderItems = initialBills[Object.keys(initialBills)[1]].orders;
