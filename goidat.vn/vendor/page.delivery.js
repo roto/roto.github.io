@@ -13,17 +13,17 @@ function populateDelivery() {
 			for (var j in floor.seats) {
 				var seat = floor.seats[j];
 				var seatName = 'seat-' + i + '-' + j;
-				floorHTML += '<input type="checkbox" id="' + seatName + '">';
-				floorHTML += '<label for="' + seatName + '"';
 				if (seat.bills && seat.bills.length > 0) {
 					for (var k in seat.bills) {
-						// TODO: solve multiple bills
+						floorHTML += '<input type="button" id="' + seatName + '"';
 						var billGUID = seat.bills[k];
-						// TODO: better random generated color
 						floorHTML += ' style="background-color:' + hash_to_rbg(hash_code(billGUID)) + '"';
+						floorHTML += 'value="' + seat.displayName + '">'
 					}
+				} else {
+					floorHTML += '<input type="button" id="' + seatName + '"';
+					floorHTML += 'value="' + seat.displayName + '">'
 				}
-				floorHTML += '>' + seat.displayName + '</label>'
 			}
 
 			floorHTML += '</fieldset>';

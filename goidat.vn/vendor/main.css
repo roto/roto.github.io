@@ -200,6 +200,10 @@ div[data-theme="b"] [data-role="delivery-table"] .ui-btn {
 	margin: 3px;
 }
 
+[data-role="delivery-table"] .ui-input-btn input {
+	opacity: .6;
+}
+
 /* Time Picker */
 /* Hide the original input, and picker icon */
 #tab-book .ui-input-has-clear {
