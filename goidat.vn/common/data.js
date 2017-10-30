@@ -160,7 +160,7 @@ initialBills = {
 	[generate_quick_guid()] : {
 		tables: [ {floor: 1, seats: [5, 6]} ],
 		orders: [{
-			created: (new Date).getTime() - 1000 * 60 * 8,
+			created: (new Date).getTime() - 1000 * 60 * 2,
 			itemID: "com-ga",
 			request: "không sốt",
 			quantity: 2,
@@ -169,7 +169,7 @@ initialBills = {
 	[generate_quick_guid()] : {
 		tables: [ {floor: 1, seats: [1, 2, 5]} ],
 		orders: [{
-			created: (new Date).getTime() - 1000 * 60 * 8,
+			created: (new Date).getTime() - 1000 * 60 * 13,
 			itemID: "com-ga",
 		}],
 	},
