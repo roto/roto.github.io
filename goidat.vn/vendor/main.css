@@ -73,6 +73,7 @@ li#new-order > a > div.ui-li-thumb > img {
 }
 
 /* Order status */
+#queue .ui-li-count,
 #order .ui-li-count {
 	top: 65%;
 }

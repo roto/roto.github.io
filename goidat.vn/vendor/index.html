@@ -70,6 +70,7 @@
 	<script src="common.js"></script>
 	<script src="page.home.js"></script>
 	<script src="page.order.js"></script>
+	<script src="page.queue.js"></script>
 	<script src="page.delivery.js"></script>
 	<script src="main.js"></script>
 	<link rel="stylesheet" href="main.css">
@@ -86,7 +87,7 @@
 			<ul id="service-list" data-role="listview" data-inset="false">
 				<!-- Auto-generated Service List -->
                 <li>
-                    <a href="#order" data-transition="slidefade">
+                    <a href="#queue" data-transition="slidefade">
                         <img data-name="NTKM" class="initial" style="border-radius: 15%">
                         <h2>Ngã Tư Kim Mã</h2>
                         <p>Chân cầu vượt.</p>
@@ -95,7 +96,7 @@
                     <!--a href="#" class="ui-btn ui-icon-edit">Edit</a-->
                 </li>
                 <li>
-                    <a href="#order" data-transition="slidefade">
+                    <a href="#queue" data-transition="slidefade">
                         <img data-name="H" class="initial" style="border-radius: 15%">
                         <h2>Huế</h2>
                         <p>Vincom.</p>
@@ -104,7 +105,7 @@
                     <!--a href="#" class="ui-btn ui-icon-edit">Edit</a-->
                 </li>
                 <li>
-                    <a href="#order" data-transition="slidefade">
+                    <a href="#queue" data-transition="slidefade">
                         <img data-name="LTT" class="initial" style="border-radius: 15%">
                         <h2>Lê Trọng Tấn</h2>
                         <p>Đối diện siêu thị Pico.</p>
@@ -116,51 +117,27 @@
 		</div>
 	</div>
 
-	<!-- Order Page -->
-	<div id="order" data-role="page" data-theme="a">
+	<!-- Queue Page -->
+	<div id="queue" data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed">
 			<a href="#" data-rel="back" data-icon="arrow-l" data-transition="slidefade" data-direction="reverse">Home</a>
-			<h1>ORDER</h1>
-			<a href="#menu" data-icon="bars" data-transition="slidefade">Menu</a>
+			<h1>QUEUE</h1>
+			<a href="#group" data-icon="bars" data-transition="slidefade">Group</a>
 		</div>
 
 		<div role="main" data-role="main" class="ui-content">
-			<ul id="order-list" data-role="listview" data-inset="false">
-				<!-- Auto-generated Order List -->
+			<ul id="queue-list" data-role="listview" data-inset="false">
+				<!-- Auto-generated Queue -->
 			</ul>
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-			<a href="#delivery" data-icon="location" data-transition="fade">
-				Delivery
-				<span class="notification error">!</span>
-			</a>
+			<a href="#" data-icon="eye" onclick="switchTheme();">Change Theme</a>
 			<div style="float:right">
-				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
-			</div>
-		</div>
-
-		<div data-role="popup" id="dialog-delivery" data-overlay-theme="b">
-			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-			<div data-role="header"><h1>Delivery Location</h1></div>
-			<div data-role="main" class="ui-content">
-				<div data-role="tabs" id="delivery-tabs">
-					<div id="tab-table"></div>
-					<div id="tab-book">
-						<label for="quantity">Number of customer:</label>
-						<input name="quantity" type="range" min="1" max="10" value="1" data-highlight="true">
-						<label for="eta-time">Estimated time of arival:</label>
-						<input name="eta-time" id="eta-time" type="text">
-					</div>
-					<div id="tab-ship"></div>
-					<div data-role="navbar">
-						<ul>
-							<li><a href="#tab-table" class="ui-btn-active">Table</a></li>
-							<li><a href="#tab-book">Book</a></li>
-							<li><a href="#tab-ship">Ship</a></li>
-						</ul>
-					</div>
-				</div>
+				<a href="#delivery" data-role="button" data-icon="location" data-transition="fade">
+					Delivery Map
+					<span class="notification error">!</span>
+				</a>
 			</div>
 		</div>
 
@@ -212,8 +189,8 @@
 	<div id="delivery" data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed">
 			<a href="#" data-rel="back" data-icon="arrow-l" data-transition="slidefade" data-direction="reverse">Back</a>
-			<h1>DELIVERY</h1>
-			<a href="#customer" data-icon="bars" data-transition="slidefade">Customer</a>
+			<h1>DELIVERY MAP</h1>
+			<a href="#order" data-icon="bars" data-transition="slidefade">Order</a>
 		</div>
 
 		<div role="main" data-role="main" class="ui-content">
@@ -221,12 +198,59 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-			<div style="float:right">
-				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
-			</div>
+			<a href="#" data-icon="eye" onclick="switchTheme();">Change Theme</a>
 		</div>
 	</div>
 
+	<!-- Order Page -->
+	<div id="order" data-role="page" data-theme="a">
+		<div data-role="header" data-position="fixed">
+			<a href="#" data-rel="back" data-icon="arrow-l" data-transition="slidefade" data-direction="reverse">Back</a>
+			<h1>ORDER</h1>
+			<a href="#menu" data-icon="bars" data-transition="slidefade">Menu</a>
+		</div>
+
+		<div role="main" data-role="main" class="ui-content">
+			<ul id="order-list" data-role="listview" data-inset="false">
+				<!-- Auto-generated Order List -->
+			</ul>
+		</div>
+		
+		<div data-role="footer" data-position="fixed">
+			<a href="#" data-icon="eye" onclick="switchTheme();">Change Theme</a>
+			<div style="float:right">
+				<a href="#" data-role="button" data-icon="location" data-transition="fade">
+					Delivery
+					<span class="notification error">!</span>
+				</a>
+			</div>
+		</div>
+
+		<div data-role="popup" id="dialog-delivery" data-overlay-theme="b">
+			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<div data-role="header"><h1>Delivery Location</h1></div>
+			<div data-role="main" class="ui-content">
+				<div data-role="tabs" id="delivery-tabs">
+					<div id="tab-table"></div>
+					<div id="tab-book">
+						<label for="quantity">Number of customer:</label>
+						<input name="quantity" type="range" min="1" max="10" value="1" data-highlight="true">
+						<label for="eta-time">Estimated time of arival:</label>
+						<input name="eta-time" id="eta-time" type="text">
+					</div>
+					<div id="tab-ship"></div>
+					<div data-role="navbar">
+						<ul>
+							<li><a href="#tab-table" class="ui-btn-active">Table</a></li>
+							<li><a href="#tab-book">Book</a></li>
+							<li><a href="#tab-ship">Ship</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<!-- Menu Page -->
 	<div id="menu" data-role="page" data-theme="a">
 		<div data-role="header" data-position="fixed">
@@ -247,9 +271,7 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-			<div style="float:right">
-				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
-			</div>
+			<a href="#" data-icon="eye" onclick="switchTheme();">Change Theme</a>
 		</div>
 
 		<div data-role="popup" id="dialog-menu" data-overlay-theme="b">

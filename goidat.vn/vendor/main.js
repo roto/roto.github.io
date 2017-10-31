@@ -2,9 +2,10 @@ $(document).ready(function(){
 	initialize_local_storage();
 
 	populateHome();
+	populateQueue();
 	populateOrder();
 	populateDelivery();
-
+	
 	// not sure why, but this has to be done after menu is populated
 	if (local_load('theme') === 'b') {
 		switchTheme();

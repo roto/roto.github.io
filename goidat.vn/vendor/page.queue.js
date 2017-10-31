@@ -1,10 +1,10 @@
 
-function populateOrder() {
+function populateQueue() {
 	var orderItemsHTML = '';
 
 	// for each menu's groups
-	for (var i in initialOrderItems) {
-		var initialOrderItem = initialOrderItems[i];
+	for (var i in initialAllOrderItems) {
+		var initialOrderItem = initialAllOrderItems[i];
 		var orderItem = createNewOrderItem(initialOrderItem.itemID);
 		if (initialOrderItem.request) {
 			orderItem.request = initialOrderItem.request;
@@ -12,35 +12,20 @@ function populateOrder() {
 		if (initialOrderItem.quantity) {
 			orderItem.quantity = initialOrderItem.quantity;
 		}
-		orderItemsHTML += generateOrderItemHTML(orderItem);
+		if (initialOrderItem.table) {
+			orderItem.table = initialOrderItem.table;
+		}
+		orderItem.state = initialOrderItem.state ? initialOrderItem.state : OrderState.QUEUEING;
+		orderItemsHTML += generateQueueItemHTML(orderItem);
 	}
 
 	// done with the initial orders
-	delete initialOrderItems;
+	delete initialAllOrderItems;
 
 	// add an big plus sign to add new order
 	orderItemsHTML += '<li id="new-order"><a href="#menu" data-transition="slidefade"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
 
-	$('ul#order-list[data-role="listview"]').empty().append($(orderItemsHTML)).listview().listview("refresh");
-}
-
-function createNewOrderItem(itemID) {
-	var orderItem = {
-		id: generateOrderItemID(itemID),
-		item: menuItems[itemID],
-	};
-	return orderItems[orderItem.id] = orderItem;
-}
-
-function generateOrderItemID(itemID) {
-	var item = menuItems[itemID];
-
-	if (!item.orderCount) {
-		item.orderCount = 1;
-		return itemID;
-	}
-
-	return itemID + '-' + (++item.orderCount);
+	$('ul#queue-list[data-role="listview"]').empty().append($(orderItemsHTML)).listview().listview("refresh");
 }
 
 function openOrderDialog(type, orderItemID) {
@@ -66,7 +51,7 @@ function openOrderDialog(type, orderItemID) {
 		if (type === 'status') {
 			$div.children('img').attr('src', orderItem.item.image);
 			if (orderItem.quantity) {
-				$div.children('span').text(orderItem.quantity + ' ×').show();
+				$div.children('span').text(orderItem.quantity).show();
 			} else {
 				$div.children('span').hide();
 			}
@@ -142,7 +127,7 @@ function openOrderDialog(type, orderItemID) {
 
 				// update order request
 				updateOrderInputElements('request', 'p', generateOrderRequestHTML);
-				updateOrderInputElements('quantity', '.ui-li-quantity', generateOrderQuantityHTML, ' ×');
+				updateOrderInputElements('quantity', '.ui-li-quantity', generateOrderQuantityHTML);
 			});
 		} else {
 			throw 'Invalid order dialog type: "' + type + "'";
@@ -152,11 +137,11 @@ function openOrderDialog(type, orderItemID) {
 	}
 }
 
-function generateOrderItemHTML(orderItem) {
+function generateQueueItemHTML(orderItem) {
 	var orderItemHTML = '<li id="order-item-' + orderItem.id + '"><a href="javascript:openOrderDialog(\'status\', \'' + orderItem.id + '\')">';
 
 	if (orderItem.item.image) {
-		orderItemHTML += '<img style="border-radius: 50%" src="' + orderItem.item.image + '">';
+		orderItemHTML += '<img data-name="' + orderItem.item.initial + '" class="initial" style="border-radius: 50%">';
 	}
 
 	if (orderItem.item.name) {
@@ -164,24 +149,100 @@ function generateOrderItemHTML(orderItem) {
 	}
 
 	orderItemHTML += generateOrderRequestHTML(orderItem);
-	orderItemHTML += generateOrderQuantityHTML(orderItem);
+	orderItemHTML += generateQueueQuantityHTML(orderItem);
+	orderItemHTML += generateQueueStateHTML(orderItem);
+	orderItemHTML += generateQueueTableHTML(orderItem);
 
-	orderItemHTML += '<span class="ui-li-count">sending..</span>';
-	orderItemHTML += '</a><a href="javascript:openOrderDialog(\'edit\', \'' + orderItem.id + '\')" class="ui-btn ui-icon-edit">Edit</a></li>';
+	orderItemHTML += '</a>';
+	orderItemHTML += generateQueueActionHTML(orderItem);
 
 	return orderItemHTML;
 }
 
-function generateOrderRequestHTML(orderItem) {
-	if (orderItem.request) {
-		return '<p>' + orderItem.request + '</p>';
+function processNext(orderItemID) {
+	if (!orderItems.hasOwnProperty(orderItemID)) {
+		console.warn('Order item "' + orderItemID + '" is not in the order');
+		return;
 	}
+
+	var orderItem = orderItems[orderItemID];
+	var newState = orderItem.state = getNextState(orderItem.state);
+
+	var $orderElement = $('#order-item-' + orderItemID);
+	var $actioNBtn = $orderElement.find('a[data-icon]');
+	// temporary disable the link until button animation finish
+	$actioNBtn.bind('click', false);
+
+	$actioNBtn.fadeOut(function() {
+		var nextState = getNextState(newState);
+		var action = getStateAction(nextState);
+		var icon = getIconNameForState(nextState);
+
+		$actioNBtn.attr('class', $actioNBtn.attr('class').replace(/ui-icon-[^\s\\]+/, 'ui-icon-' + icon));
+		$actioNBtn.attr('title', action);
+		$actioNBtn.fadeIn('slow', function() {
+			// button animation finish, re-enable the link
+			$actioNBtn.unbind('click', false);
+		});
+
+		var $stateEl = $orderElement.find('.ui-li-count');
+		if ($stateEl.text() != newState) {
+			$stateEl.fadeOut(function() {
+				$stateEl.text(newState);
+				$stateEl.fadeIn('slow').fadeOut().fadeIn('slow');
+			});
+		}
+	});
+}
+
+function getNextState(state) {
+	switch (state) {
+		case OrderState.QUEUEING:	return OrderState.PROCESSING;
+		case OrderState.PROCESSING:	return OrderState.SERVING;
+		case OrderState.SERVING:	return OrderState.FINISHED;
+	}
+}
+
+function getStateAction(state) {
+	switch (state) {
+		case OrderState.QUEUEING:	return "Queue";
+		case OrderState.PROCESSING:	return "Process";
+		case OrderState.SERVING:	return "Serve";
+		case OrderState.FINISHED:	return "Finish";
+	}
+}
+
+function getIconNameForState(state) {
+	switch (state) {
+		case OrderState.QUEUEING:	return "plus";
+		case OrderState.PROCESSING:	return "action";
+		case OrderState.SERVING:	return "navigation";
+		case OrderState.FINISHED:	return "check";
+		default:					return "forbidden";
+	}
+}
+
+function generateQueueQuantityHTML(orderItem) {
+    if (orderItem.quantity) {
+        return '<span class="ui-li-quantity ui-body-inherit">' + orderItem.quantity + '</span>';
+    }
 	return '';
 }
 
-function generateOrderQuantityHTML(orderItem) {
-    if (orderItem.quantity) {
-        return '<span class="ui-li-quantity ui-body-inherit">' + orderItem.quantity + ' &times;</span>';
-    }
+function generateQueueStateHTML(orderItem) {
+	return '<span class="ui-li-count">' + orderItem.state + '</span>';
+}
+
+function generateQueueActionHTML(orderItem) {
+	var nextState = getNextState(orderItem.state);
+	var action = getStateAction(nextState);
+	var icon = getIconNameForState(nextState);
+	return '<a href="javascript:processNext(\'' + orderItem.id + '\')" data-icon="' + icon +'">' + action + '</a></li>';
+}
+
+function generateQueueTableHTML(orderItem) {
+	if (orderItem.table) {
+		return '<span class="ui-li-table ui-body-inherit">' + orderItem.table + '</span>';
+	}
 	return '';
 }
