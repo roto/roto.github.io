@@ -124,7 +124,7 @@ var deliveryData = {
  * Temporary Data
  */
 
-initialBills = {
+var initialGroups = {
 	[generate_quick_guid()] : {
 		tables: [ {floor: 1, seats: [3, 4, 5]} ],
 		orders: [{
@@ -176,46 +176,46 @@ initialBills = {
 };
 
 // construct the full order list from bill list
-initialAllOrderItems = [];
-for (var billGUID in initialBills) {
+var initialAllOrderItems = [];
+for (var groupGUID in initialGroups) {
 	var tableToDisplay;
 	var tableSharedCount = Number.MAX_SAFE_INTEGER;
 
-	var bill = initialBills[billGUID];
+	var group = initialGroups[groupGUID];
 
-	for (j in bill.tables) {
-		var floor = bill.tables[j].floor;
+	for (j in group.tables) {
+		var floor = group.tables[j].floor;
 		var floorData = deliveryData[floor];
 		if (!floorData) {
 			throw "Floor not exist: " + floor;
 		}
 
-		for (k in bill.tables[j].seats) {
-			var seat = bill.tables[j].seats[k];
+		for (k in group.tables[j].seats) {
+			var seat = group.tables[j].seats[k];
 			var seatData = floorData.seats[seat];
 			if (!seatData) {
 				throw "Seat not exist: " + seat + " on floor " + floor;
 			}
 
-			if (!seatData.bills) {
-				seatData.bills = [ billGUID ];
+			if (!seatData.groups) {
+				seatData.groups = [ groupGUID ];
 			} else {
-				seatData.bills.push(billGUID);
+				seatData.groups.push(groupGUID);
 			}
 
-			if (tableSharedCount > seatData.bills.length) {
-				tableSharedCount = seatData.bills.length;
+			if (tableSharedCount > seatData.groups.length) {
+				tableSharedCount = seatData.groups.length;
 				tableToDisplay = seatData.displayName;
 			}
 		}
 	}
 
-	for (j in bill.orders) {
-		var order = bill.orders[j];
+	for (j in group.orders) {
+		var order = group.orders[j];
 		order.table = tableToDisplay;
 	}
 
-	initialAllOrderItems = initialAllOrderItems.concat(bill.orders);
+	initialAllOrderItems = initialAllOrderItems.concat(group.orders);
 }
 
 initialAllOrderItems.sort(function(a, b) {
@@ -224,4 +224,4 @@ initialAllOrderItems.sort(function(a, b) {
 
 // temporary initial object for table 206
 // https://stackoverflow.com/questions/4044845/retrieving-a-property-of-a-json-object-by-index/31103463#31103463
-var initialOrderItems = initialBills[Object.keys(initialBills)[1]].orders;
+var initialOrderItems = initialGroups[Object.keys(initialGroups)[1]].orders;
