@@ -3,7 +3,6 @@ $(document).ready(function(){
 
 	populateHome();
 	populateQueue();
-	populateOrder();
 	populateDelivery();
 	
 	// not sure why, but this has to be done after menu is populated

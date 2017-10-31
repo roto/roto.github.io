@@ -1,5 +1,7 @@
 
-function populateOrder() {
+function populateOrder(groupGUID) {
+	initialOrderItems = initialGroups[groupGUID].orders;
+
 	var orderItemsHTML = '';
 
 	// for each menu's groups

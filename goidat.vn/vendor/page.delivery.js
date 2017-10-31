@@ -37,6 +37,9 @@ function focusGroupTables(groupGUID) {
 		$input.addClass('ui-focus ui-highlight');
 	} else {
 		$input.addClass('ui-focus ui-highlight');
-		console.debug('Navigate to group: ' + groupGUID);
+		populateOrder(groupGUID);
+		$.mobile.navigate('#order', {
+			transition: "slidefade",
+		});
 	}
 }
