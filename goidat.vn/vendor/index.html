@@ -59,6 +59,11 @@
 	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
 	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
+	<!-- jQuery Mobile DateBox -->
+	<link href="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.2.2/jtsage-datebox.min.css" rel="stylesheet" type="text/css">
+	<script src="https://cdn.jsdelivr.net/npm/jtsage-datebox-jqm@4.2.2/jtsage-datebox.min.js" type="text/javascript"></script>
+
+	<!-- initial.js -->
 	<script src="../lib/initial.min.js"></script>
 
 	<!-- common utilities -->
@@ -72,6 +77,7 @@
 	<script src="page.order.js"></script>
 	<script src="page.queue.js"></script>
 	<script src="page.delivery.js"></script>
+	<script src="../common/dialog.delivery.js"></script>
 	<script src="main.js"></script>
 	<link rel="stylesheet" href="main.css">
 </head>
@@ -180,7 +186,7 @@
 		<div data-role="footer" data-position="fixed">
 			<a href="#" data-icon="eye" onclick="switchTheme();">Change Theme</a>
 			<div style="float:right">
-				<a href="#" data-role="button" data-icon="location" data-transition="fade">
+				<a href="#dialog-delivery" id="footer-button-delivery" data-role="button" data-icon="location" data-rel="popup" data-position-to="#footer-button-delivery">
 					Delivery
 					<span class="notification error">!</span>
 				</a>

@@ -11,11 +11,13 @@ $(document).ready(function(){
 	if (local_load('theme') === 'b') {
 		switchTheme();
 	}
-
+	
 	$('.initial').each(function() {
 		initial($(this));
 	});
 
+	loadDeliveryPopup();
+	
 	disable_page_scroll_while_popup_shown();
 
 	config_page_slide_for_touch_device(['order', 'menu']);

@@ -186,6 +186,24 @@ div[data-theme="b"] #dialog-order-edit .ui-icon-delete:not(.ui-btn-icon-notext):
 }
 
 /* Delivery table format */
+#dialog-delivery .ui-checkbox.ui-controlgroup-controls .ui-btn-corner-all,
+#dialog-delivery .ui-controlgroup-controls .ui-btn.ui-corner-all {
+    border-radius: 6px;
+	border-width: 1px;
+	padding: 8px;
+	margin: 1px;
+}
+div[data-theme="a"] #dialog-delivery .seat-taken {
+	background-color: lightgrey;
+}
+div[data-theme="b"] #dialog-delivery .seat-taken {
+	background-color: grey;
+}
+#dialog-delivery .seat-taken.ui-checkbox-on {
+	background-color: red !important;
+}
+
+/* Delivery page format */
 div[data-theme="a"] [data-role="delivery-table"] .ui-btn {
 	border-color: grey;
 }
