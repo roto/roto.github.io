@@ -33,6 +33,95 @@ function local_remove(key) {
 	localStorage.removeItem(key);
 }
 
+/* UI Text Formating */
+function etaTime(time) {
+	var now = new Date();
+
+	if (time.getFullYear() <= new Date(0).getFullYear()) {
+		// time has no date value, use todays
+		time.setDate(now.getDate());
+		time.setMonth(now.getMonth());
+		time.setFullYear(now.getFullYear());
+	}
+
+	var timePassed = false;
+	var eta = time - now;
+
+	if (eta === 0) {
+		return 'now';
+	} else if (eta < 0) {
+		timePassed = true;
+		eta = Math.abs(eta);
+	}
+
+	var etaString = getETAString(eta);
+	if (etaString.startsWith('1 ')) {
+		// trim the last plural 's'
+		etaString = etaString.substring(0, etaString.length - 1);
+	}
+
+	if (timePassed) {
+		return etaString + ' ago';
+	} else {
+		return etaString;
+	}
+
+	function getETAString(eta) {
+		var msPerMinute = 60 * 1000;
+		var msPerHour = msPerMinute * 60;
+		var msPerDay = msPerHour * 24;
+		var msPerMonth = msPerDay * 30;
+		var msPerYear = msPerDay * 365;
+
+		if (eta < msPerMinute) {
+			return Math.round(eta / 1000) + ' secs';
+		} else if (eta < msPerHour) {
+			return Math.round(eta / msPerMinute) + ' mins';
+		} else if (eta < msPerDay) {
+			return Math.round(eta / msPerHour) + ' hrs';
+		} else if (eta < msPerMonth) {
+			return Math.round(eta / msPerDay) + ' days';
+		} else if (eta < msPerYear) {
+			return Math.round(eta / msPerMonth) + ' months';
+		} else {
+			return Math.round(eta / msPerYear) + ' years';
+		}
+	}
+}
+
+function formatPrice(price) {
+	if (price % 1000000000 == 0) {
+		return addThousandSeparators(price / 1000000000) + "b";
+	} else if (price % 1000000 == 0) {
+		return addThousandSeparators(price / 1000000) + "m";
+	} else if (price % 1000 == 0) {
+		return addThousandSeparators(price / 1000) + "k";
+	} else {
+		return addThousandSeparators(price);
+	}
+}
+
+/* Separator constants */
+var DECIMAL_SEPARATOR = 0.1.toLocaleString().charAt(1);
+var THOUSAND_SEPARATOR = DECIMAL_SEPARATOR === "." ? "," : ".";
+var THOUSAND_REGEX = /(\d+)(\d{3})/;
+
+/* http://www.mredkj.com/javascript/nfbasic.html */
+function addThousandSeparators(number)
+{
+	var absNum = Math.abs(number);
+	if (absNum < 1000) {
+		return number;
+	}
+	var parts = absNum.toString().split(DECIMAL_SEPARATOR);
+	var intPart = parts[0];
+	var fracPart = parts.length > 1 ? DECIMAL_SEPARATOR + parts[1] : '';
+	while (THOUSAND_REGEX.test(intPart)) {
+		intPart = intPart.replace(THOUSAND_REGEX, '$1' + THOUSAND_SEPARATOR + '$2');
+	}
+	return (number < 0 ? "-" : "") + intPart + fracPart;
+}
+
 /*****************************************************************************/
 
 function disable_page_scroll_while_popup_shown() {
