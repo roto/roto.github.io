@@ -140,7 +140,7 @@ function openOrderDialog(type, orderItemID) {
 function generateQueueItemHTML(orderItem) {
 	var orderItemHTML = '<li id="order-item-' + orderItem.id + '"><a href="javascript:openOrderDialog(\'status\', \'' + orderItem.id + '\')">';
 
-	if (orderItem.item.image) {
+	if (orderItem.item.initial) {
 		orderItemHTML += '<img data-name="' + orderItem.item.initial + '" class="initial" style="border-radius: 50%">';
 	}
 

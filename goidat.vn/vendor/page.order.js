@@ -25,7 +25,10 @@ function populateOrder(groupGUID) {
 	// add an big plus sign to add new order
 	orderItemsHTML += '<li id="new-order"><a href="#menu" data-transition="slidefade"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
 
-	$('ul#order-list[data-role="listview"]').empty().append($(orderItemsHTML)).listview().listview("refresh");
+	$('ul#order-list[data-role="listview"]').empty().append($(orderItemsHTML)).listview().listview("refresh")
+			.find('.initial.uninitialized').removeClass('uninitialized').each(function() {
+				initial($(this));
+			});
 }
 
 function populateOrderHeader(groupGUID) {
@@ -188,8 +191,8 @@ function openOrderDialog(type, orderItemID) {
 function generateOrderItemHTML(orderItem) {
 	var orderItemHTML = '<li id="order-item-' + orderItem.id + '"><a href="javascript:openOrderDialog(\'status\', \'' + orderItem.id + '\')">';
 
-	if (orderItem.item.image) {
-		orderItemHTML += '<img style="border-radius: 50%" src="' + orderItem.item.image + '">';
+	if (orderItem.item.initial) {
+		orderItemHTML += '<img data-name="' + orderItem.item.initial + '" class="initial uninitialized" style="border-radius: 50%">';
 	}
 
 	if (orderItem.item.name) {
