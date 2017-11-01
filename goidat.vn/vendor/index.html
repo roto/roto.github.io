@@ -134,7 +134,7 @@
 		<div data-role="footer" data-position="fixed">
 			<a href="#" data-icon="eye" onclick="switchTheme();">Change Theme</a>
 			<div style="float:right">
-				<a href="#delivery" data-role="button" data-icon="location" data-transition="fade">
+				<a href="#" data-role="button" data-icon="location" data-transition="fade" onclick="openDeliveryMap();">
 					Delivery Map
 					<span class="notification error">!</span>
 				</a>
@@ -190,7 +190,7 @@
 		<div data-role="header" data-position="fixed">
 			<a href="#" data-rel="back" data-icon="arrow-l" data-transition="slidefade" data-direction="reverse">Back</a>
 			<h1>DELIVERY MAP</h1>
-			<a href="#order" data-icon="bars" data-transition="slidefade">Order</a>
+			<a href="#order" data-icon="bars" data-transition="slidefade" id="navigator-order" class="ui-disabled">Order</a>
 		</div>
 
 		<div role="main" data-role="main" class="ui-content">

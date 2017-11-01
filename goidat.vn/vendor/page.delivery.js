@@ -1,4 +1,15 @@
 
+function openDeliveryMap() {
+	// disable header's Order button
+	$('div#delivery #navigator-order').addClass('ui-disabled');
+
+	populateDelivery();
+
+	$.mobile.navigate('#delivery', {
+		transition: "fade",
+	});
+}
+
 function populateDelivery() {
 	var $div = $('div#delivery #delivery-list');
 	var html = '';
@@ -31,15 +42,27 @@ function populateDelivery() {
 
 function focusGroupTables(groupGUID) {
 	var $div = $('div#delivery #delivery-list');
+
 	var $input = $div.find('div.ui-input-btn:has(> input[name="' + groupGUID + '"])');
 	if ($input.not('.ui-highlight').length > 0) {
-		$div.find('div.ui-input-btn.ui-focus').removeClass('ui-focus ui-highlight');
-		$input.addClass('ui-focus ui-highlight');
-	} else {
-		$input.addClass('ui-focus ui-highlight');
-		populateOrder(groupGUID);
-		$.mobile.navigate('#order', {
-			transition: "slidefade",
+		$div.find('div.ui-input-btn.ui-highlight').removeClass('ui-highlight');
+		$input.addClass('ui-highlight');
+
+		// Header's Order button handler
+		var $navBtn = $('div#delivery #navigator-order');
+		$navBtn.removeClass('ui-disabled');
+		$navBtn.off('click').on('click', function() {
+			navigateToOrder(groupGUID);
 		});
+	} else {
+		$input.addClass('ui-highlight');
+		navigateToOrder(groupGUID);
 	}
+}
+
+function navigateToOrder(groupGUID) {
+	populateOrder(groupGUID);
+	$.mobile.navigate('#order', {
+		transition: "slidefade",
+	});
 }

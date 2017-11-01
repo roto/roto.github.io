@@ -205,6 +205,13 @@ div[data-theme="b"] [data-role="delivery-table"] .ui-btn {
 	opacity: .6;
 }
 
+/* Clone and override from jQM's .ui-focus class */
+[data-role="delivery-table"] .ui-highlight {
+    -webkit-box-shadow: 0 0 20px #38c !important;
+    -moz-box-shadow: 0 0 20px #38c !important;
+    box-shadow: 0 0 20px #38c !important;
+}
+
 /* Time Picker */
 /* Hide the original input, and picker icon */
 #tab-book .ui-input-has-clear {
