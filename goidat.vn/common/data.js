@@ -184,28 +184,28 @@ for (var groupGUID in initialGroups) {
 	var group = initialGroups[groupGUID];
 
 	for (j in group.tables) {
-		var floor = group.tables[j].floor;
-		var floorData = deliveryData[floor];
-		if (!floorData) {
-			throw "Floor not exist: " + floor;
+		var floorID = group.tables[j].floor;
+		var floor = deliveryData[floorID];
+		if (!floor) {
+			throw "Floor not exist: " + floorID;
 		}
 
 		for (k in group.tables[j].seats) {
-			var seat = group.tables[j].seats[k];
-			var seatData = floorData.seats[seat];
-			if (!seatData) {
-				throw "Seat not exist: " + seat + " on floor " + floor;
+			var seatID = group.tables[j].seats[k];
+			var seat = floor.seats[seatID];
+			if (!seat) {
+				throw "Seat not exist: " + seatID + " on floor " + floorID;
 			}
 
-			if (!seatData.groups) {
-				seatData.groups = [ groupGUID ];
+			if (!seat.groups) {
+				seat.groups = [ groupGUID ];
 			} else {
-				seatData.groups.push(groupGUID);
+				seat.groups.push(groupGUID);
 			}
 
-			if (tableSharedCount > seatData.groups.length) {
-				tableSharedCount = seatData.groups.length;
-				tableToDisplay = seatData.displayName;
+			if (tableSharedCount > seat.groups.length) {
+				tableSharedCount = seat.groups.length;
+				tableToDisplay = seat.displayName;
 			}
 		}
 	}
