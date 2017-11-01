@@ -102,7 +102,7 @@ function openOrderDialog(type, orderItemID) {
 		if (type === 'status') {
 			$div.children('img').attr('src', orderItem.item.image);
 			if (orderItem.quantity) {
-				$div.children('span').text(orderItem.quantity + ' ×').show();
+				$div.children('span').text(orderItem.quantity + ORDER_QUANTITY_POSTFIX).show();
 			} else {
 				$div.children('span').hide();
 			}
@@ -178,7 +178,7 @@ function openOrderDialog(type, orderItemID) {
 
 				// update order request
 				updateOrderInputElements('request', 'p', generateOrderRequestHTML);
-				updateOrderInputElements('quantity', '.ui-li-quantity', generateOrderQuantityHTML, ' ×');
+				updateOrderInputElements('quantity', '.ui-li-quantity', generateOrderQuantityHTML, ORDER_QUANTITY_POSTFIX);
 			});
 		} else {
 			throw 'Invalid order dialog type: "' + type + "'";
@@ -217,7 +217,7 @@ function generateOrderRequestHTML(orderItem) {
 
 function generateOrderQuantityHTML(orderItem) {
     if (orderItem.quantity) {
-        return '<span class="ui-li-quantity ui-body-inherit">' + orderItem.quantity + ' &times;</span>';
+        return '<span class="ui-li-quantity ui-body-inherit">' + orderItem.quantity + ORDER_QUANTITY_POSTFIX + '</span>';
     }
 	return '';
 }

@@ -1,3 +1,5 @@
+var ORDER_QUANTITY_POSTFIX = ' ×';
+
 $(document).ready(function(){
 	initialize_local_storage();
 
