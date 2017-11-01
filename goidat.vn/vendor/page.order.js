@@ -2,6 +2,8 @@
 function populateOrder(groupGUID) {
 	initialOrderItems = initialGroups[groupGUID].orders;
 
+	populateOrderHeader(groupGUID);
+
 	var orderItemsHTML = '';
 
 	// for each menu's groups
@@ -24,6 +26,35 @@ function populateOrder(groupGUID) {
 	orderItemsHTML += '<li id="new-order"><a href="#menu" data-transition="slidefade"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
 
 	$('ul#order-list[data-role="listview"]').empty().append($(orderItemsHTML)).listview().listview("refresh");
+}
+
+function populateOrderHeader(groupGUID) {
+	var $div = $('div[data-role="subheader"]');
+	var html = '<div data-role="delivery-table" align="center"><fieldset data-role="controlgroup" data-type="horizontal">';
+
+	var group = initialGroups[groupGUID];
+	for (var i in group.tables) {
+		var floorID = group.tables[i].floor;
+		var floor = deliveryData[floorID];
+		if (!floor) {
+			throw "Floor not exist: " + floorID;
+		}
+
+		for (var j in group.tables[i].seats) {
+			var seatID = group.tables[i].seats[j];
+			var seat = floor.seats[seatID];
+			if (!seat) {
+				throw "Seat not exist: " + seatID + " on floor " + floorID;
+			}
+
+			html += '<input type="button" value="' + seat.displayName + '"';
+			html += ' style="background-color:' + hash_to_rbg(hash_code(groupGUID)) + '">';
+		}
+	}
+
+	html += '</fieldset></div>';
+
+	$div.html(html).enhanceWithin();
 }
 
 function createNewOrderItem(itemID) {
