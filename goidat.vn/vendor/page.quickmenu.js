@@ -16,7 +16,10 @@ function populateQuickMenu() {
 	}
 
 	// append the collapsible group div
-	$('ul#menu-list[data-role="listview"]').empty().append($(groupsHTML)).listview().listview("refresh");
+	$('ul#menu-list[data-role="listview"]').empty().append($(groupsHTML)).listview().listview("refresh")
+			.find('.initial.uninitialized').removeClass('uninitialized').each(function() {
+				initial($(this));
+			});
 }
 
 function openQuickMenuDialog(type, itemID) {
@@ -93,7 +96,7 @@ function generateQuickMenuGroupHTML(group) {
 	}
 
 	// nested items UL
-	groupHTML += '<ul data-role="listview" data-inset="true">' + itemsHTML + '</ul>';
+	groupHTML += '<ul data-role="listview" data-inset="true"><fieldset data-role="controlgroup" data-type="horizontal">' + itemsHTML + '</fieldset></ul>';
 
 	// generate the collapsible group div with data-filtertext
 	var groupHTMLPrefix = '<div data-role="collapsible" data-collapsed="false" id="group-' + group.id + '"';
@@ -107,29 +110,13 @@ function generateQuickMenuGroupHTML(group) {
 
 function generateQuickMenuItemHTML(item) {
 	var itemHTML = '<a href="javascript:openQuickMenuDialog(\'detail\', \'' + item.id + '\')">';
-
-	if (item.image) {
-		itemHTML += '<img style="border-radius: 50%" src="' + item.image + '">';
-	}
-
-	if (item.name) {
-		itemHTML += '<h2>' + item.name + '</h2>';
-	}
-
-	if (item.desc) {
-		itemHTML += '<p>' + item.desc + '</p>';
-	}
-
-	if (item.price) {
-		itemHTML += '<span class="ui-li-count">' + formatPrice(item.price) + '</span>';
-	}
-
-	itemHTML += '</a><a href="javascript:openQuickMenuDialog(\'new\', \'' + item.id + '\');" class="ui-btn ui-icon-plus">Order</a></li>';
+	itemHTML += '<img data-name="' + item.initial + '" class="initial uninitialized" style="border-radius: 50%">';
+	itemHTML += '</a>';
 
 	if (item.filterText.length > 0) {
-		itemHTML = '<li id="item-' + item.id + '" data-filtertext="' + item.filterText + '">' + itemHTML;
+		itemHTML = '<li id="item-' + item.id + '" data-filtertext="' + item.filterText + '">' + itemHTML + '</li>';
 	} else {
-		itemHTML = '<li id="item-' + item.id + '">' + itemHTML;
+		itemHTML = '<li id="item-' + item.id + '">' + itemHTML + '</li>';
 	}
 
 	return itemHTML;
