@@ -10,7 +10,9 @@ function populateQuickMenu() {
 			continue;
 		}
 
-		groupsHTML += generateQuickMenuGroupHTML(group);
+		if (!group.nofilter) {
+			groupsHTML += generateQuickMenuGroupHTML(group);
+		}
 	}
 
 	// append the collapsible group div
@@ -85,7 +87,7 @@ function generateQuickMenuGroupHTML(group) {
 			item.id = itemID;
 		}
 
-		generateQuickMenuItemFilterText(item, !group.nofilter);
+		generateMenuItemFilterText(item, !group.nofilter, true);
 		itemsHTML += generateQuickMenuItemHTML(item);
 		groupFilterText += item.filterText;
 	}
@@ -101,27 +103,6 @@ function generateQuickMenuGroupHTML(group) {
 	groupHTML = groupHTMLPrefix + '>' + groupHTML + '</div>';
 
 	return groupHTML;
-}
-
-function generateQuickMenuItemFilterText(item, allowFilter) {
-	if (typeof item.filterText !== 'undefined' && item.filterText.length > 0) {
-		// filter text is already generated, return
-		return;
-	}
-
-	item.filterText = "";
-
-	if (!allowFilter) {
-		return;
-	}
-
-	if (item.name) {
-		item.filterText += '|' + getFilterText(item.name);
-	}
-
-	if (item.desc) {
-		item.filterText += '|' + getFilterText(item.desc);
-	}
 }
 
 function generateQuickMenuItemHTML(item) {

@@ -103,7 +103,7 @@ function generateMenuGroupHTML(group) {
 	return groupHTML;
 }
 
-function generateMenuItemFilterText(item, allowFilter) {
+function generateMenuItemFilterText(item, allowFilter, includeInitial) {
 	if (typeof item.filterText !== 'undefined' && item.filterText.length > 0) {
 		// filter text is already generated, return
 		return;
@@ -121,6 +121,10 @@ function generateMenuItemFilterText(item, allowFilter) {
 
 	if (item.desc) {
 		item.filterText += '|' + getFilterText(item.desc);
+	}
+
+	if (includeInitial && item.initial) {
+		item.filterText += '|' + item.initial;
 	}
 }
 
