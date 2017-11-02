@@ -6,7 +6,7 @@ $(document).ready(function(){
 	populateHome();
 	populateQueue();
 	populateDelivery();
-	populateMenu();
+	populateQuickMenu();
 	
 	// not sure why, but this has to be done after menu is populated
 	if (local_load('theme') === 'b') {
