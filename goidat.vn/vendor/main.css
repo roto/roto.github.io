@@ -1,3 +1,16 @@
+/* Much faster page transition for Vendor module */
+/* All animation duration is 1/7 of Vendee module */
+.in {
+	-webkit-animation-duration: 70ms !important;
+	-moz-animation-duration: 70ms !important;
+	animation-duration: 70ms !important;
+}
+.out {
+	-webkit-animation-duration: 45ms !important;
+	-moz-animation-duration: 45ms !important;
+	animation-duration: 45ms !important;
+}
+
 /* Home Page */
 /* https://stackoverflow.com/questions/21552308/set-content-height-100-jquery-mobile/27617438#27617438 */
 html, body, #home { /* specify page */
