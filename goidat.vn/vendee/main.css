@@ -108,6 +108,7 @@ li#new-order > a > div.ui-li-thumb > img {
 	top: 25%;
 	margin-top: -.88em;
 	border-radius: 10px;
+	border-color: #888 !important;
 }
 
 #dialog-order-status > .ui-li-quantity {
