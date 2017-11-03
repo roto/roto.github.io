@@ -32,7 +32,7 @@ function populateOrder(groupGUID) {
 }
 
 function populateOrderHeader(groupGUID) {
-	var $div = $('div[data-role="subheader"]');
+	var $div = $('#order > div[data-role="subheader"]');
 	var html = '<div data-role="delivery-table" align="center"><fieldset data-role="controlgroup" data-type="horizontal">';
 
 	var group = initialGroups[groupGUID];
