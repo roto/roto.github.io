@@ -84,13 +84,24 @@ function menuItemClick(itemID) {
 	var itemExist = false;
 
 	$ul.children('li').each(function(index) {
-		var orderItem = $(this).data('orderItem');
+		var $this = $(this);
+		var orderItem = $this.data('orderItem');
 		if(orderItem && orderItem.item.id === itemID && !orderItem.request) {
 			if (!orderItem.quantity) {
-				orderItem.quantity = 1;
+				orderItem.quantity = 2;
 			} else {
 				++orderItem.quantity;
 			}
+
+			var $span = $this.children('span');
+			$span.text(orderItem.quantity);
+
+			if (orderItem.quantity > 1) {
+				$span.css('visibility', 'visible');
+			} else {
+				$span.css('visibility', 'hidden');
+			}
+
 			itemExist = true;
 			return false; // stop processing the next .each() iteration
 		}
@@ -110,7 +121,7 @@ function menuItemClick(itemID) {
 function generateQuickMenuPreviewItemHTML(item) {
 	var itemHTML = '<li id="item-' + item.id + '"><a href="javascript:openQuickMenuDialog(\'new\', \'' + item.id + '\')">';
 	itemHTML += '<img data-name="' + item.initial + '" class="initial uninitialized" style="border-radius: 50%">';
-	itemHTML += '</a></li>';
+	itemHTML += '</a><span class="ui-li-quantity ui-body-inherit" style="visibility:hidden">0</span></li>';
 
 	return itemHTML;
 }

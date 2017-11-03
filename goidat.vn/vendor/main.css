@@ -156,6 +156,18 @@ li#new-order > a > div.ui-li-thumb > img {
 	margin-left: 6px;
 }
 
+/* Order Preview */
+#order-preview-list > li {
+	margin-right: -20px;
+}
+
+#order-preview-list > li > .ui-li-quantity {
+	position: relative;
+	top: -55px;
+	left: -20px;
+	padding: .24em .48em;
+}
+
 /* Order table */
 /* Clone from .ui-li-count (jQueryMobile) */
 .ui-li-table {
