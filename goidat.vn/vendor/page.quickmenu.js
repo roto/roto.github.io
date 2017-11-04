@@ -121,6 +121,8 @@ function menuItemClick(itemID) {
 			$panel.show();
 		}
 
+		// BUG: QuickMenu is not rendered correctly after add order preview
+		// 		Smallscree, long quick menu list. Tap an item to preview order.
 		//$('#menu-list').listview("refresh");
 		$('#menu').trigger('refresh');
 	}
