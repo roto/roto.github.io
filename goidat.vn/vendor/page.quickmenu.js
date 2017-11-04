@@ -115,6 +115,14 @@ function menuItemClick(itemID) {
 		$ul.append($item).find('.initial.uninitialized').removeClass('uninitialized').each(function() {
 			initial($(this));
 		});
+
+		var $panel = $('#order-preview-panel');
+		if (!$panel.is(":visible")) {
+			$panel.show();
+		}
+
+		//$('#menu-list').listview("refresh");
+		$('#menu').trigger('refresh');
 	}
 }
 
