@@ -92,7 +92,7 @@ function menuItemClick(itemID) {
 
 			// register the Undo action
 			historyAdd(function() {
-				setQuantity(currentQuantity);
+				setPreviewQuantity($this, currentQuantity);
 			});
 
 			if (!orderItem.quantity) {
@@ -101,56 +101,79 @@ function menuItemClick(itemID) {
 				++orderItem.quantity;
 			}
 
-			setQuantity(orderItem.quantity);
+			setPreviewQuantity($this, orderItem.quantity);
 
 			itemExist = true;
 			return false; // stop processing the next .each() iteration
-		}
-
-		function setQuantity(quantity) {
-			orderItem.quantity = quantity;
-
-			var $span = $this.children('span');
-			$span.text(quantity);
-
-			if (quantity > 1) {
-				$span.css('visibility', 'visible');
-			} else {
-				$span.css('visibility', 'hidden');
-			}
 		}
 	});
 
 	if (!itemExist) {
 		var html = generateQuickMenuPreviewItemHTML(item);
 		var $item = $(html);
-		$item.data('orderItem', createNewOrderItem(itemID));
 
 		historyAdd(function() {
-			$item.remove();
-
-			if ($ul.children('li').length == 0) {
-				$('#order-preview-panel').hide();
-				$('#action-preview-clear').addClass('ui-disabled');
-				$('#action-preview-accept').addClass('ui-disabled');
-			}
+			removePreviewItem($ul, $item);
 		});
 
-		$ul.append($item).find('.initial.uninitialized').removeClass('uninitialized').each(function() {
-			initial($(this));
-		});
-
-		var $panel = $('#order-preview-panel');
-		if (!$panel.is(":visible")) {
-			$panel.show();
-			$('#action-preview-clear').removeClass('ui-disabled');
-			$('#action-preview-accept').removeClass('ui-disabled');
-		}
+		addPreviewItemInside($ul, $item, createNewOrderItem(itemID));
 
 		// BUG: QuickMenu is not rendered correctly after add order preview
 		// 		Smallscree, long quick menu list. Tap an item to preview order.
 		//$('#menu-list').listview("refresh");
-		$('#menu').trigger('refresh');
+		//$('#menu').trigger('refresh');
+	}
+}
+
+function removePreviewItem($ul, $item) {
+	$item.remove();
+	
+	if ($ul.children('li').length == 0) {
+		$('#order-preview-panel').hide();
+		$('#action-preview-clear').addClass('ui-disabled');
+		$('#action-preview-accept').addClass('ui-disabled');
+	}
+}
+
+function addPreviewItemBefore($next, $item, orderItem) {
+	if (orderItem) {
+		$item.data('orderItem', orderItem);
+	}
+
+	onNewPreviewItem($item.insertBefore($next));
+}
+
+function addPreviewItemInside($parent, $item, orderItem) {
+	if (orderItem) {
+		$item.data('orderItem', orderItem);
+	}
+
+	onNewPreviewItem($parent.append($item));
+}
+
+function onNewPreviewItem($item) {
+	$item.find('.initial.uninitialized').removeClass('uninitialized').each(function() {
+		initial($(this));
+	});
+
+	var $panel = $('#order-preview-panel');
+	if (!$panel.is(":visible")) {
+		$panel.show();
+		$('#action-preview-clear').removeClass('ui-disabled');
+		$('#action-preview-accept').removeClass('ui-disabled');
+	}
+}
+
+function setPreviewQuantity($item, quantity) {
+	$item.data('orderItem').quantity = quantity;
+
+	var $span = $item.children('span');
+	$span.text(quantity);
+
+	if (quantity > 1) {
+		$span.css('visibility', 'visible');
+	} else {
+		$span.css('visibility', 'hidden');
 	}
 }
 
@@ -177,7 +200,7 @@ function historyClear() {
 }
 
 function generateQuickMenuPreviewItemHTML(item) {
-	var itemHTML = '<li id="item-' + item.id + '"><a href="javascript:openQuickMenuDialog(\'new\', \'' + item.id + '\')">';
+	var itemHTML = '<li id="item-' + item.id + '"><a href="#" onclick="openQuickMenuDialog(this);">';
 	itemHTML += '<img data-name="' + item.initial + '" class="initial uninitialized" style="border-radius: 50%">';
 	itemHTML += '</a><span class="ui-li-quantity ui-body-inherit" style="visibility:hidden">0</span></li>';
 
@@ -185,6 +208,8 @@ function generateQuickMenuPreviewItemHTML(item) {
 }
 
 function clearPreviewList() {
+	// TODO: undo support
+	// save all orderData of the items for later undo actions
 	historyClear();
 
 	var $panel = $('#order-preview-panel');
@@ -197,46 +222,111 @@ function clearPreviewList() {
 	$('#order-preview-list').empty();
 }
 
-function openQuickMenuDialog(type, itemID) {
-	var menuItem = menuItems[itemID];
+function openQuickMenuDialog(link) {
+	var $item = $(link).parent();
+	var orderItem = $item.data('orderItem');
+	var orderItemID = orderItem.id;
+
 	var $dialog = $('#dialog-menu');
-	$dialog.find('h1').text(menuItem.name);
+	$dialog.find('h1').text(orderItem.item.name);
 
 	var $main = $dialog.children('[data-role="main"]');
 	$main.children('div').hide();	// hide all children
 
-	showQuickMenuContent(type);
+	showQuickMenuContent('edit');
 	$dialog.popup('open');
 	return;
 
 	function showQuickMenuContent(type) {
-		var $div = $main.children('#dialog-menu-' + type);
+		var $div = $main.children('#dialog-menu-' + type).hide();
 
-		if (type === 'detail') {
-			$div.children('img').attr('src', menuItem.image);
-			$div.children('p').text(menuItem.desc ? menuItem.desc : '');
-			$div.find('a').off('click').click(function() {
+		if (type === 'status') {
+			$div.children('img').attr('src', orderItem.item.image);
+			if (orderItem.quantity) {
+				$div.children('span').text(orderItem.quantity + ORDER_QUANTITY_POSTFIX).show();
+			} else {
+				$div.children('span').hide();
+			}
+			$div.children('#dialog-order-status-request').html(orderItem.request ? orderItem.request : '');
+			$div.children('#dialog-order-status-status').html(orderItem.status ? orderItem.status : 'Queueing');
+			
+			$div.find('a.ui-icon-edit').off('click').click(function() {
 				$div.hide();
-				showQuickMenuContent('new');
+				showOrderContent('edit');
 				$dialog.popup("reposition", {});
 			});
-		} else if (type === 'new') {
-			loadRequestInputEvents($div, itemID);
-			loadQuantityInputEvents($div);
 
-			$div.find('form').off('submit').submit(function(){
-				var orderItem = createNewOrderItem(itemID);
+			$div.find('a.ui-icon-info').off('click').click(function() {
+				$div.hide();
+				showOrderContent('info');
+				$dialog.popup("reposition", {});
+			});
+		} else if (type === 'info') {
+			$div.children('img').attr('src', orderItem.item.image);
+			$div.children('p').text(orderItem.item.desc ? orderItem.item.desc : '');
+			$div.find('a').off('click').click(function() {
+				$div.hide();
+				showOrderContent('status');
+				$dialog.popup("reposition", {});
+			});
+		} else if (type === 'edit') {
+			loadRequestInputEvents($div, orderItem.item.id, orderItemID);
+			loadQuantityInputEvents($div, orderItem.quantity);
+
+			var $form = $div.find("form");
+			$form.find('a#order-delete').off("click").click(function() {
+				var orderItem = $item.data('orderItem');
+				var $ul = $item.parent();
+				var $next = $item.next();
+
+				if ($next.length > 0) {
+					historyAdd(function() {
+						addPreviewItemBefore($next, $item, orderItem);
+					});
+				} else {
+					historyAdd(function() {
+						addPreviewItemInside($ul, $item, orderItem);
+					});
+				}
+
+				removePreviewItem($ul, $item);
+			});
+
+			$form.off("submit").submit(function() {
 				fetchOrderInputs(orderItem, $div);
-				var orderItemHTML = generateOrderItemHTML(orderItem);
-				$(orderItemHTML).insertBefore('#new-order');
-				$('ul#order-list[data-role="listview"]').listview().listview("refresh");
-				window.history.go(-2);
-				$('#order-item-' + orderItem.id).fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
+				$.mobile.back();
+				var $orderElement = $('#order-item-' + orderItemID);
+
+				function updateOrderInputElements(property, selector, htmlGeneratorFunc, valuePostfix) {
+					var $el = $orderElement.find(selector);
+					if ($el.length > 0) {
+						if (orderItem[property]) {
+							var valueWithPF = valuePostfix ? orderItem[property] + valuePostfix : orderItem[property];
+							if ($el.text() != valueWithPF) {
+								$el.text(valueWithPF);
+								$el.fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
+							}
+						} else {
+							$el.fadeOut(1000, function() {
+								// remove the item's DOM when animation complete
+								$(this).remove();
+							});
+						}
+					} else {
+						if (orderItem[property]) {
+							$(htmlGeneratorFunc(orderItem)).insertAfter('#order-item-' + orderItemID + ' > a > h2').hide().fadeIn(1000);
+						}
+					}
+				}
+
+				// update order request
+				updateOrderInputElements('request', 'p', generateOrderRequestHTML);
+				updateOrderInputElements('quantity', '.ui-li-quantity', generateOrderQuantityHTML, ORDER_QUANTITY_POSTFIX);
 			});
 		} else {
-			throw 'Invalid menu dialog type: "' + type + "'";
+			throw 'Invalid order dialog type: "' + type + "'";
 		}
-		
+
 		$div.show();
 	}
 }
