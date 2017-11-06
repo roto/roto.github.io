@@ -86,24 +86,38 @@ function menuItemClick(itemID) {
 	$ul.children('li').each(function(index) {
 		var $this = $(this);
 		var orderItem = $this.data('orderItem');
+
 		if(orderItem && orderItem.item.id === itemID && !orderItem.request) {
+			var currentQuantity = orderItem.quantity;
+
+			// register the Undo action
+			historyAdd(function() {
+				setQuantity(currentQuantity);
+			});
+
 			if (!orderItem.quantity) {
 				orderItem.quantity = 2;
 			} else {
 				++orderItem.quantity;
 			}
 
-			var $span = $this.children('span');
-			$span.text(orderItem.quantity);
+			setQuantity(orderItem.quantity);
 
-			if (orderItem.quantity > 1) {
+			itemExist = true;
+			return false; // stop processing the next .each() iteration
+		}
+
+		function setQuantity(quantity) {
+			orderItem.quantity = quantity;
+
+			var $span = $this.children('span');
+			$span.text(quantity);
+
+			if (quantity > 1) {
 				$span.css('visibility', 'visible');
 			} else {
 				$span.css('visibility', 'hidden');
 			}
-
-			itemExist = true;
-			return false; // stop processing the next .each() iteration
 		}
 	});
 
@@ -112,6 +126,16 @@ function menuItemClick(itemID) {
 		var $item = $(html);
 		$item.data('orderItem', createNewOrderItem(itemID));
 
+		historyAdd(function() {
+			$item.remove();
+
+			if ($ul.children('li').length == 0) {
+				$('#order-preview-panel').hide();
+				$('#action-preview-clear').addClass('ui-disabled');
+				$('#action-preview-accept').addClass('ui-disabled');
+			}
+		});
+
 		$ul.append($item).find('.initial.uninitialized').removeClass('uninitialized').each(function() {
 			initial($(this));
 		});
@@ -119,6 +143,8 @@ function menuItemClick(itemID) {
 		var $panel = $('#order-preview-panel');
 		if (!$panel.is(":visible")) {
 			$panel.show();
+			$('#action-preview-clear').removeClass('ui-disabled');
+			$('#action-preview-accept').removeClass('ui-disabled');
 		}
 
 		// BUG: QuickMenu is not rendered correctly after add order preview
@@ -126,6 +152,28 @@ function menuItemClick(itemID) {
 		//$('#menu-list').listview("refresh");
 		$('#menu').trigger('refresh');
 	}
+}
+
+function historyAdd(action) {
+	action.next = historyAdd.current;
+	historyAdd.current = action;
+	$('#action-preview-undo').removeClass('ui-disabled');
+}
+
+function historyUndo() {
+	if (historyAdd.current) {
+		historyAdd.current();
+		historyAdd.current = historyAdd.current.next;
+	}
+
+	if (!historyAdd.current) {
+		$('#action-preview-undo').addClass('ui-disabled');
+	}
+}
+
+function historyClear() {
+	delete historyAdd.current;
+	$('#action-preview-undo').addClass('ui-disabled');
 }
 
 function generateQuickMenuPreviewItemHTML(item) {
@@ -137,9 +185,13 @@ function generateQuickMenuPreviewItemHTML(item) {
 }
 
 function clearPreviewList() {
+	historyClear();
+
 	var $panel = $('#order-preview-panel');
 	if ($panel.is(":visible")) {
 		$panel.hide();
+		$('#action-preview-clear').addClass('ui-disabled');
+		$('#action-preview-accept').addClass('ui-disabled');
 	}
 
 	$('#order-preview-list').empty();
