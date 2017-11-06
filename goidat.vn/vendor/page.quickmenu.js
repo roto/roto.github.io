@@ -304,24 +304,16 @@ function openQuickMenuDialog(link) {
 				$.mobile.back();
 
 				// TBD: are those check nessesary?
-				var quantityChanged = quantity !== orderItem.quantity;
+				var quantityChanged = quantity != orderItem.quantity;
 				var requestChanged = request !== orderItem.request;
 
-				historyAdd(function() {
-					if (quantityChanged) {
+				if (quantityChanged || requestChanged) {
+					historyAdd(function() {
 						setPreviewQuantity($item, quantity);
-					}
-
-					if (requestChanged) {
 						setPreviewRequest($item, request);
-					}
-				});
+					});
 
-				if (quantityChanged) {
 					setPreviewQuantity($item, orderItem.quantity);
-				}
-
-				if (requestChanged) {
 					setPreviewRequest($item, orderItem.request);
 				}
 			});
