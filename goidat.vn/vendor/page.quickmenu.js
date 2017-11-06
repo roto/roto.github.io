@@ -178,7 +178,9 @@ function setPreviewQuantity($item, quantity) {
 }
 
 function setPreviewRequest($item, request) {
-	// TODO
+	$item.data('orderItem').request = request;
+	var color = (request && request.length > 0) ? hash_to_rbg(hash_code(request)) : 'transparent';
+	$item.children('a').first().css('background-color', color);
 }
 
 function historyAdd(action) {
