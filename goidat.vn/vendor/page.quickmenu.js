@@ -136,6 +136,15 @@ function generateQuickMenuPreviewItemHTML(item) {
 	return itemHTML;
 }
 
+function clearPreviewList() {
+	var $panel = $('#order-preview-panel');
+	if ($panel.is(":visible")) {
+		$panel.hide();
+	}
+
+	$('#order-preview-list').empty();
+}
+
 function openQuickMenuDialog(type, itemID) {
 	var menuItem = menuItems[itemID];
 	var $dialog = $('#dialog-menu');
