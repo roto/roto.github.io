@@ -123,6 +123,10 @@
                 </li>
 			</ul>
 		</div>
+
+		<div data-role="footer" data-position="fixed">
+			<a href="#" data-icon="eye" onclick="switchTheme();">Change Theme</a>
+		</div>
 	</div>
 
 	<!-- Queue Page -->
@@ -140,7 +144,6 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-			<a href="#" data-icon="eye" onclick="switchTheme();">Change Theme</a>
 			<div style="float:right">
 				<a href="#" data-role="button" data-icon="location" data-transition="fade" onclick="openDeliveryMap();">
 					Delivery Map
@@ -160,10 +163,6 @@
 
 		<div role="main" data-role="main" class="ui-content">
 			<div id="delivery-list" data-role="delivery-table"></div>
-		</div>
-
-		<div data-role="footer" data-position="fixed">
-			<a href="#" data-icon="eye" onclick="switchTheme();">Change Theme</a>
 		</div>
 	</div>
 
@@ -186,7 +185,6 @@
 		</div>
 		
 		<div data-role="footer" data-position="fixed">
-			<a href="#" data-icon="eye" onclick="switchTheme();">Change Theme</a>
 			<div style="float:right">
 				<a href="#dialog-delivery" id="footer-button-delivery" data-role="button" data-icon="location" data-rel="popup" data-position-to="#footer-button-delivery">
 					Delivery
@@ -290,7 +288,11 @@
 					</ul>
 				</fieldset>
 			</div>
-			<a href="#" data-icon="eye" onclick="switchTheme();">Change Theme</a>
+			<a href="#" data-icon="delete" onclick="">Clear</a>
+			<a href="#" data-icon="back" onclick="">Undo</a>
+			<div style="float:right">
+				<a href="#" data-role="button" data-icon="check" onclick="">Accept</a>
+			</div>
 		</div>
 
 		<div data-role="popup" id="dialog-menu" data-overlay-theme="b">

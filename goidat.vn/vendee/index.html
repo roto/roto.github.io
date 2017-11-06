@@ -115,9 +115,7 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-			<div style="float:right">
-				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
-			</div>
+			<a href="#" data-icon="eye" onclick="switchTheme();">Change Theme</a>
 		</div>
 
 		<div data-role="popup" id="dialog-location" data-overlay-theme="b">
@@ -154,12 +152,11 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-			<a href="#dialog-delivery" id="footer-button-delivery" data-rel="popup" data-position-to="#footer-button-delivery" class="ui-btn ui-icon-location ui-btn-icon-left">
-				Delivery
-				<span class="notification error">!</span>
-			</a>
 			<div style="float:right">
-				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
+				<a href="#dialog-delivery" id="footer-button-delivery" data-role="button" data-icon="location" data-rel="popup" data-position-to="#footer-button-delivery">
+					Delivery
+					<span class="notification error">!</span>
+				</a>
 			</div>
 		</div>
 
@@ -248,12 +245,6 @@
 			<ul id="menu-list" data-role="listview" data-inset="false" data-filter="true" data-input="#menuFilterInput" data-children="> div, > div ul li">
 				<!-- Script-generated Menu List -->
 			</ul>
-		</div>
-
-		<div data-role="footer" data-position="fixed">
-			<div style="float:right">
-				<a href="#" class="ui-btn ui-icon-eye ui-btn-icon-left" onclick="switchTheme();">Change Theme</a>
-			</div>
 		</div>
 
 		<div data-role="popup" id="dialog-menu" data-overlay-theme="b">
