@@ -303,7 +303,6 @@ function openQuickMenuDialog(link) {
 				fetchOrderInputs(orderItem, $div);
 				$.mobile.back();
 
-				// TBD: are those check nessesary?
 				var quantityChanged = quantity != orderItem.quantity;
 				var requestChanged = request !== orderItem.request;
 
