@@ -177,6 +177,10 @@ function setPreviewQuantity($item, quantity) {
 	}
 }
 
+function setPreviewRequest($item, request) {
+	// TODO
+}
+
 function historyAdd(action) {
 	action.next = historyAdd.current;
 	historyAdd.current = action;
@@ -293,35 +297,33 @@ function openQuickMenuDialog(link) {
 			});
 
 			$form.off("submit").submit(function() {
+				var quantity = orderItem.quantity;
+				var request = orderItem.request;
+
 				fetchOrderInputs(orderItem, $div);
 				$.mobile.back();
-				var $orderElement = $('#order-item-' + orderItemID);
 
-				function updateOrderInputElements(property, selector, htmlGeneratorFunc, valuePostfix) {
-					var $el = $orderElement.find(selector);
-					if ($el.length > 0) {
-						if (orderItem[property]) {
-							var valueWithPF = valuePostfix ? orderItem[property] + valuePostfix : orderItem[property];
-							if ($el.text() != valueWithPF) {
-								$el.text(valueWithPF);
-								$el.fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
-							}
-						} else {
-							$el.fadeOut(1000, function() {
-								// remove the item's DOM when animation complete
-								$(this).remove();
-							});
-						}
-					} else {
-						if (orderItem[property]) {
-							$(htmlGeneratorFunc(orderItem)).insertAfter('#order-item-' + orderItemID + ' > a > h2').hide().fadeIn(1000);
-						}
+				// TBD: are those check nessesary?
+				var quantityChanged = quantity !== orderItem.quantity;
+				var requestChanged = request !== orderItem.request;
+
+				historyAdd(function() {
+					if (quantityChanged) {
+						setPreviewQuantity($item, quantity);
 					}
+
+					if (requestChanged) {
+						setPreviewRequest($item, request);
+					}
+				});
+
+				if (quantityChanged) {
+					setPreviewQuantity($item, orderItem.quantity);
 				}
 
-				// update order request
-				updateOrderInputElements('request', 'p', generateOrderRequestHTML);
-				updateOrderInputElements('quantity', '.ui-li-quantity', generateOrderQuantityHTML, ORDER_QUANTITY_POSTFIX);
+				if (requestChanged) {
+					setPreviewRequest($item, orderItem.request);
+				}
 			});
 		} else {
 			throw 'Invalid order dialog type: "' + type + "'";
