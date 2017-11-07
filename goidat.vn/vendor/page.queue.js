@@ -16,7 +16,7 @@ function generateQueueItemHTML(order) {
 	var orderHTML = '<li id="queue-item-' + order.id + '"><a href="javascript:openOrderDialog(\'status\', \'' + order.id + '\')">';
 
 	if (order.item.initial) {
-		orderHTML += '<img data-name="' + order.item.initial + '" class="initial" style="border-radius: 50%">';
+		orderHTML += '<img data-name="' + order.item.initial + '" class="initial uninitialized" style="border-radius: 50%">';
 	}
 
 	if (order.item.name) {

@@ -214,6 +214,7 @@ function createNewOrder(itemID) {
 		id: generate_quick_guid(),
 		created: (new Date).getTime(),
 		item: _MenuItems[itemID],
+		state: OrderState.QUEUEING,
 	};
 }
 

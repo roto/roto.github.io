@@ -235,13 +235,18 @@ function acceptPreviewList() {
 
 		if (order) {
 			_GroupOrders[order.id] = order;
+			_AllOrders[order.id] = order;
+
 			var orderHTML = generateOrderHTML(order);
 			$(orderHTML).insertBefore('#new-order')
 			$('#order-item-' + order.id).fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
+
+			var queueHTML = generateQueueItemHTML(order);
+			$('#queue-list').append($(queueHTML));
 		}
 	});
 
-	$('ul#order-list[data-role="listview"]').listview().listview("refresh")
+	$('#order-list,#queue-list').listview().listview("refresh")
 			.find('.initial.uninitialized').removeClass('uninitialized').each(function() {
 				initial($(this));
 			});;

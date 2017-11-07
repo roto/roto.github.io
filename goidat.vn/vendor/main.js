@@ -15,7 +15,7 @@ $(document).ready(function(){
 		switchTheme();
 	}
 	
-	$('.initial').each(function() {
+	$('.initial.uninitialized').removeClass('uninitialized').each(function() {
 		initial($(this));
 	});
 
