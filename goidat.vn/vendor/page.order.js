@@ -1,26 +1,16 @@
 
 function populateOrder(groupGUID) {
-	groupOrderItems = orderGroups[groupGUID].orders;
+	orderItems = orderGroups[groupGUID].orders;
 
 	populateOrderHeader(groupGUID);
 
 	var orderItemsHTML = '';
 
 	// for each menu's groups
-	for (var i in groupOrderItems) {
-		var initialOrderItem = groupOrderItems[i];
-		var orderItem = createNewOrderItem(initialOrderItem.itemID);
-		if (initialOrderItem.request) {
-			orderItem.request = initialOrderItem.request;
-		}
-		if (initialOrderItem.quantity) {
-			orderItem.quantity = initialOrderItem.quantity;
-		}
+	for (var id in orderItems) {
+		var orderItem = orderItems[id];
 		orderItemsHTML += generateOrderItemHTML(orderItem);
 	}
-
-	// done with the initial orders
-	delete groupOrderItems;
 
 	// add an big plus sign to add new order
 	orderItemsHTML += '<li id="new-order"><a href="#menu" data-transition="slidefade"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
@@ -61,22 +51,17 @@ function populateOrderHeader(groupGUID) {
 }
 
 function createNewOrderItem(itemID) {
-	var orderItem = {
-		id: generateOrderItemID(itemID),
+	return {
+		id: generate_quick_guid(),
+		created: (new Date).getTime(),
 		item: menuItems[itemID],
 	};
-	return orderItems[orderItem.id] = orderItem;
 }
 
-function generateOrderItemID(itemID) {
-	var item = menuItems[itemID];
-
-	if (!item.orderCount) {
-		item.orderCount = 1;
-		return itemID;
-	}
-
-	return itemID + '-' + (++item.orderCount);
+function addNewOrderItem(itemID) {
+	var orderItem = createNewOrderItem(itemID);
+	orderItems[orderItem.id] = orderItem;
+	return orderItem;
 }
 
 function openOrderDialog(type, orderItemID) {
@@ -152,7 +137,7 @@ function openOrderDialog(type, orderItemID) {
 			$form.off("submit").submit(function() {
 				fetchOrderInputs(orderItem, $div);
 				$.mobile.back();
-				var $orderElement = $('#order-item-' + orderItemID);
+				var $orderElement = $('#order-item-' + orderItemID + ',#queue-item-' + orderItemID);
 
 				function updateOrderInputElements(property, selector, htmlGeneratorFunc, valuePostfix) {
 					var $el = $orderElement.find(selector);

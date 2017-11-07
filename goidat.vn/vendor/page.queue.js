@@ -3,24 +3,11 @@ function populateQueue() {
 	var orderItemsHTML = '';
 
 	// for each menu's groups
-	for (var i in allOrderItems) {
-		var initialOrderItem = allOrderItems[i];
-		var orderItem = createNewOrderItem(initialOrderItem.itemID);
-		if (initialOrderItem.request) {
-			orderItem.request = initialOrderItem.request;
-		}
-		if (initialOrderItem.quantity) {
-			orderItem.quantity = initialOrderItem.quantity;
-		}
-		if (initialOrderItem.table) {
-			orderItem.table = initialOrderItem.table;
-		}
-		orderItem.state = initialOrderItem.state ? initialOrderItem.state : OrderState.QUEUEING;
-		orderItemsHTML += generateQueueItemHTML(orderItem);
+	for (var orderItemID in allOrderItems) {
+		var orderItem = allOrderItems[orderItemID];
+		orderItem.state = orderItem.state ? orderItem.state : OrderState.QUEUEING;
+		orderItemsHTML += generateQueueItemHTML(orderItemID, orderItem);
 	}
-
-	// done with the initial orders
-	delete allOrderItems;
 
 	// add an big plus sign to add new order
 	orderItemsHTML += '<li id="new-order"><a href="#menu" data-transition="slidefade"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
@@ -28,8 +15,12 @@ function populateQueue() {
 	$('ul#queue-list[data-role="listview"]').empty().append($(orderItemsHTML)).listview().listview("refresh");
 }
 
-function generateQueueItemHTML(orderItem) {
-	var orderItemHTML = '<li id="order-item-' + orderItem.id + '"><a href="javascript:openOrderDialog(\'status\', \'' + orderItem.id + '\')">';
+function generateQueueItemHTML(orderItemID, orderItem) {
+	if (!orderItem) {
+		orderItem = orderItems[orderItemID];
+	}
+
+	var orderItemHTML = '<li id="queue-item-' + orderItemID + '"><a href="javascript:openOrderDialog(\'status\', \'' + orderItemID + '\')">';
 
 	if (orderItem.item.initial) {
 		orderItemHTML += '<img data-name="' + orderItem.item.initial + '" class="initial" style="border-radius: 50%">';
@@ -59,7 +50,7 @@ function processNext(orderItemID) {
 	var orderItem = orderItems[orderItemID];
 	var newState = orderItem.state = getNextState(orderItem.state);
 
-	var $orderElement = $('#order-item-' + orderItemID);
+	var $orderElement = $('#queue-item-' + orderItemID);
 	var $actioNBtn = $orderElement.find('a[data-icon]');
 	// temporary disable the link until button animation finish
 	$actioNBtn.bind('click', false);

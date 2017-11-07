@@ -45,7 +45,7 @@ function openMenuDialog(type, itemID) {
 			loadQuantityInputEvents($div);
 
 			$div.find('form').off('submit').submit(function(){
-				var orderItem = createNewOrderItem(itemID);
+				var orderItem = addNewOrderItem(itemID);
 				fetchOrderInputs(orderItem, $div);
 				var orderItemHTML = generateOrderItemHTML(orderItem);
 				$(orderItemHTML).insertBefore('#new-order');
