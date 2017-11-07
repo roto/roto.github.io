@@ -1,3 +1,5 @@
+var VENDEE = false;
+var VENDOR = true;
 var ORDER_QUANTITY_POSTFIX = '';
 
 $(document).ready(function(){
