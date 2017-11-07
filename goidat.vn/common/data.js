@@ -178,20 +178,31 @@ var initialGroups = {
 // construct the full order list from bill list
 var initialAllOrderItems = [];
 for (var groupGUID in initialGroups) {
-	var tableToDisplay;
 	var tableSharedCount = Number.MAX_SAFE_INTEGER;
 
 	var group = initialGroups[groupGUID];
+	var tableToDisplay = getGroupDisplayName(group);
+	
+	for (j in group.orders) {
+		var order = group.orders[j];
+		order.table = tableToDisplay;
+	}
 
-	for (j in group.tables) {
-		var floorID = group.tables[j].floor;
+	initialAllOrderItems = initialAllOrderItems.concat(group.orders);
+}
+
+function getGroupDisplayName(group) {
+	var displayName;
+
+	for (var i in group.tables) {
+		var floorID = group.tables[i].floor;
 		var floor = deliveryData[floorID];
 		if (!floor) {
 			throw "Floor not exist: " + floorID;
 		}
 
-		for (k in group.tables[j].seats) {
-			var seatID = group.tables[j].seats[k];
+		for (var j in group.tables[i].seats) {
+			var seatID = group.tables[i].seats[j];
 			var seat = floor.seats[seatID];
 			if (!seat) {
 				throw "Seat not exist: " + seatID + " on floor " + floorID;
@@ -199,23 +210,18 @@ for (var groupGUID in initialGroups) {
 
 			if (!seat.groups) {
 				seat.groups = [ groupGUID ];
-			} else {
+			} else if ($.inArray(groupGUID, seat.groups) < 0) {
 				seat.groups.push(groupGUID);
 			}
 
 			if (tableSharedCount > seat.groups.length) {
 				tableSharedCount = seat.groups.length;
-				tableToDisplay = seat.displayName;
+				displayName = seat.displayName;
 			}
 		}
 	}
 
-	for (j in group.orders) {
-		var order = group.orders[j];
-		order.table = tableToDisplay;
-	}
-
-	initialAllOrderItems = initialAllOrderItems.concat(group.orders);
+	return displayName;
 }
 
 initialAllOrderItems.sort(function(a, b) {
