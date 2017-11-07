@@ -85,23 +85,23 @@ function menuItemClick(itemID) {
 
 	$ul.children('li').each(function(index) {
 		var $this = $(this);
-		var orderItem = $this.data('orderItem');
+		var order = $this.data('order');
 
-		if(orderItem && orderItem.item.id === itemID && !orderItem.request) {
-			var currentQuantity = orderItem.quantity;
+		if(order && order.item.id === itemID && !order.request) {
+			var currentQuantity = order.quantity;
 
 			// register the Undo action
 			historyAdd(function() {
 				setPreviewQuantity($this, currentQuantity);
 			});
 
-			if (!orderItem.quantity) {
-				orderItem.quantity = 2;
+			if (!order.quantity) {
+				order.quantity = 2;
 			} else {
-				++orderItem.quantity;
+				++order.quantity;
 			}
 
-			setPreviewQuantity($this, orderItem.quantity);
+			setPreviewQuantity($this, order.quantity);
 
 			itemExist = true;
 			return false; // stop processing the next .each() iteration
@@ -116,7 +116,7 @@ function menuItemClick(itemID) {
 			removePreviewItem($ul, $item);
 		});
 
-		addPreviewItemInside($ul, $item, createNewOrderItem(itemID));
+		addPreviewItemInside($ul, $item, createNewOrder(itemID));
 
 		// BUG: QuickMenu is not rendered correctly after add order preview
 		// 		Smallscree, long quick menu list. Tap an item to preview order.
@@ -135,17 +135,17 @@ function removePreviewItem($ul, $item) {
 	}
 }
 
-function addPreviewItemBefore($next, $item, orderItem) {
-	if (orderItem) {
-		$item.data('orderItem', orderItem);
+function addPreviewItemBefore($next, $item, order) {
+	if (order) {
+		$item.data('order', order);
 	}
 
 	onNewPreviewItem($item.insertBefore($next));
 }
 
-function addPreviewItemInside($parent, $item, orderItem) {
-	if (orderItem) {
-		$item.data('orderItem', orderItem);
+function addPreviewItemInside($parent, $item, order) {
+	if (order) {
+		$item.data('order', order);
 	}
 
 	onNewPreviewItem($parent.append($item));
@@ -165,7 +165,7 @@ function onNewPreviewItem($item) {
 }
 
 function setPreviewQuantity($item, quantity) {
-	$item.data('orderItem').quantity = quantity;
+	$item.data('order').quantity = quantity;
 
 	var $span = $item.children('span');
 	$span.text(quantity);
@@ -178,7 +178,7 @@ function setPreviewQuantity($item, quantity) {
 }
 
 function setPreviewRequest($item, request) {
-	$item.data('orderItem').request = request;
+	$item.data('order').request = request;
 	var color = (request && request.length > 0) ? hash_to_rbg(hash_code(request)) : 'transparent';
 	$item.children('a').first().css('background-color', color);
 }
@@ -230,10 +230,10 @@ function clearPreviewList() {
 
 function openQuickMenuDialog(link) {
 	var $item = $(link).parent();
-	var orderItem = $item.data('orderItem');
+	var order = $item.data('order');
 
 	var $dialog = $('#dialog-menu');
-	$dialog.find('h1').text(orderItem.item.name);
+	$dialog.find('h1').text(order.item.name);
 
 	var $main = $dialog.children('[data-role="main"]');
 	$main.children('div').hide();	// hide all children
@@ -246,22 +246,22 @@ function openQuickMenuDialog(link) {
 		var $div = $main.children('#dialog-menu-' + type).hide();
 
 		if (type === 'edit') {
-			loadRequestInputEvents($div, orderItem.item.id, orderItem.id);
-			loadQuantityInputEvents($div, orderItem.quantity);
+			loadRequestInputEvents($div, order.item.id, order.id);
+			loadQuantityInputEvents($div, order.quantity);
 
 			var $form = $div.find("form");
 			$form.find('a#order-delete').off("click").click(function() {
-				var orderItem = $item.data('orderItem');
+				var order = $item.data('order');
 				var $ul = $item.parent();
 				var $next = $item.next();
 
 				if ($next.length > 0) {
 					historyAdd(function() {
-						addPreviewItemBefore($next, $item, orderItem);
+						addPreviewItemBefore($next, $item, order);
 					});
 				} else {
 					historyAdd(function() {
-						addPreviewItemInside($ul, $item, orderItem);
+						addPreviewItemInside($ul, $item, order);
 					});
 				}
 
@@ -269,14 +269,14 @@ function openQuickMenuDialog(link) {
 			});
 
 			$form.off("submit").submit(function() {
-				var quantity = orderItem.quantity;
-				var request = orderItem.request;
+				var quantity = order.quantity;
+				var request = order.request;
 
-				fetchOrderInputs(orderItem, $div);
+				fetchOrderInputs(order, $div);
 				$.mobile.back();
 
-				var quantityChanged = quantity != orderItem.quantity;
-				var requestChanged = request !== orderItem.request;
+				var quantityChanged = quantity != order.quantity;
+				var requestChanged = request !== order.request;
 
 				if (quantityChanged || requestChanged) {
 					historyAdd(function() {
@@ -284,8 +284,8 @@ function openQuickMenuDialog(link) {
 						setPreviewRequest($item, request);
 					});
 
-					setPreviewQuantity($item, orderItem.quantity);
-					setPreviewRequest($item, orderItem.request);
+					setPreviewQuantity($item, order.quantity);
+					setPreviewRequest($item, order.request);
 				}
 			});
 		} else {

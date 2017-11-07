@@ -3,20 +3,20 @@
 /*****************************************************************************/
 
 /* Find the duplicate order */
-function isRequestOrdered(itemID, request, excludeOrderItemID) {
+function isRequestOrdered(itemID, request, excludeOrderID) {
 	for (var i in _GroupOrders) {
-		if (excludeOrderItemID === i) {
+		if (excludeOrderID === i) {
 			continue;
 		}
 
-		var orderItem = _GroupOrders[i];
-		if (orderItem.item.id === itemID) {
-			if (!request && !orderItem.request) {
+		var order = _GroupOrders[i];
+		if (order.item.id === itemID) {
+			if (!request && !order.request) {
 				return true;
 			}
 
-			if (request && orderItem.request ) {
-				if (request.trim().toLowerCase() === orderItem.request.trim().toLowerCase()) {
+			if (request && order.request ) {
+				if (request.trim().toLowerCase() === order.request.trim().toLowerCase()) {
 					return true;
 				}
 			}
@@ -26,14 +26,14 @@ function isRequestOrdered(itemID, request, excludeOrderItemID) {
 	return false;
 }
 
-function loadRequestInputEvents($div, itemID, orderItemID) {
+function loadRequestInputEvents($div, itemID, orderID) {
 	var $requestInput = $div.find('input[name="request"]');
 	$requestInput.off("input");
 	var $dupWarn = $div.find('#warn-duplicate');
 
 	// there are orders of the same item, monitor the input event
 	$requestInput.on("input", function() {
-		if (isRequestOrdered(itemID, $requestInput.val(), orderItemID)) {
+		if (isRequestOrdered(itemID, $requestInput.val(), orderID)) {
 			// identical order exists, show warning
 			$dupWarn.show();
 		} else {
@@ -41,8 +41,8 @@ function loadRequestInputEvents($div, itemID, orderItemID) {
 		}
 	});
 
-	if (orderItemID && _GroupOrders[orderItemID] && _GroupOrders[orderItemID].request) {
-		$requestInput.val(_GroupOrders[orderItemID].request).trigger("input");
+	if (orderID && _GroupOrders[orderID] && _GroupOrders[orderID].request) {
+		$requestInput.val(_GroupOrders[orderID].request).trigger("input");
 	} else {
 		$requestInput.val('').trigger("input");
 	}
@@ -77,22 +77,22 @@ function loadQuantityInputEvents($div, quantity) {
 	}
 }
 
-function fetchOrderInputs(orderItem, $div) {
+function fetchOrderInputs(order, $div) {
 	var quantity = $div.find('input[name="quantity"]').val();
 	if (quantity && quantity > 1) {
-		orderItem.quantity = quantity;
+		order.quantity = quantity;
 	} else {
-		delete orderItem.quantity;
+		delete order.quantity;
 	}
 
 	var request = $div.find('input[name="request"]').val().trim();
 	if (request && request.length > 0) {
-		orderItem.request = request;
+		order.request = request;
 	} else {
-		delete orderItem.request;
+		delete order.request;
 	}
 
-	return orderItem;
+	return order;
 }
 
 function getFilterText(text) {

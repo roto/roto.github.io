@@ -45,13 +45,13 @@ function openMenuDialog(type, itemID) {
 			loadQuantityInputEvents($div);
 
 			$div.find('form').off('submit').submit(function(){
-				var orderItem = addNewOrderItem(itemID);
-				fetchOrderInputs(orderItem, $div);
-				var orderItemHTML = generateOrderItemHTML(orderItem);
-				$(orderItemHTML).insertBefore('#new-order');
+				var order = addNewOrder(itemID);
+				fetchOrderInputs(order, $div);
+				var orderHTML = generateOrderHTML(order);
+				$(orderHTML).insertBefore('#new-order');
 				$('ul#order-list[data-role="listview"]').listview().listview("refresh");
 				window.history.go(-2);
-				$('#order-item-' + orderItem.id).fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
+				$('#order-item-' + order.id).fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
 			});
 		} else {
 			throw 'Invalid menu dialog type: "' + type + "'";

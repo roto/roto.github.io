@@ -1,20 +1,20 @@
 
 function populateOrder() {
-	var orderItemsHTML = '';
+	var ordersHTML = '';
 
 	// for each menu's groups
 	for (var id in _GroupOrders) {
-		var orderItem = _GroupOrders[id];
-		orderItemsHTML += generateOrderItemHTML(orderItem);
+		var order = _GroupOrders[id];
+		ordersHTML += generateOrderHTML(order);
 	}
 
 	// add an big plus sign to add new order
-	orderItemsHTML += '<li id="new-order"><a href="#menu" data-transition="slidefade"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
+	ordersHTML += '<li id="new-order"><a href="#menu" data-transition="slidefade"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
 
-	$('ul#order-list[data-role="listview"]').empty().append($(orderItemsHTML)).listview().listview("refresh");
+	$('ul#order-list[data-role="listview"]').empty().append($(ordersHTML)).listview().listview("refresh");
 }
 
-function createNewOrderItem(itemID) {
+function createNewOrder(itemID) {
 	return {
 		id: generate_quick_guid(),
 		created: (new Date).getTime(),
@@ -22,21 +22,21 @@ function createNewOrderItem(itemID) {
 	};
 }
 
-function addNewOrderItem(itemID) {
-	var orderItem = createNewOrderItem(itemID);
-	_GroupOrders[orderItem.id] = orderItem;
-	return orderItem;
+function addNewOrder(itemID) {
+	var order = createNewOrder(itemID);
+	_GroupOrders[order.id] = order;
+	return order;
 }
 
-function openOrderDialog(type, orderItemID) {
-	if (!_GroupOrders.hasOwnProperty(orderItemID)) {
-		console.warn('Order item "' + orderItemID + '" is not in the order');
+function openOrderDialog(type, orderID) {
+	if (!_GroupOrders.hasOwnProperty(orderID)) {
+		console.warn('Order item "' + orderID + '" is not in the order');
 		return;
 	}
 
-	var orderItem = _GroupOrders[orderItemID];
+	var order = _GroupOrders[orderID];
 	var $dialog = $('#dialog-order');
-	$dialog.find('h1[role="heading"]').text(orderItem.item.name);
+	$dialog.find('h1[role="heading"]').text(order.item.name);
 
 	var $main = $dialog.children('[data-role="main"]');
 	$main.children('div').hide();	// hide all children
@@ -49,14 +49,14 @@ function openOrderDialog(type, orderItemID) {
 		var $div = $main.children('#dialog-order-' + type).hide();
 
 		if (type === 'status') {
-			$div.children('img').attr('src', orderItem.item.image);
-			if (orderItem.quantity) {
-				$div.children('span').text(orderItem.quantity + ORDER_QUANTITY_POSTFIX).show();
+			$div.children('img').attr('src', order.item.image);
+			if (order.quantity) {
+				$div.children('span').text(order.quantity + ORDER_QUANTITY_POSTFIX).show();
 			} else {
 				$div.children('span').hide();
 			}
-			$div.children('#dialog-order-status-request').html(orderItem.request ? orderItem.request : '');
-			$div.children('#dialog-order-status-status').html(orderItem.status ? orderItem.status : 'Queueing');
+			$div.children('#dialog-order-status-request').html(order.request ? order.request : '');
+			$div.children('#dialog-order-status-status').html(order.status ? order.status : 'Queueing');
 			
 			$div.find('a.ui-icon-edit').off('click').click(function() {
 				$div.hide();
@@ -70,22 +70,22 @@ function openOrderDialog(type, orderItemID) {
 				$dialog.popup("reposition", {});
 			});
 		} else if (type === 'info') {
-			$div.children('img').attr('src', orderItem.item.image);
-			$div.children('p').text(orderItem.item.desc ? orderItem.item.desc : '');
+			$div.children('img').attr('src', order.item.image);
+			$div.children('p').text(order.item.desc ? order.item.desc : '');
 			$div.find('a').off('click').click(function() {
 				$div.hide();
 				showOrderContent('status');
 				$dialog.popup("reposition", {});
 			});
 		} else if (type === 'edit') {
-			loadRequestInputEvents($div, orderItem.item.id, orderItemID);
-			loadQuantityInputEvents($div, orderItem.quantity);
+			loadRequestInputEvents($div, order.item.id, orderID);
+			loadQuantityInputEvents($div, order.quantity);
 
 			var $form = $div.find("form");
 			$form.find('a#order-delete').off("click").click(function() {
-				delete _GroupOrders[orderItemID];
+				delete _GroupOrders[orderID];
 
-				var $orderElement = $('#order-item-' + orderItemID);
+				var $orderElement = $('#order-item-' + orderID);
 				$orderElement.children('a').off('click').attr('href', undefined);
 				// animate the item out
 				$orderElement.animate(
@@ -99,15 +99,15 @@ function openOrderDialog(type, orderItemID) {
 			});
 
 			$form.off("submit").submit(function() {
-				fetchOrderInputs(orderItem, $div);
+				fetchOrderInputs(order, $div);
 				$.mobile.back();
-				var $orderElement = $('#order-item-' + orderItemID);
+				var $orderElement = $('#order-item-' + orderID);
 
 				function updateOrderInputElements(property, selector, htmlGeneratorFunc, valuePostfix) {
 					var $el = $orderElement.find(selector);
 					if ($el.length > 0) {
-						if (orderItem[property]) {
-							var valueWithPF = valuePostfix ? orderItem[property] + valuePostfix : orderItem[property];
+						if (order[property]) {
+							var valueWithPF = valuePostfix ? order[property] + valuePostfix : order[property];
 							if ($el.text() != valueWithPF) {
 								$el.text(valueWithPF);
 								$el.fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
@@ -119,8 +119,8 @@ function openOrderDialog(type, orderItemID) {
 							});
 						}
 					} else {
-						if (orderItem[property]) {
-							$(htmlGeneratorFunc(orderItem)).insertAfter('#order-item-' + orderItemID + ' > a > h2').hide().fadeIn(1000);
+						if (order[property]) {
+							$(htmlGeneratorFunc(order)).insertAfter('#order-item-' + orderID + ' > a > h2').hide().fadeIn(1000);
 						}
 					}
 				}
@@ -137,36 +137,36 @@ function openOrderDialog(type, orderItemID) {
 	}
 }
 
-function generateOrderItemHTML(orderItem) {
-	var orderItemHTML = '<li id="order-item-' + orderItem.id + '"><a href="javascript:openOrderDialog(\'status\', \'' + orderItem.id + '\')">';
+function generateOrderHTML(order) {
+	var orderHTML = '<li id="order-item-' + order.id + '"><a href="javascript:openOrderDialog(\'status\', \'' + order.id + '\')">';
 
-	if (orderItem.item.image) {
-		orderItemHTML += '<img style="border-radius: 50%" src="' + orderItem.item.image + '">';
+	if (order.item.image) {
+		orderHTML += '<img style="border-radius: 50%" src="' + order.item.image + '">';
 	}
 
-	if (orderItem.item.name) {
-		orderItemHTML += '<h2>' + orderItem.item.name + '</h2>';
+	if (order.item.name) {
+		orderHTML += '<h2>' + order.item.name + '</h2>';
 	}
 
-	orderItemHTML += generateOrderRequestHTML(orderItem);
-	orderItemHTML += generateOrderQuantityHTML(orderItem);
+	orderHTML += generateOrderRequestHTML(order);
+	orderHTML += generateOrderQuantityHTML(order);
 
-	orderItemHTML += '<span class="ui-li-count">sending..</span>';
-	orderItemHTML += '</a><a href="javascript:openOrderDialog(\'edit\', \'' + orderItem.id + '\')" class="ui-btn ui-icon-edit">Edit</a></li>';
+	orderHTML += '<span class="ui-li-count">sending..</span>';
+	orderHTML += '</a><a href="javascript:openOrderDialog(\'edit\', \'' + order.id + '\')" class="ui-btn ui-icon-edit">Edit</a></li>';
 
-	return orderItemHTML;
+	return orderHTML;
 }
 
-function generateOrderRequestHTML(orderItem) {
-	if (orderItem.request) {
-		return '<p>' + orderItem.request + '</p>';
+function generateOrderRequestHTML(order) {
+	if (order.request) {
+		return '<p>' + order.request + '</p>';
 	}
 	return '';
 }
 
-function generateOrderQuantityHTML(orderItem) {
-    if (orderItem.quantity) {
-        return '<span class="ui-li-quantity ui-body-inherit">' + orderItem.quantity + ORDER_QUANTITY_POSTFIX + '</span>';
+function generateOrderQuantityHTML(order) {
+    if (order.quantity) {
+        return '<span class="ui-li-quantity ui-body-inherit">' + order.quantity + ORDER_QUANTITY_POSTFIX + '</span>';
     }
 	return '';
 }

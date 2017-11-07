@@ -1,56 +1,52 @@
 
 function populateQueue() {
-	var orderItemsHTML = '';
+	var ordersHTML = '';
 
-	// for each menu's groups
-	for (var orderItemID in _AllOrders) {
-		var orderItem = _AllOrders[orderItemID];
-		orderItem.state = orderItem.state ? orderItem.state : OrderState.QUEUEING;
-		orderItemsHTML += generateQueueItemHTML(orderItemID, orderItem);
+	// for all orders
+	for (var orderID in _AllOrders) {
+		var order = _AllOrders[orderID];
+		order.state = order.state ? order.state : OrderState.QUEUEING;
+		ordersHTML += generateQueueItemHTML(order);
 	}
 
 	// add an big plus sign to add new order
-	orderItemsHTML += '<li id="new-order"><a href="#menu" data-transition="slidefade"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
+	ordersHTML += '<li id="new-order"><a href="#menu" data-transition="slidefade"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
 
-	$('ul#queue-list[data-role="listview"]').empty().append($(orderItemsHTML)).listview().listview("refresh");
+	$('ul#queue-list[data-role="listview"]').empty().append($(ordersHTML)).listview().listview("refresh");
 }
 
-function generateQueueItemHTML(orderItemID, orderItem) {
-	if (!orderItem) {
-		orderItem = _GroupOrders[orderItemID];
+function generateQueueItemHTML(order) {
+	var orderHTML = '<li id="queue-item-' + order.id + '"><a href="javascript:openOrderDialog(\'status\', \'' + order.id + '\')">';
+
+	if (order.item.initial) {
+		orderHTML += '<img data-name="' + order.item.initial + '" class="initial" style="border-radius: 50%">';
 	}
 
-	var orderItemHTML = '<li id="queue-item-' + orderItemID + '"><a href="javascript:openOrderDialog(\'status\', \'' + orderItemID + '\')">';
-
-	if (orderItem.item.initial) {
-		orderItemHTML += '<img data-name="' + orderItem.item.initial + '" class="initial" style="border-radius: 50%">';
+	if (order.item.name) {
+		orderHTML += '<h2>' + order.item.name + '</h2>';
 	}
 
-	if (orderItem.item.name) {
-		orderItemHTML += '<h2>' + orderItem.item.name + '</h2>';
-	}
+	orderHTML += generateOrderRequestHTML(order);
+	orderHTML += generateOrderQuantityHTML(order);
+	orderHTML += generateQueueStateHTML(order);
+	orderHTML += generateQueueTableHTML(order);
 
-	orderItemHTML += generateOrderRequestHTML(orderItem);
-	orderItemHTML += generateOrderQuantityHTML(orderItem);
-	orderItemHTML += generateQueueStateHTML(orderItem);
-	orderItemHTML += generateQueueTableHTML(orderItem);
+	orderHTML += '</a>';
+	orderHTML += generateQueueActionHTML(order);
 
-	orderItemHTML += '</a>';
-	orderItemHTML += generateQueueActionHTML(orderItem);
-
-	return orderItemHTML;
+	return orderHTML;
 }
 
-function processNext(orderItemID) {
-	if (!_GroupOrders.hasOwnProperty(orderItemID)) {
-		console.warn('Order item "' + orderItemID + '" is not in the order');
+function processNext(orderID) {
+	if (!_AllOrders.hasOwnProperty(orderID)) {
+		console.warn('Order item "' + orderID + '" is not in the order');
 		return;
 	}
 
-	var orderItem = _GroupOrders[orderItemID];
-	var newState = orderItem.state = getNextState(orderItem.state);
+	var order = _AllOrders[orderID];
+	var newState = order.state = getNextState(order.state);
 
-	var $orderElement = $('#queue-item-' + orderItemID);
+	var $orderElement = $('#queue-item-' + orderID);
 	var $actioNBtn = $orderElement.find('a[data-icon]');
 	// temporary disable the link until button animation finish
 	$actioNBtn.bind('click', false);
@@ -104,20 +100,20 @@ function getIconNameForState(state) {
 	}
 }
 
-function generateQueueStateHTML(orderItem) {
-	return '<span class="ui-li-count">' + orderItem.state + '</span>';
+function generateQueueStateHTML(order) {
+	return '<span class="ui-li-count">' + order.state + '</span>';
 }
 
-function generateQueueActionHTML(orderItem) {
-	var nextState = getNextState(orderItem.state);
+function generateQueueActionHTML(order) {
+	var nextState = getNextState(order.state);
 	var action = getStateAction(nextState);
 	var icon = getIconNameForState(nextState);
-	return '<a href="javascript:processNext(\'' + orderItem.id + '\')" data-icon="' + icon +'">' + action + '</a></li>';
+	return '<a href="javascript:processNext(\'' + order.id + '\')" data-icon="' + icon +'">' + action + '</a></li>';
 }
 
-function generateQueueTableHTML(orderItem) {
-	if (orderItem.table) {
-		return '<span class="ui-li-table ui-body-inherit">' + orderItem.table + '</span>';
+function generateQueueTableHTML(order) {
+	if (order.table) {
+		return '<span class="ui-li-table ui-body-inherit">' + order.table + '</span>';
 	}
 	return '';
 }
