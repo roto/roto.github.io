@@ -9,9 +9,6 @@ function populateQueue() {
 		ordersHTML += generateQueueItemHTML(order);
 	}
 
-	// add an big plus sign to add new order
-	ordersHTML += '<li id="new-order"><a href="#menu" data-transition="slidefade"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
-
 	$('ul#queue-list[data-role="listview"]').empty().append($(ordersHTML)).listview().listview("refresh");
 }
 

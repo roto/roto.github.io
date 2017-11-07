@@ -228,6 +228,27 @@ function clearPreviewList() {
 	$('#order-preview-list').empty();
 }
 
+function acceptPreviewList() {
+	$('#order-preview-list').children('li').each(function(index) {
+		var $this = $(this);
+		var order = $this.data('order');
+
+		if (order) {
+			_GroupOrders[order.id] = order;
+			var orderHTML = generateOrderHTML(order);
+			$(orderHTML).insertBefore('#new-order')
+			$('#order-item-' + order.id).fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
+		}
+	});
+
+	$('ul#order-list[data-role="listview"]').listview().listview("refresh")
+			.find('.initial.uninitialized').removeClass('uninitialized').each(function() {
+				initial($(this));
+			});;
+
+	clearPreviewList();
+}
+
 function openQuickMenuDialog(link) {
 	var $item = $(link).parent();
 	var order = $item.data('order');
