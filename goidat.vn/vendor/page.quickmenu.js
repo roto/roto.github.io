@@ -3,8 +3,8 @@ function populateQuickMenu() {
 	var groupsHTML = '';
 
 	// for each menu's groups
-	for (var idx = 0; idx < menuGroups.length; ++idx) {
-		var group = menuGroups[idx];
+	for (var idx = 0; idx < _MenuGroups.length; ++idx) {
+		var group = _MenuGroups[idx];
 		if (typeof group === 'undefined' || typeof group.items === 'undefined' || group.items.length === 0) {
 			// group.items is not defined or empty
 			continue;
@@ -40,7 +40,7 @@ function generateQuickMenuGroupHTML(group) {
 	// for each group's items
 	for (var i = 0; i < group.items.length; ++i) {
 		var itemID = group.items[i];
-		var item = menuItems[itemID];
+		var item = _MenuItems[itemID];
 		if (!item.id) {
 			// make sure the item.id is set
 			item.id = itemID;
@@ -79,7 +79,7 @@ function generateQuickMenuItemHTML(item) {
 }
 
 function menuItemClick(itemID) {
-	var item = menuItems[itemID];
+	var item = _MenuItems[itemID];
 	var $ul = $('#order-preview-list');
 	var itemExist = false;
 

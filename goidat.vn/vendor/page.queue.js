@@ -3,8 +3,8 @@ function populateQueue() {
 	var orderItemsHTML = '';
 
 	// for each menu's groups
-	for (var orderItemID in allOrderItems) {
-		var orderItem = allOrderItems[orderItemID];
+	for (var orderItemID in _AllOrders) {
+		var orderItem = _AllOrders[orderItemID];
 		orderItem.state = orderItem.state ? orderItem.state : OrderState.QUEUEING;
 		orderItemsHTML += generateQueueItemHTML(orderItemID, orderItem);
 	}
@@ -17,7 +17,7 @@ function populateQueue() {
 
 function generateQueueItemHTML(orderItemID, orderItem) {
 	if (!orderItem) {
-		orderItem = orderItems[orderItemID];
+		orderItem = _GroupOrders[orderItemID];
 	}
 
 	var orderItemHTML = '<li id="queue-item-' + orderItemID + '"><a href="javascript:openOrderDialog(\'status\', \'' + orderItemID + '\')">';
@@ -42,12 +42,12 @@ function generateQueueItemHTML(orderItemID, orderItem) {
 }
 
 function processNext(orderItemID) {
-	if (!orderItems.hasOwnProperty(orderItemID)) {
+	if (!_GroupOrders.hasOwnProperty(orderItemID)) {
 		console.warn('Order item "' + orderItemID + '" is not in the order');
 		return;
 	}
 
-	var orderItem = orderItems[orderItemID];
+	var orderItem = _GroupOrders[orderItemID];
 	var newState = orderItem.state = getNextState(orderItem.state);
 
 	var $orderElement = $('#queue-item-' + orderItemID);

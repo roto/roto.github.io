@@ -73,8 +73,8 @@ function loadDeliveryTable() {
 	if ($div.children().length === 0) {
 		$div.hide();
 		var html = '';
-		for (var i in deliveryData) {
-			var floor = deliveryData[i];
+		for (var i in _DeliveryData) {
+			var floor = _DeliveryData[i];
 			var floorHTML = '<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">';
 			floorHTML += '<legend>' + floor.name + '</legend>';
 

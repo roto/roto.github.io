@@ -7,7 +7,7 @@ OrderState = {
 	REJECTED:	'rejected',
 }
 
-var menuGroups = [{
+var _MenuGroups = [{
 		id: 'hot',
 		name: 'Hot',
 		nofilter: true,
@@ -28,7 +28,7 @@ var menuGroups = [{
 	},
 ];
 
-var menuItems = {
+var _MenuItems = {
 	'com-ga': {
 		name:   'Cơm Gà',
 		desc:   'Cơm rang với đùi gà rán.',
@@ -77,7 +77,7 @@ var menuItems = {
 	},
 };
 
-var deliveryData = {
+var _DeliveryData = {
 	1: {
 		name: 'Tầng 1',
 		seats: {
@@ -118,19 +118,19 @@ var deliveryData = {
 	},
 };
 
-var orderGroups = {
+var _OrderGroups = {
 	[generate_quick_guid()] : {
 		tables: [ {floor: 1, seats: [3, 4, 5]} ],
 		orders: {
 			[generate_quick_guid()] : {
 				created: (new Date).getTime() - 1000 * 60 * 10,
-				item: menuItems['pho-ngan'],
+				item: _MenuItems['pho-ngan'],
 				request: 'nhiều tiết',
 				quantity: 4,
 			},
 			[generate_quick_guid()] : {
 				created: (new Date).getTime() - 1000 * 60 * 3,
-				item: menuItems['pho-bo'],
+				item: _MenuItems['pho-bo'],
 				quantity: 3,
 			},
 		},
@@ -140,12 +140,12 @@ var orderGroups = {
 		orders: {
 			[generate_quick_guid()] : {
 				created: (new Date).getTime() - 1000 * 60 * 9,
-				item: menuItems['pho-bo'],
+				item: _MenuItems['pho-bo'],
 				request: 'ít bún',
 			},
 			[generate_quick_guid()] : {
 				created: (new Date).getTime() - 1000 * 60 * 5,
-				item: menuItems['com-ga'],
+				item: _MenuItems['com-ga'],
 				quantity: 2,
 			}
 		},
@@ -155,7 +155,7 @@ var orderGroups = {
 		orders: {
 			[generate_quick_guid()] : {
 				created: (new Date).getTime() - 1000 * 60 * 8,
-				item: menuItems['com-rang-dua-bo'],
+				item: _MenuItems['com-rang-dua-bo'],
 			}
 		},
 	},
@@ -164,7 +164,7 @@ var orderGroups = {
 		orders: {
 			[generate_quick_guid()] : {
 				created: (new Date).getTime() - 1000 * 60 * 2,
-				item: menuItems['com-ga'],
+				item: _MenuItems['com-ga'],
 				request: 'không sốt',
 				quantity: 2,
 			}
@@ -175,18 +175,18 @@ var orderGroups = {
 		orders: {
 			[generate_quick_guid()] : {
 				created: (new Date).getTime() - 1000 * 60 * 13,
-				item: menuItems['com-ga'],
+				item: _MenuItems['com-ga'],
 			}
 		},
 	},
 };
 
 // construct the full order list from bill list
-var allOrderItems = [];
-for (var groupGUID in orderGroups) {
+var _AllOrders = [];
+for (var groupGUID in _OrderGroups) {
 	var tableSharedCount = Number.MAX_SAFE_INTEGER;
 
-	var group = orderGroups[groupGUID];
+	var group = _OrderGroups[groupGUID];
 	var tableToDisplay = getGroupDisplayName(group);
 	
 	for (var orderID in group.orders) {
@@ -195,23 +195,23 @@ for (var groupGUID in orderGroups) {
 		order.id = orderID;
 	}
 
-	allOrderItems = Object.assign(allOrderItems, group.orders);
+	_AllOrders = Object.assign(_AllOrders, group.orders);
 }
 
-allOrderItems.sort(function(a, b) {
+_AllOrders.sort(function(a, b) {
 	return a.created - b.created;
 })
 
 // orders for table 206
 // https://stackoverflow.com/questions/4044845/retrieving-a-property-of-a-json-object-by-index/31103463#31103463
-var orderItems = orderGroups[Object.keys(orderGroups)[1]].orders;
+var _GroupOrders = _OrderGroups[Object.keys(_OrderGroups)[1]].orders;
 
 function getGroupDisplayName(group) {
 	var displayName;
 
 	for (var i in group.tables) {
 		var floorID = group.tables[i].floor;
-		var floor = deliveryData[floorID];
+		var floor = _DeliveryData[floorID];
 		if (!floor) {
 			throw 'Floor not exist: ' + floorID;
 		}

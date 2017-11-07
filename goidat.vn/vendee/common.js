@@ -4,12 +4,12 @@
 
 /* Find the duplicate order */
 function isRequestOrdered(itemID, request, excludeOrderItemID) {
-	for (var i in orderItems) {
+	for (var i in _GroupOrders) {
 		if (excludeOrderItemID === i) {
 			continue;
 		}
 
-		var orderItem = orderItems[i];
+		var orderItem = _GroupOrders[i];
 		if (orderItem.item.id === itemID) {
 			if (!request && !orderItem.request) {
 				return true;
@@ -41,8 +41,8 @@ function loadRequestInputEvents($div, itemID, orderItemID) {
 		}
 	});
 
-	if (orderItemID && orderItems[orderItemID] && orderItems[orderItemID].request) {
-		$requestInput.val(orderItems[orderItemID].request).trigger("input");
+	if (orderItemID && _GroupOrders[orderItemID] && _GroupOrders[orderItemID].request) {
+		$requestInput.val(_GroupOrders[orderItemID].request).trigger("input");
 	} else {
 		$requestInput.val('').trigger("input");
 	}

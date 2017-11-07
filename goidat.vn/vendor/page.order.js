@@ -1,14 +1,14 @@
 
 function populateOrder(groupGUID) {
-	orderItems = orderGroups[groupGUID].orders;
+	_GroupOrders = _OrderGroups[groupGUID].orders;
 
 	populateOrderHeader(groupGUID);
 
 	var orderItemsHTML = '';
 
 	// for each menu's groups
-	for (var id in orderItems) {
-		var orderItem = orderItems[id];
+	for (var id in _GroupOrders) {
+		var orderItem = _GroupOrders[id];
 		orderItemsHTML += generateOrderItemHTML(orderItem);
 	}
 
@@ -25,10 +25,10 @@ function populateOrderHeader(groupGUID) {
 	var $div = $('#order > div[data-role="subheader"]');
 	var html = '<div data-role="delivery-table" align="center"><fieldset data-role="controlgroup" data-type="horizontal">';
 
-	var group = orderGroups[groupGUID];
+	var group = _OrderGroups[groupGUID];
 	for (var i in group.tables) {
 		var floorID = group.tables[i].floor;
-		var floor = deliveryData[floorID];
+		var floor = _DeliveryData[floorID];
 		if (!floor) {
 			throw "Floor not exist: " + floorID;
 		}
@@ -54,23 +54,23 @@ function createNewOrderItem(itemID) {
 	return {
 		id: generate_quick_guid(),
 		created: (new Date).getTime(),
-		item: menuItems[itemID],
+		item: _MenuItems[itemID],
 	};
 }
 
 function addNewOrderItem(itemID) {
 	var orderItem = createNewOrderItem(itemID);
-	orderItems[orderItem.id] = orderItem;
+	_GroupOrders[orderItem.id] = orderItem;
 	return orderItem;
 }
 
 function openOrderDialog(type, orderItemID) {
-	if (!orderItems.hasOwnProperty(orderItemID)) {
+	if (!_GroupOrders.hasOwnProperty(orderItemID)) {
 		console.warn('Order item "' + orderItemID + '" is not in the order');
 		return;
 	}
 
-	var orderItem = orderItems[orderItemID];
+	var orderItem = _GroupOrders[orderItemID];
 	var $dialog = $('#dialog-order');
 	$dialog.find('h1[role="heading"]').text(orderItem.item.name);
 
@@ -119,7 +119,7 @@ function openOrderDialog(type, orderItemID) {
 
 			var $form = $div.find("form");
 			$form.find('a#order-delete').off("click").click(function() {
-				delete orderItems[orderItemID];
+				delete _GroupOrders[orderItemID];
 
 				var $orderElement = $('#order-item-' + orderItemID);
 				$orderElement.children('a').off('click').attr('href', undefined);

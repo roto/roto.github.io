@@ -13,8 +13,8 @@ function openDeliveryMap() {
 function populateDelivery() {
 	var $div = $('div#delivery #delivery-list');
 	var html = '';
-	for (var i in deliveryData) {
-		var floor = deliveryData[i];
+	for (var i in _DeliveryData) {
+		var floor = _DeliveryData[i];
 		var floorHTML = '<fieldset data-role="controlgroup" data-type="horizontal">';
 		floorHTML += '<legend>' + floor.name + '</legend>';
 
