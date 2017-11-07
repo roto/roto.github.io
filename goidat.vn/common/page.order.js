@@ -156,8 +156,9 @@ function openOrderDialog(type, orderID) {
 			var $form = $div.find("form");
 			$form.find('a#order-delete').off("click").click(function() {
 				delete _GroupOrders[orderID];
+				delete _AllOrders[orderID];
 
-				var $orderElement = $('#order-item-' + orderID);
+				var $orderElement = $('#order-item-' + orderID + ',#queue-item-' + orderID);
 				$orderElement.children('a').off('click').attr('href', undefined);
 				// animate the item out
 				$orderElement.animate(
