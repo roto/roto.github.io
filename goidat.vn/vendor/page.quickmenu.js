@@ -231,7 +231,6 @@ function clearPreviewList() {
 function openQuickMenuDialog(link) {
 	var $item = $(link).parent();
 	var orderItem = $item.data('orderItem');
-	var orderItemID = orderItem.id;
 
 	var $dialog = $('#dialog-menu');
 	$dialog.find('h1').text(orderItem.item.name);
@@ -246,37 +245,8 @@ function openQuickMenuDialog(link) {
 	function showQuickMenuContent(type) {
 		var $div = $main.children('#dialog-menu-' + type).hide();
 
-		if (type === 'status') {
-			$div.children('img').attr('src', orderItem.item.image);
-			if (orderItem.quantity) {
-				$div.children('span').text(orderItem.quantity + ORDER_QUANTITY_POSTFIX).show();
-			} else {
-				$div.children('span').hide();
-			}
-			$div.children('#dialog-order-status-request').html(orderItem.request ? orderItem.request : '');
-			$div.children('#dialog-order-status-status').html(orderItem.status ? orderItem.status : 'Queueing');
-			
-			$div.find('a.ui-icon-edit').off('click').click(function() {
-				$div.hide();
-				showOrderContent('edit');
-				$dialog.popup("reposition", {});
-			});
-
-			$div.find('a.ui-icon-info').off('click').click(function() {
-				$div.hide();
-				showOrderContent('info');
-				$dialog.popup("reposition", {});
-			});
-		} else if (type === 'info') {
-			$div.children('img').attr('src', orderItem.item.image);
-			$div.children('p').text(orderItem.item.desc ? orderItem.item.desc : '');
-			$div.find('a').off('click').click(function() {
-				$div.hide();
-				showOrderContent('status');
-				$dialog.popup("reposition", {});
-			});
-		} else if (type === 'edit') {
-			loadRequestInputEvents($div, orderItem.item.id, orderItemID);
+		if (type === 'edit') {
+			loadRequestInputEvents($div, orderItem.item.id, orderItem.id);
 			loadQuantityInputEvents($div, orderItem.quantity);
 
 			var $form = $div.find("form");
