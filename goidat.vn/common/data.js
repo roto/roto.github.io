@@ -124,7 +124,7 @@ var deliveryData = {
  * Temporary Data
  */
 
-var initialGroups = {
+var orderGroups = {
 	[generate_quick_guid()] : {
 		tables: [ {floor: 1, seats: [3, 4, 5]} ],
 		orders: [{
@@ -176,11 +176,11 @@ var initialGroups = {
 };
 
 // construct the full order list from bill list
-var initialAllOrderItems = [];
-for (var groupGUID in initialGroups) {
+var allOrderItems = [];
+for (var groupGUID in orderGroups) {
 	var tableSharedCount = Number.MAX_SAFE_INTEGER;
 
-	var group = initialGroups[groupGUID];
+	var group = orderGroups[groupGUID];
 	var tableToDisplay = getGroupDisplayName(group);
 	
 	for (j in group.orders) {
@@ -188,7 +188,7 @@ for (var groupGUID in initialGroups) {
 		order.table = tableToDisplay;
 	}
 
-	initialAllOrderItems = initialAllOrderItems.concat(group.orders);
+	allOrderItems = allOrderItems.concat(group.orders);
 }
 
 function getGroupDisplayName(group) {
@@ -224,10 +224,10 @@ function getGroupDisplayName(group) {
 	return displayName;
 }
 
-initialAllOrderItems.sort(function(a, b) {
+allOrderItems.sort(function(a, b) {
 	return a.created - b.created;
 })
 
 // temporary initial object for table 206
 // https://stackoverflow.com/questions/4044845/retrieving-a-property-of-a-json-object-by-index/31103463#31103463
-var initialOrderItems = initialGroups[Object.keys(initialGroups)[1]].orders;
+var groupOrderItems = orderGroups[Object.keys(orderGroups)[1]].orders;

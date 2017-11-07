@@ -3,8 +3,8 @@ function populateOrder() {
 	var orderItemsHTML = '';
 
 	// for each menu's groups
-	for (var i in initialOrderItems) {
-		var initialOrderItem = initialOrderItems[i];
+	for (var i in groupOrderItems) {
+		var initialOrderItem = groupOrderItems[i];
 		var orderItem = createNewOrderItem(initialOrderItem.itemID);
 		if (initialOrderItem.request) {
 			orderItem.request = initialOrderItem.request;
@@ -16,7 +16,7 @@ function populateOrder() {
 	}
 
 	// done with the initial orders
-	delete initialOrderItems;
+	delete groupOrderItems;
 
 	// add an big plus sign to add new order
 	orderItemsHTML += '<li id="new-order"><a href="#menu" data-transition="slidefade"><div class="ui-li-thumb"><img src="http://library.austintexas.gov/sites/default/files/plus-gray.svg"></div></a></li>';
