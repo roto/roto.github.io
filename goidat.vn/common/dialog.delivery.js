@@ -1,7 +1,7 @@
 
 function loadDeliveryPopup() {
 	$('#delivery-tabs').tabs({ activate: onDeliveryTabActivate });
-	$('#dialog-delivery').one('popupbeforeposition', loadDeliveryTable)
+	$('#dialog-delivery').on('popupbeforeposition', loadDeliveryTable)
 			.on('popupafteropen', onDeliveryPopupOpen)
 			.on('popupafterclose', onDeliveryPopupClose);
 }
@@ -70,7 +70,13 @@ function loadDeliveryTable() {
 	var $main = $dialog.children('[data-role="main"]');
 	var $div = $main.children('div#delivery-tabs').children('div#tab-table');
 
-	if ($div.children().length === 0) {
+	if ($div.data('group') !== _GroupID) {
+		$div.empty();
+	}
+
+	if ($div.children().length === 0 || $div.data('group') !== _GroupID) {
+		$div.data('group', _GroupID);
+
 		$div.hide();
 		var html = '';
 		for (var i in _DeliveryData) {
@@ -81,12 +87,13 @@ function loadDeliveryTable() {
 			for (var j in floor.seats) {
 				var seat = floor.seats[j];
 				var seatName = 'seat-' + i + '-' + j;
-				floorHTML += '<input type="checkbox" id="' + seatName + '">';
-				floorHTML += '<label for="' + seatName + '"';
-				if (seat.groups && seat.groups.length > 0) {
-					floorHTML += ' class="seat-taken"';
-				}
-				floorHTML += '>' + seat.displayName + '</label>'
+
+				var checked = seat.groups && $.inArray(_GroupID, seat.groups) >= 0;
+				var taken = seat.groups && seat.groups.length > (checked ? 1 : 0);
+
+				floorHTML += '<input type="checkbox" id="' + seatName + '"' + (checked ? ' checked>' : '>');
+				floorHTML += '<label for="' + seatName + '"' + (taken ? ' class="seat-taken">' : '>');
+				floorHTML += seat.displayName + '</label>'
 			}
 
 			floorHTML += '</fieldset>';

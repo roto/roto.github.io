@@ -1,6 +1,7 @@
 
 function populateOrder(groupGUID) {
 	if (groupGUID) {
+		_GroupID = groupGUID;
 		_GroupOrders = _OrderGroups[groupGUID].orders;
 
 		populateOrderHeader(groupGUID);

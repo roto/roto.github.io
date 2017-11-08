@@ -204,7 +204,8 @@ _AllOrders.sort(function(a, b) {
 
 // orders for table 206
 // https://stackoverflow.com/questions/4044845/retrieving-a-property-of-a-json-object-by-index/31103463#31103463
-var _GroupOrders = _OrderGroups[Object.keys(_OrderGroups)[1]].orders;
+var _GroupID = Object.keys(_OrderGroups)[1];
+var _GroupOrders = _OrderGroups[_GroupID].orders;
 
 function getGroupDisplayName(group) {
 	var displayName;
