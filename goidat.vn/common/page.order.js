@@ -17,6 +17,13 @@ function populateOrder(groupGUID) {
 			initial($(this));
 		});
 	}
+
+	// TODO: use back ref to group, instead of duplicating all table display name to each orders
+	var orderKeys = Object.keys(_GroupOrders);
+	if (orderKeys.length > 0) {
+		var dest = 'Table ' + _GroupOrders[orderKeys[0]].table;
+		$('a#footer-button-delivery').text(dest);
+	}
 }
 
 function populateOrderHeader(groupGUID) {

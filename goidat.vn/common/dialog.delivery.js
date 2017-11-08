@@ -32,7 +32,20 @@ function onDeliveryPopupClose(event, ui) {
 		}
 
 		if ($tableElement && $tableElement.text().length > 0) {
-			dest = 'Table ' + $tableElement.text();
+			var tableName = $tableElement.text();
+			dest = 'Table ' + tableName;
+
+			if (VENDOR) {
+				for (var orderID in _GroupOrders) {
+					var order = _GroupOrders[orderID];
+					order.table = tableName;
+
+					// update queue list table display
+					$('#queue-item-' + order.id + ' span.ui-li-table').text(tableName);
+				}
+
+				updateDeliveryData($dialog);
+			}
 		}
 	} else if ($activeTab == 1) {	// book
         var etaDate = $('#eta-time').datebox('getTheDate');
@@ -51,6 +64,53 @@ function onDeliveryPopupClose(event, ui) {
 		$link.text(dest);
 		$link.fadeOut().fadeIn('slow').fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
 	}
+}
+
+function updateDeliveryData($dialog) {
+	// update global data
+	var group = _OrderGroups[_GroupID];
+	
+	// remove all groupID from old seats
+	for (var i in group.tables) {
+		var table = group.tables[i];
+		var floorID = table.floor;
+		var seatID = table.seat;
+
+		var floor = _DeliveryData[floorID];
+		if (!floor) {
+			throw 'Floor not exist: ' + floorID;
+		}
+
+		var seat = floor.seats[seatID];
+		if (!seat) {
+			throw 'Seat not exist: ' + seatID + ' on floor ' + floorID;
+		}
+
+		if (seat.groups && ($.inArray(_GroupID, seat.groups) >= 0)) {
+			// remove the groupGUID from the seat.groups
+			seat.groups.splice($.inArray(_GroupID, seat.groups), 1);
+		}
+	}
+
+	var tables = [];
+	$dialog.find('div#tab-table label.ui-checkbox-on').each(function() {
+		var $this = $(this);
+		var table = $this.attr('for').split('-');
+		var floorID = table[1];
+		var seatID = table[2];
+		tables.push({floor: floorID, seat: seatID});
+
+		var seat = _DeliveryData[floorID].seats[seatID];
+		if (!seat.groups) {
+			seat.groups = [ _GroupID ];
+		} else if ($.inArray(_GroupID, seat.groups) < 0) {
+			seat.groups.push(_GroupID);
+		}
+	});
+
+	group.tables = tables;
+
+	populateDelivery();
 }
 
 function onDeliveryTabActivate(event, ui) {

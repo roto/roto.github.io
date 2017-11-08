@@ -120,7 +120,11 @@ var _DeliveryData = {
 
 var _OrderGroups = {
 	[generate_quick_guid()] : {
-		tables: [ {floor: 1, seats: [3, 4, 5]} ],
+		tables: [
+			{floor: 1, seat: 3},
+			{floor: 1, seat: 4},
+			{floor: 1, seat: 3},
+		],
 		orders: {
 			[generate_quick_guid()] : {
 				created: (new Date).getTime() - 1000 * 60 * 10,
@@ -136,7 +140,10 @@ var _OrderGroups = {
 		},
 	},
 	[generate_quick_guid()] : {
-		tables: [ {floor: 2, seats: [5, 6]} ],
+		tables: [
+			{floor: 2, seat: 5},
+			{floor: 2, seat: 6},
+		],
 		orders: {
 			[generate_quick_guid()] : {
 				created: (new Date).getTime() - 1000 * 60 * 9,
@@ -151,7 +158,10 @@ var _OrderGroups = {
 		},
 	},
 	[generate_quick_guid()] : {
-		tables: [ {floor: 3, seats: ['B', 'D']} ],
+		tables: [
+			{floor: 3, seat: 'B'},
+			{floor: 3, seat: 'D'},
+		],
 		orders: {
 			[generate_quick_guid()] : {
 				created: (new Date).getTime() - 1000 * 60 * 8,
@@ -160,7 +170,10 @@ var _OrderGroups = {
 		},
 	},
 	[generate_quick_guid()] : {
-		tables: [ {floor: 1, seats: [5, 6]} ],
+		tables: [
+			{floor: 1, seat: 5},
+			{floor: 1, seat: 6},
+		],
 		orders: {
 			[generate_quick_guid()] : {
 				created: (new Date).getTime() - 1000 * 60 * 2,
@@ -171,7 +184,11 @@ var _OrderGroups = {
 		},
 	},
 	[generate_quick_guid()] : {
-		tables: [ {floor: 1, seats: [1, 2, 5]} ],
+		tables: [
+			{floor: 1, seat: 1},
+			{floor: 1, seat: 2},
+			{floor: 1, seat: 5},
+		],
 		orders: {
 			[generate_quick_guid()] : {
 				created: (new Date).getTime() - 1000 * 60 * 13,
@@ -211,29 +228,29 @@ function getGroupDisplayName(group) {
 	var displayName;
 
 	for (var i in group.tables) {
-		var floorID = group.tables[i].floor;
+		var table = group.tables[i];
+		var floorID = table.floor;
+		var seatID = table.seat;
+
 		var floor = _DeliveryData[floorID];
 		if (!floor) {
 			throw 'Floor not exist: ' + floorID;
 		}
 
-		for (var j in group.tables[i].seats) {
-			var seatID = group.tables[i].seats[j];
-			var seat = floor.seats[seatID];
-			if (!seat) {
-				throw 'Seat not exist: ' + seatID + ' on floor ' + floorID;
-			}
+		var seat = floor.seats[seatID];
+		if (!seat) {
+			throw 'Seat not exist: ' + seatID + ' on floor ' + floorID;
+		}
 
-			if (!seat.groups) {
-				seat.groups = [ groupGUID ];
-			} else if ($.inArray(groupGUID, seat.groups) < 0) {
-				seat.groups.push(groupGUID);
-			}
+		if (!seat.groups) {
+			seat.groups = [ groupGUID ];
+		} else if ($.inArray(groupGUID, seat.groups) < 0) {
+			seat.groups.push(groupGUID);
+		}
 
-			if (tableSharedCount > seat.groups.length) {
-				tableSharedCount = seat.groups.length;
-				displayName = seat.displayName;
-			}
+		if (tableSharedCount > seat.groups.length) {
+			tableSharedCount = seat.groups.length;
+			displayName = seat.displayName;
 		}
 	}
 
