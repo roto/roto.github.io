@@ -1,3 +1,7 @@
+/**
+ * Constants
+ */
+var ALL_GROUP = '*';
 
 /**
  * Initalize Ably message channel
@@ -14,10 +18,13 @@ _ably.connection.on('connected', function() {
 
     _channel = _ably.channels.get('Huế');
 
-    // vendor does not need the group id, and always subscribe to all topic
-    // vendee need it, so it will subscribe right after the data is fully synced
     if (VENDOR) {
+        // vendor does not need the group id, and always subscribe to all topic
+        // vendee need it, so it will subscribe right after the data is fully synced
         _channel.subscribe(messageHandler);
+    } else {
+        // all group message
+        _channel.subscribe(ALL_GROUP, messageHandler);
     }
 });
 
@@ -73,9 +80,9 @@ populateGroupData();",
             eval(message.data.script);
         }
 
-        // vendee need correct group id
-        // vendor does not need it, and always subscribe to all in the caller function
         if (VENDEE) {
+            // vendee need correct group id
+            // vendor does not need it, and always subscribe to all in the caller function
             _channel.subscribe(_GroupID, messageHandler);
         }
     }

@@ -36,9 +36,10 @@ function onDeliveryPopupClose(event, ui) {
 	}
 
 	updateDeliveryData(data);
-	_channel.publish(_GroupID, {
-		script: "updateDeliveryData(message.data.data, message.name);",
+	_channel.publish(ALL_GROUP, {
+		script: "updateDeliveryData(message.data.data, message.data.group);",
 		data: data,
+		group: _GroupID,
 	})
 }
 
