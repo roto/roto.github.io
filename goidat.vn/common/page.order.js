@@ -32,22 +32,21 @@ function populateOrderHeader(groupGUID) {
 
 	var group = _OrderGroups[groupGUID];
 	for (var i in group.tables) {
-		var floorID = group.tables[i].floor;
+		var table = group.tables[i];
+		var floorID = table.floor;
 		var floor = _DeliveryData[floorID];
 		if (!floor) {
 			throw "Floor not exist: " + floorID;
 		}
 
-		for (var j in group.tables[i].seats) {
-			var seatID = group.tables[i].seats[j];
-			var seat = floor.seats[seatID];
-			if (!seat) {
-				throw "Seat not exist: " + seatID + " on floor " + floorID;
-			}
-
-			html += '<input type="button" value="' + seat.displayName + '"';
-			html += ' style="background-color:' + hash_to_rbg(hash_code(groupGUID)) + '">';
+		var seatID = table.seat;
+		var seat = floor.seats[seatID];
+		if (!seat) {
+			throw "Seat not exist: " + seatID + " on floor " + floorID;
 		}
+
+		html += '<input type="button" value="' + seat.displayName + '"';
+		html += ' style="background-color:' + hash_to_rbg(hash_code(groupGUID)) + '">';
 	}
 
 	html += '</fieldset></div>';
