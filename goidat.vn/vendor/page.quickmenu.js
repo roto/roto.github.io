@@ -229,27 +229,22 @@ function clearPreviewList() {
 }
 
 function acceptPreviewList() {
+	var orders = [];
 	$('#order-preview-list').children('li').each(function(index) {
 		var $this = $(this);
 		var order = $this.data('order');
 
 		if (order) {
-			_GroupOrders[order.id] = order;
-			_AllOrders[order.id] = order;
-
-			var orderHTML = generateOrderHTML(order);
-			$(orderHTML).insertBefore('#new-order')
-			$('#order-item-' + order.id).fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
-
-			var queueHTML = generateQueueItemHTML(order);
-			$('#queue-list').append($(queueHTML));
+			orders.push(order);
 		}
 	});
 
-	$('#order-list,#queue-list').listview().listview("refresh")
-			.find('.initial.uninitialized').removeClass('uninitialized').each(function() {
-				initial($(this));
-			});;
+	addNewOrders(orders);
+
+	_channel.publish(_GroupID, {
+		script: "addNewOrders(message.data.orders, message.name);",
+		orders: orders,
+	})
 
 	clearPreviewList();
 }

@@ -164,7 +164,7 @@ function openOrderDialog(type, orderID) {
 			$form.find('a#order-delete').off("click").click(function() {
 				deleteOrder(orderID);
 				_channel.publish(_GroupID, {
-					script: "deleteOrder(message.data.orderID);",
+					script: "deleteOrder(message.data.orderID, message.name);",
 					orderID: orderID,
 				})
 			});
@@ -208,20 +208,14 @@ function openOrderDialog(type, orderID) {
 	}
 }
 
-function deleteOrder(orderID) {
-	delete _AllOrders[orderID];
-
-	if (_GroupOrders[orderID]) {
-		delete _GroupOrders[orderID];
+function deleteOrder(orderID, groupID) {
+	if (groupID) {
+		delete _OrderGroups[groupID].orders[orderID];
 	} else {
-		for (var groupID in _OrderGroups) {
-			if (_OrderGroups[groupID].orders[orderID]) {
-				delete _OrderGroups[groupID].orders[orderID];
-				break;
-			}
-		}
+		delete _GroupOrders[orderID];
 	}
-
+	delete _AllOrders[orderID];
+	
 	var $orderElement = $('#order-item-' + orderID + ',#queue-item-' + orderID);
 	$orderElement.children('a').off('click').attr('href', undefined);
 	// animate the item out
@@ -248,4 +242,35 @@ function addNewOrder(itemID) {
 	var order = createNewOrder(itemID);
 	_GroupOrders[order.id] = order;
 	return order;
+}
+
+function addNewOrders(orders, groupID) {
+	for (var i = 0; i < orders.length; ++i) {
+		var order = orders[i];
+
+		if (groupID) {
+			_OrderGroups[groupID].orders[order.id] = order;
+		} else {
+			_GroupOrders[order.id] = order;
+		}
+		
+		var orderHTML = generateOrderHTML(order);
+		$(orderHTML).insertBefore('#new-order')
+		$('#order-item-' + order.id).fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
+
+		if (VENDOR) {
+			_AllOrders[order.id] = order;
+			var queueHTML = generateQueueItemHTML(order);
+			$('#queue-list').append($(queueHTML));
+		}
+	}
+
+	var $list = $('#order-list,#queue-list');
+	$list.listview().listview("refresh");
+
+	if (VENDOR) {
+		$list.find('.initial.uninitialized').removeClass('uninitialized').each(function() {
+			initial($(this));
+		});
+	}
 }
