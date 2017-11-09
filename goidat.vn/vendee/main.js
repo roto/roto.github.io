@@ -20,7 +20,6 @@ $(document).ready(function(){
 
 function populateGroupData() {
 	populateOrder();
-	loadDeliveryPopup();
 }
 
 $(window).load(function() {

@@ -18,6 +18,8 @@ function populateOrder(groupGUID) {
 		});
 	}
 
+	loadDeliveryPopup();
+
 	// TODO: use back ref to group, instead of duplicating all table display name to each orders
 	var orderKeys = Object.keys(_GroupOrders);
 	if (orderKeys.length > 0) {
