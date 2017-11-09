@@ -123,7 +123,7 @@ var _OrderGroups = {
 		tables: [
 			{floor: 1, seat: 3},
 			{floor: 1, seat: 4},
-			{floor: 1, seat: 3},
+			{floor: 1, seat: 5},
 		],
 		orders: {
 			[generate_quick_guid()] : {
@@ -200,25 +200,33 @@ var _OrderGroups = {
 
 // construct the full order list from bill list
 var _AllOrders = {};
-for (var groupGUID in _OrderGroups) {
-	var tableSharedCount = Number.MAX_SAFE_INTEGER;
 
-	var group = _OrderGroups[groupGUID];
-	var tableToDisplay = getGroupDisplayName(group);
-	
-	for (var orderID in group.orders) {
-		var order = group.orders[orderID];
-		order.table = tableToDisplay;
-		order.id = orderID;
+if (_AllOrders) {
+	var sorted = [];
+	for (var groupGUID in _OrderGroups) {
+		var tableSharedCount = Number.MAX_SAFE_INTEGER;
+
+		var group = _OrderGroups[groupGUID];
+		var tableToDisplay = getGroupDisplayName(group);
+		
+		for (var orderID in group.orders) {
+			var order = group.orders[orderID];
+			order.table = tableToDisplay;
+			order.id = orderID;
+
+			sorted.push(order);
+		}
 	}
 
-	_AllOrders = Object.assign(_AllOrders, group.orders);
-}
+	sorted.sort(function(a, b) {
+		return a.created - b.created;
+	});
 
-/* TODO: use groupID back-ref and sort the map
-_AllOrders.sort(function(a, b) {
-	return a.created - b.created;
-})*/
+	for (var i = 0; i < sorted.length; ++i) {
+		var order = sorted[i];
+		_AllOrders[order.id] = order;
+	}
+}
 
 // orders for table 206
 // https://stackoverflow.com/questions/4044845/retrieving-a-property-of-a-json-object-by-index/31103463#31103463
