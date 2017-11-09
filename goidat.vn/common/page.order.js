@@ -1,10 +1,10 @@
 
-function populateOrder(groupGUID) {
-	if (groupGUID) {
-		_GroupID = groupGUID;
-		_GroupOrders = _OrderGroups[groupGUID].orders;
+function populateOrder(groupID) {
+	if (groupID) {
+		_GroupID = groupID;
+		_GroupOrders = _OrderGroups[groupID].orders;
 
-		populateOrderHeader(groupGUID);
+		populateOrderHeader();
 	}
 
 	var ordersHTML = generateOrdersHTML();
@@ -28,27 +28,17 @@ function populateOrder(groupGUID) {
 	}
 }
 
-function populateOrderHeader(groupGUID) {
+function populateOrderHeader() {
 	var $div = $('#order > div[data-role="subheader"]');
 	var html = '<div data-role="delivery-table" align="center"><fieldset data-role="controlgroup" data-type="horizontal">';
 
-	var group = _OrderGroups[groupGUID];
+	var group = _OrderGroups[_GroupID];
 	for (var i in group.tables) {
 		var table = group.tables[i];
-		var floorID = table.floor;
-		var floor = _DeliveryData[floorID];
-		if (!floor) {
-			throw "Floor not exist: " + floorID;
-		}
-
-		var seatID = table.seat;
-		var seat = floor.seats[seatID];
-		if (!seat) {
-			throw "Seat not exist: " + seatID + " on floor " + floorID;
-		}
+		var seat = _DeliveryData[table.floor].seats[table.seat];
 
 		html += '<input type="button" value="' + seat.displayName + '"';
-		html += ' style="background-color:' + hash_to_rbg(hash_code(groupGUID)) + '">';
+		html += ' style="background-color:' + hash_to_rbg(hash_code(_GroupID)) + '">';
 	}
 
 	html += '</fieldset></div>';

@@ -13,10 +13,59 @@ function onDeliveryPopupOpen(event, ui) {
 
 function onDeliveryPopupClose(event, ui) {
 	var $dialog = $(event.target);
-	$tabs = $dialog.find('#delivery-tabs');
+	var $tabs = $dialog.find('#delivery-tabs');
 
+	var activeTab = $tabs.tabs("option", "active");
+
+	var data = {};
+
+	if (activeTab == 0) {			// table
+		var $tableElement = $dialog.find('div#tab-table label.ui-checkbox-on:not(.seat-taken)').first();
+		if (!$tableElement || $tableElement.length <= 0) {
+			$tableElement = $dialog.find('div#tab-table label.ui-checkbox-on').first();
+		}
+
+		if ($tableElement && $tableElement.text().length > 0) {
+			data.tableName = $tableElement.text();
+			data.tables = fetchTablesFromDeliveryDialog($dialog);
+		}
+	} else if (activeTab == 1) {	// book
+		data.etaDate = $('#eta-time').datebox('getTheDate');
+	} else if (activeTab == 2) {	// ship
+		// TODO: shipping address
+	}
+
+	updateDeliveryData(data);
+	_channel.publish(_GroupID, {
+		script: "updateDeliveryData(message.data.data, message.name);",
+		data: data,
+	})
+}
+
+function updateDeliveryData(data, groupID) {
+	if (data.tableName && data.tables) {
+		updateGroupOrderDisplayName(data.tableName, groupID);
+		updateGroupTables(data.tables, groupID);
+
+		if (VENDOR) {
+			populateDelivery();
+		}
+	} else if (data.etaDate) {
+		// TODO: eta time
+	} else if (data.address) {
+		// TODO: shipping address
+	}
+
+	if (!groupID || groupID == _GroupID) {
+		updateDeliveryLink(data);
+		if (VENDOR) {
+			populateOrderHeader();
+		}
+	}
+}
+
+function updateDeliveryLink(data) {
 	var $link = $('a#footer-button-delivery');
-	var $activeTab = $tabs.tabs("option", "active");
 	var dest;
 
 	// clear the booking delivery personal interval
@@ -25,74 +74,82 @@ function onDeliveryPopupClose(event, ui) {
 		delete onDeliveryPopupClose.etaInterval;
 	}
 
-	if ($activeTab == 0) {			// table
-		var $tableElement = $dialog.find('div#tab-table label.ui-checkbox-on:not(.seat-taken)').first();
-		if (!$tableElement || $tableElement.length <= 0) {
-			$tableElement = $dialog.find('div#tab-table label.ui-checkbox-on').first();
-		}
+	if (data.tableName) {
+		dest = 'Table ' + data.tableName;
 
-		if ($tableElement && $tableElement.text().length > 0) {
-			var tableName = $tableElement.text();
-			dest = 'Table ' + tableName;
-
-			if (VENDOR) {
-				for (var orderID in _GroupOrders) {
-					var order = _GroupOrders[orderID];
-					order.table = tableName;
-
-					// update queue list table display
-					$('#queue-item-' + order.id + ' span.ui-li-table').text(tableName);
-				}
-
-				updateDeliveryData($dialog);
-			}
-		}
-	} else if ($activeTab == 1) {	// book
-        var etaDate = $('#eta-time').datebox('getTheDate');
-		dest = 'ETA: ' + etaTime(etaDate);
-
+		// clear the table tab
+		$('#dialog-delivery > [data-role="main"] > div#delivery-tabs > div#tab-table').empty();
+	} else if (data.etaDate) {
+		dest = 'ETA: ' + etaTime(data.etaDate);
+		
 		onDeliveryPopupClose.etaInterval = window.setInterval(function() {
 			$link.fadeOut();
-			$link.text('ETA: ' + etaTime(etaDate));
+			$link.text('ETA: ' + etaTime(data.etaDate));
 			$link.fadeIn('slow');
 		}, 1000 * 60);
-	} else if ($activeTab == 2) {	// ship
+	} else if (data.address) {
 		dest = 'Ship: ';
+		// TODO: shipping address
 	}
-
+	
 	if ($link.text() !== dest) {
 		$link.text(dest);
 		$link.fadeOut().fadeIn('slow').fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
 	}
 }
 
-function updateDeliveryData($dialog) {
+function updateGroupOrderDisplayName(tableName, groupID) {
+	var orders = groupID ? _OrderGroups[groupID].orders : _GroupOrders;
+
+	for (var orderID in orders) {
+		var order = orders[orderID];
+		order.table = tableName;
+
+		if (VENDOR) {
+			// update queue list table display
+			$('#queue-item-' + order.id + ' span.ui-li-table').text(tableName);
+		}
+	}
+}
+
+function updateGroupTables(tables, groupID) {
+	if (!groupID) {
+		groupID = _GroupID;
+	}
+
 	// update global data
-	var group = _OrderGroups[_GroupID];
+	var group = _OrderGroups[groupID];
 	
 	// remove all groupID from old seats
 	for (var i in group.tables) {
 		var table = group.tables[i];
-		var floorID = table.floor;
-		var seatID = table.seat;
+		var seat = _DeliveryData[table.floor].seats[table.seat];
 
-		var floor = _DeliveryData[floorID];
-		if (!floor) {
-			throw 'Floor not exist: ' + floorID;
-		}
-
-		var seat = floor.seats[seatID];
-		if (!seat) {
-			throw 'Seat not exist: ' + seatID + ' on floor ' + floorID;
-		}
-
-		if (seat.groups && ($.inArray(_GroupID, seat.groups) >= 0)) {
+		if (seat.groups && ($.inArray(groupID, seat.groups) >= 0)) {
 			// remove the groupGUID from the seat.groups
-			seat.groups.splice($.inArray(_GroupID, seat.groups), 1);
+			seat.groups.splice($.inArray(groupID, seat.groups), 1);
 		}
 	}
 
+	group.tables = tables;
+
+	// add all groupID to new seats
+	for (var i in group.tables) {
+		var table = group.tables[i];
+		var seat = _DeliveryData[table.floor].seats[table.seat];
+
+		if (!seat.groups) {
+			seat.groups = [ groupID ];
+		} else if ($.inArray(groupID, seat.groups) < 0) {
+			// add the groupGUID to the seat.groups
+			seat.groups.push(groupID);
+		}
+	}
+}
+
+function fetchTablesFromDeliveryDialog($dialog) {
 	var tables = [];
+
 	$dialog.find('div#tab-table label.ui-checkbox-on').each(function() {
 		var $this = $(this);
 		var table = $this.attr('for').split('-');
@@ -108,9 +165,7 @@ function updateDeliveryData($dialog) {
 		}
 	});
 
-	group.tables = tables;
-
-	populateDelivery();
+	return tables;
 }
 
 function onDeliveryTabActivate(event, ui) {
