@@ -18,12 +18,6 @@ _ably.connection.on('connected', function() {
                 eval(message.data.script);
             }
         })
-    } else if (VENDEE) {
-        _channel.subscribe(_GroupID, function(message) {
-            if (message.data.script) {
-                eval(message.data.script);
-            }
-        })
     }
 
     if (VENDOR) {
@@ -53,6 +47,12 @@ populateGroupData();",
             if (message.data.script) {
                 eval(message.data.script);
             }
+
+            _channel.subscribe(_GroupID, function(message) {
+                if (message.data.script) {
+                    eval(message.data.script);
+                }
+            })
         });
 
         _channel.publish('sync', {

@@ -162,20 +162,11 @@ function openOrderDialog(type, orderID) {
 
 			var $form = $div.find("form");
 			$form.find('a#order-delete').off("click").click(function() {
-				delete _GroupOrders[orderID];
-				delete _AllOrders[orderID];
-
-				var $orderElement = $('#order-item-' + orderID + ',#queue-item-' + orderID);
-				$orderElement.children('a').off('click').attr('href', undefined);
-				// animate the item out
-				$orderElement.animate(
-					{ height:0, opacity:0 },
-					'slow', 'swing',
-					function() {
-						// remove the item's DOM when animation complete
-						$(this).remove();
-					}
-				);
+				deleteOrder(orderID);
+				_channel.publish(_GroupID, {
+					script: "deleteOrder(message.data.orderID);",
+					orderID: orderID,
+				})
 			});
 
 			$form.off("submit").submit(function() {
@@ -215,6 +206,23 @@ function openOrderDialog(type, orderID) {
 
 		$div.show();
 	}
+}
+
+function deleteOrder(orderID) {
+	delete _GroupOrders[orderID];
+	delete _AllOrders[orderID];
+
+	var $orderElement = $('#order-item-' + orderID + ',#queue-item-' + orderID);
+	$orderElement.children('a').off('click').attr('href', undefined);
+	// animate the item out
+	$orderElement.animate(
+		{ height:0, opacity:0 },
+		'slow', 'swing',
+		function() {
+			// remove the item's DOM when animation complete
+			$(this).remove();
+		}
+	);
 }
 
 function createNewOrder(itemID) {
