@@ -172,33 +172,12 @@ function openOrderDialog(type, orderID) {
 			$form.off("submit").submit(function() {
 				fetchOrderInputs(order, $div);
 				$.mobile.back();
-				var $orderElement = $('#order-item-' + orderID + ',#queue-item-' + orderID);
 
-				function updateOrderInputElements(property, selector, htmlGeneratorFunc, valuePostfix) {
-					var $el = $orderElement.find(selector);
-					if ($el.length > 0) {
-						if (order[property]) {
-							var valueWithPF = valuePostfix ? order[property] + valuePostfix : order[property];
-							if ($el.text() != valueWithPF) {
-								$el.text(valueWithPF);
-								$el.fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
-							}
-						} else {
-							$el.fadeOut(1000, function() {
-								// remove the item's DOM when animation complete
-								$(this).remove();
-							});
-						}
-					} else {
-						if (order[property]) {
-							$(htmlGeneratorFunc(order)).insertAfter('#order-item-' + orderID + ' > a > h2').hide().fadeIn(1000);
-						}
-					}
-				}
-
-				// update order request
-				updateOrderInputElements('request', 'p', generateOrderRequestHTML);
-				updateOrderInputElements('quantity', '.ui-li-quantity', generateOrderQuantityHTML, ORDER_QUANTITY_POSTFIX);
+				updateOrder(order);
+				_channel.publish(_GroupID, {
+					script: "updateOrder(message.data.order, message.name);",
+					order: order,
+				});
 			});
 		} else {
 			throw 'Invalid order dialog type: "' + type + "'";
@@ -206,6 +185,45 @@ function openOrderDialog(type, orderID) {
 
 		$div.show();
 	}
+}
+
+function updateOrder(order, groupID) {
+	if (groupID) {
+		_OrderGroups[groupID].orders[order.id] = order;
+	} else {
+		_GroupOrders[order.id] = order;
+	}
+	_AllOrders[order.id] = order;
+
+	var $orderElement = $('#order-item-' + order.id + ',#queue-item-' + order.id);
+	
+	function updateOrderInputElements(property, selector, htmlGeneratorFunc, valuePostfix) {
+		var $el = $orderElement.find(selector);
+		if ($el.length > 0) {
+			if (order[property]) {
+				var valueWithPF = valuePostfix ? order[property] + valuePostfix : order[property];
+				if ($el.text() != valueWithPF) {
+					$el.text(valueWithPF);
+					$el.fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
+				}
+			} else {
+				$el.fadeOut(1000, function() {
+					// remove the item's DOM when animation complete
+					$(this).remove();
+				});
+			}
+		} else {
+			if (order[property]) {
+				$(htmlGeneratorFunc(order))
+						.insertAfter('#order-item-' + order.id + ' > a > h2,#queue-item-' + order.id + ' > a > h2')
+						.hide().fadeIn(1000);
+			}
+		}
+	}
+
+	// update order request
+	updateOrderInputElements('request', 'p', generateOrderRequestHTML);
+	updateOrderInputElements('quantity', '.ui-li-quantity', generateOrderQuantityHTML, ORDER_QUANTITY_POSTFIX);
 }
 
 function deleteOrder(orderID, groupID) {
