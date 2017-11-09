@@ -2,7 +2,11 @@
 /**
  * Initalize Ably message channel
  */
-var _ably = new Ably.Realtime('agg3hg.T0Klpw:byN8TMRdKPVupvnk');
+var _ably = new Ably.Realtime({
+    key: 'agg3hg.T0Klpw:byN8TMRdKPVupvnk',
+    echoMessages: false,
+});
+
 var _channel;
 
 _ably.connection.on('connected', function() {
