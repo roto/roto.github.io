@@ -199,7 +199,7 @@ var _OrderGroups = {
 };
 
 // construct the full order list from bill list
-var _AllOrders = [];
+var _AllOrders = {};
 for (var groupGUID in _OrderGroups) {
 	var tableSharedCount = Number.MAX_SAFE_INTEGER;
 
@@ -215,9 +215,10 @@ for (var groupGUID in _OrderGroups) {
 	_AllOrders = Object.assign(_AllOrders, group.orders);
 }
 
+/* TODO: use groupID back-ref and sort the map
 _AllOrders.sort(function(a, b) {
 	return a.created - b.created;
-})
+})*/
 
 // orders for table 206
 // https://stackoverflow.com/questions/4044845/retrieving-a-property-of-a-json-object-by-index/31103463#31103463

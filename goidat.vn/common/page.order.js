@@ -209,8 +209,18 @@ function openOrderDialog(type, orderID) {
 }
 
 function deleteOrder(orderID) {
-	delete _GroupOrders[orderID];
 	delete _AllOrders[orderID];
+
+	if (_GroupOrders[orderID]) {
+		delete _GroupOrders[orderID];
+	} else {
+		for (var groupID in _OrderGroups) {
+			if (_OrderGroups[groupID].orders[orderID]) {
+				delete _OrderGroups[groupID].orders[orderID];
+				break;
+			}
+		}
+	}
 
 	var $orderElement = $('#order-item-' + orderID + ',#queue-item-' + orderID);
 	$orderElement.children('a').off('click').attr('href', undefined);
