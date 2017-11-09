@@ -238,9 +238,8 @@ function createNewOrder(itemID) {
 	};
 }
 
-function addNewOrder(itemID) {
-	var order = createNewOrder(itemID);
-	_GroupOrders[order.id] = order;
+function addNewOrder(order, groupID) {
+	addNewOrders([order], groupID);
 	return order;
 }
 
@@ -256,13 +255,14 @@ function addNewOrders(orders, groupID) {
 		
 		var orderHTML = generateOrderHTML(order);
 		$(orderHTML).insertBefore('#new-order')
-		$('#order-item-' + order.id).fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
 
 		if (VENDOR) {
 			_AllOrders[order.id] = order;
 			var queueHTML = generateQueueItemHTML(order);
 			$('#queue-list').append($(queueHTML));
 		}
+
+		$('#order-item-' + order.id + ',#queue-item-' + order.id).fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
 	}
 
 	var $list = $('#order-list,#queue-list');
