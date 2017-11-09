@@ -10,15 +10,18 @@ _ably.connection.on('connected', function() {
 
     if (VENDOR) {
         _channel.subscribe(function(message) {
-            var groupID = message.name;
-            // TODO
+            if (message.data.script) {
+                eval(message.data.script);
+            }
         })
     } else if (VENDEE) {
         _channel.subscribe(_GroupID, function(message) {
-            // TODO
+            if (message.data.script) {
+                eval(message.data.script);
+            }
         })
     }
-        
+
     if (VENDOR) {
         // sync: {groupID}
         _channel.subscribe('sync', function(message) {
@@ -26,6 +29,12 @@ _ably.connection.on('connected', function() {
             var groupID = message.data.group;
 
             _channel.publish(client, {
+                script:
+"_OrderGroups = message.data.orderGroups;\
+_DeliveryData = message.data.deliveryData;\
+_GroupID = Object.keys(_OrderGroups)[1];\
+_GroupOrders = _OrderGroups[_GroupID].orders;\
+populateGroupData();",
                 orderGroups: _OrderGroups,
                 deliveryData: _DeliveryData,
             });
@@ -37,12 +46,9 @@ _ably.connection.on('connected', function() {
             _channel.unsubscribe(client, arguments.callee);
 
             // sync all global data
-            _OrderGroups = message.data.orderGroups;
-            _DeliveryData = message.data.deliveryData;
-            _GroupID = Object.keys(_OrderGroups)[1];
-            _GroupOrders = _OrderGroups[_GroupID].orders;
-
-            populateGroupData();
+            if (message.data.script) {
+                eval(message.data.script);
+            }
         });
 
         _channel.publish('sync', {
