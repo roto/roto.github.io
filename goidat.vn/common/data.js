@@ -203,16 +203,16 @@ var _AllOrders = {};
 
 if (_AllOrders) {
 	var sorted = [];
-	for (var groupGUID in _OrderGroups) {
+	for (var groupID in _OrderGroups) {
 		var tableSharedCount = Number.MAX_SAFE_INTEGER;
 
-		var group = _OrderGroups[groupGUID];
-		var tableToDisplay = getGroupDisplayName(group);
+		var group = _OrderGroups[groupID];
+		group.tableToDisplay = getGroupDisplayName(group);
 		
 		for (var orderID in group.orders) {
 			var order = group.orders[orderID];
-			order.table = tableToDisplay;
 			order.id = orderID;
+			order.groupID = groupID;
 
 			sorted.push(order);
 		}
@@ -252,9 +252,9 @@ function getGroupDisplayName(group) {
 		}
 
 		if (!seat.groups) {
-			seat.groups = [ groupGUID ];
-		} else if ($.inArray(groupGUID, seat.groups) < 0) {
-			seat.groups.push(groupGUID);
+			seat.groups = [ groupID ];
+		} else if ($.inArray(groupID, seat.groups) < 0) {
+			seat.groups.push(groupID);
 		}
 
 		if (tableSharedCount > seat.groups.length) {

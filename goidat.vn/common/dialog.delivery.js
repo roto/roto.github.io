@@ -108,13 +108,17 @@ function updateDeliveryLink(data) {
 }
 
 function updateGroupOrderDisplayName(tableName, groupID) {
-	var orders = groupID ? _OrderGroups[groupID].orders : _GroupOrders;
+	if (!groupID) {
+		groupID = _GroupID;
+	}
 
-	for (var orderID in orders) {
-		var order = orders[orderID];
-		order.table = tableName;
+	_OrderGroups[groupID].tableToDisplay = tableName;
 
-		if (VENDOR) {
+	if (VENDOR) {
+		var orders = _OrderGroups[groupID].orders;
+		for (var orderID in orders) {
+			var order = orders[orderID];
+
 			// update queue list table display
 			$('#queue-item-' + order.id + ' span.ui-li-table').text(tableName);
 		}

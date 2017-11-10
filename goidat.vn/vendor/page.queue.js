@@ -105,8 +105,8 @@ function generateQueueActionHTML(order) {
 }
 
 function generateQueueTableHTML(order) {
-	if (order.table) {
-		return '<span class="ui-li-table ui-body-inherit">' + order.table + '</span>';
+	if (_OrderGroups[order.groupID].tableToDisplay) {
+		return '<span class="ui-li-table ui-body-inherit">' + _OrderGroups[order.groupID].tableToDisplay + '</span>';
 	}
 	return '';
 }

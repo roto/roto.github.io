@@ -20,10 +20,8 @@ function populateOrder(groupID) {
 
 	loadDeliveryPopup();
 
-	// TODO: use back ref to group, instead of duplicating all table display name to each orders
-	var orderKeys = Object.keys(_GroupOrders);
-	if (orderKeys.length > 0) {
-		var dest = 'Table ' + _GroupOrders[orderKeys[0]].table;
+	if (_GroupOrders.tableToDisplay) {
+		var dest = 'Table ' + _GroupOrders.tableToDisplay;
 		$('a#footer-button-delivery').text(dest);
 	}
 }
@@ -258,14 +256,14 @@ function addNewOrder(order, groupID) {
 }
 
 function addNewOrders(orders, groupID) {
+	if (!groupID) {
+		groupID = _GroupID;
+	}
+
 	for (var i = 0; i < orders.length; ++i) {
 		var order = orders[i];
-
-		if (groupID) {
-			_OrderGroups[groupID].orders[order.id] = order;
-		} else {
-			_GroupOrders[order.id] = order;
-		}
+		order.groupID = groupID;
+		_OrderGroups[groupID].orders[order.id] = order;
 		
 		var orderHTML = generateOrderHTML(order);
 		$(orderHTML).insertBefore('#new-order')
