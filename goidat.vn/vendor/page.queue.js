@@ -5,8 +5,9 @@ function populateQueue() {
 	// for all orders
 	for (var orderID in _AllOrders) {
 		var order = _AllOrders[orderID];
-		order.state = order.state ? order.state : OrderState.QUEUEING;
-		ordersHTML += generateQueueItemHTML(order);
+		if (order.state && order.state != OrderState.FINISHED) {
+			ordersHTML += generateQueueItemHTML(order);
+		}
 	}
 
 	$('ul#queue-list[data-role="listview"]').empty().append($(ordersHTML)).listview().listview("refresh");

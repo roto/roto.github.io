@@ -213,6 +213,7 @@ if (_AllOrders) {
 			var order = group.orders[orderID];
 			order.id = orderID;
 			order.groupID = groupID;
+			order.state = OrderState.QUEUEING;
 
 			sorted.push(order);
 		}

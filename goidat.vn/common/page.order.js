@@ -322,7 +322,24 @@ function processNextOrderState(orderID, newState) {
 		if ($stateEl.text() != newState) {
 			$stateEl.fadeOut(function() {
 				$stateEl.text(newState);
-				$stateEl.fadeIn('slow').fadeOut().fadeIn('slow');
+				if (newState != OrderState.FINISHED) {
+					$stateEl.fadeIn('slow').fadeOut().fadeIn('slow');
+				} else {
+					$stateEl.fadeIn('slow').fadeOut().fadeIn('slow', function() {
+						// remove the finished order in the queue, not in the order page
+						var $orderElement = $('#queue-item-' + orderID);
+						$orderElement.children('a').off('click').attr('href', undefined);
+						// animate the item out
+						$orderElement.animate(
+							{ height:0, opacity:0 },
+							'slow', 'swing',
+							function() {
+								// remove the item's DOM when animation complete
+								$(this).remove();
+							}
+						);
+					});
+				}
 			});
 		}
 	}
