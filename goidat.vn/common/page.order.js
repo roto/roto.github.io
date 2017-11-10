@@ -332,7 +332,7 @@ function processNextOrderState(orderID, newState) {
 						// animate the item out
 						$orderElement.animate(
 							{ height:0, opacity:0 },
-							'slow', 'swing',
+							'fast', 'swing',
 							function() {
 								// remove the item's DOM when animation complete
 								$(this).remove();
