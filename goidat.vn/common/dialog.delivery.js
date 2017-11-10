@@ -30,9 +30,10 @@ function onDeliveryPopupClose(event, ui) {
 			data.tables = fetchTablesFromDeliveryDialog($dialog);
 		}
 	} else if (activeTab == 1) {	// book
-		data.etaDate = $('#eta-time').datebox('getTheDate');
+		data.etaDate = $('#eta-time').datebox('getTheDate').getTime();
 	} else if (activeTab == 2) {	// ship
 		// TODO: shipping address
+		data.address = "Someplace";
 	}
 
 	updateDeliveryData(data);
@@ -75,21 +76,28 @@ function updateDeliveryLink(data) {
 		delete onDeliveryPopupClose.etaInterval;
 	}
 
+	var $tabs = $('#dialog-delivery > [data-role="main"] > div#delivery-tabs');
+
 	if (data.tableName) {
 		dest = 'Table ' + data.tableName;
 
 		// clear the table tab
-		$('#dialog-delivery > [data-role="main"] > div#delivery-tabs > div#tab-table').empty();
+		$tabs.children('div#tab-table').empty();
+		$tabs.find('a[href="#tab-table"]').trigger('click');
 	} else if (data.etaDate) {
-		dest = 'ETA: ' + etaTime(data.etaDate);
+		var eta = new Date(data.etaDate);
+		dest = 'ETA: ' + etaTime(eta);
 		
 		onDeliveryPopupClose.etaInterval = window.setInterval(function() {
 			$link.fadeOut();
-			$link.text('ETA: ' + etaTime(data.etaDate));
+			$link.text('ETA: ' + etaTime(eta));
 			$link.fadeIn('slow');
 		}, 1000 * 60);
+
+		$tabs.find('a[href="#tab-book"]').trigger('click');
 	} else if (data.address) {
 		dest = 'Ship: ';
+		$tabs.find('a[href="#tab-ship"]').trigger('click');
 		// TODO: shipping address
 	}
 	
