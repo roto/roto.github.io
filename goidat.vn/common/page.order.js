@@ -78,8 +78,8 @@ function generateOrderHTML(order) {
 
 	orderHTML += generateOrderRequestHTML(order);
 	orderHTML += generateOrderQuantityHTML(order);
+	orderHTML += generateOrderStateHTML(order);
 
-	orderHTML += '<span class="ui-li-count">sending..</span>';
 	orderHTML += '</a><a href="javascript:openOrderDialog(\'edit\', \'' + order.id + '\')" class="ui-btn ui-icon-edit">Edit</a></li>';
 
 	return orderHTML;
@@ -97,6 +97,10 @@ function generateOrderQuantityHTML(order) {
         return '<span class="ui-li-quantity ui-body-inherit">' + order.quantity + ORDER_QUANTITY_POSTFIX + '</span>';
     }
 	return '';
+}
+
+function generateOrderStateHTML(order) {
+	return '<span class="ui-li-count">' + order.state + '</span>';
 }
 
 function openOrderDialog(type, orderID) {

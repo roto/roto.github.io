@@ -25,7 +25,7 @@ function generateQueueItemHTML(order) {
 
 	orderHTML += generateOrderRequestHTML(order);
 	orderHTML += generateOrderQuantityHTML(order);
-	orderHTML += generateQueueStateHTML(order);
+	orderHTML += generateOrderStateHTML(order);
 	orderHTML += generateQueueTableHTML(order);
 
 	orderHTML += '</a>';
@@ -95,10 +95,6 @@ function getIconNameForState(state) {
 		case OrderState.FINISHED:	return "check";
 		default:					return "forbidden";
 	}
-}
-
-function generateQueueStateHTML(order) {
-	return '<span class="ui-li-count">' + order.state + '</span>';
 }
 
 function generateQueueActionHTML(order) {
