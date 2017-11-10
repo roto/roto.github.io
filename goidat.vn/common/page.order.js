@@ -268,8 +268,9 @@ function addNewOrders(orders, groupID) {
 		var orderHTML = generateOrderHTML(order);
 		$(orderHTML).insertBefore('#new-order')
 
+		_AllOrders[order.id] = order;
+		
 		if (VENDOR) {
-			_AllOrders[order.id] = order;
 			var queueHTML = generateQueueItemHTML(order);
 			$('#queue-list').append($(queueHTML));
 		}
