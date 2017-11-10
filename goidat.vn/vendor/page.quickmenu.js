@@ -239,13 +239,12 @@ function acceptPreviewList() {
 		}
 	});
 
-	addNewOrders(orders);
-
 	_channel.publish(_GroupID, {
 		script: "addNewOrders(message.data.orders, message.name);",
 		orders: orders,
 	})
-
+	addNewOrders(orders);
+	
 	clearPreviewList();
 }
 

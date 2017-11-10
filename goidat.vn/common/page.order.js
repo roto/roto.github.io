@@ -156,22 +156,22 @@ function openOrderDialog(type, orderID) {
 
 			var $form = $div.find("form");
 			$form.find('a#order-delete').off("click").click(function() {
-				deleteOrder(orderID);
 				_channel.publish(_GroupID, {
 					script: "deleteOrder(message.data.orderID, message.name);",
 					orderID: orderID,
 				})
+				deleteOrder(orderID);
 			});
 
 			$form.off("submit").submit(function() {
 				fetchOrderInputs(order, $div);
 				$.mobile.back();
 
-				updateOrder(order);
 				_channel.publish(_GroupID, {
 					script: "updateOrder(message.data.order, message.name);",
 					order: order,
 				});
+				updateOrder(order);
 			});
 		} else {
 			throw 'Invalid order dialog type: "' + type + "'";

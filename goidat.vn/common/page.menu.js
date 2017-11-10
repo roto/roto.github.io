@@ -48,13 +48,12 @@ function openMenuDialog(type, itemID) {
 				var order = createNewOrder(itemID);
 				fetchOrderInputs(order, $div);
 
-				addNewOrder(order);
-
 				_channel.publish(_GroupID, {
 					script: "addNewOrder(message.data.order, message.name);",
 					order: order,
 				})
-
+				addNewOrder(order);
+				
 				window.history.go(-2);
 			});
 		} else {
