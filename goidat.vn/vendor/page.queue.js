@@ -41,33 +41,14 @@ function processNext(orderID) {
 	}
 
 	var order = _AllOrders[orderID];
-	var newState = order.state = getNextState(order.state);
-
-	var $orderElement = $('#queue-item-' + orderID);
-	var $actioNBtn = $orderElement.find('a[data-icon]');
-	// temporary disable the link until button animation finish
-	$actioNBtn.bind('click', false);
-
-	$actioNBtn.fadeOut(function() {
-		var nextState = getNextState(newState);
-		var action = getStateAction(nextState);
-		var icon = getIconNameForState(nextState);
-
-		$actioNBtn.attr('class', $actioNBtn.attr('class').replace(/ui-icon-[^\s\\]+/, 'ui-icon-' + icon));
-		$actioNBtn.attr('title', action);
-		$actioNBtn.fadeIn('slow', function() {
-			// button animation finish, re-enable the link
-			$actioNBtn.unbind('click', false);
-		});
-
-		var $stateEl = $orderElement.find('.ui-li-count');
-		if ($stateEl.text() != newState) {
-			$stateEl.fadeOut(function() {
-				$stateEl.text(newState);
-				$stateEl.fadeIn('slow').fadeOut().fadeIn('slow');
-			});
-		}
+	var newState = getNextState(order.state);
+	
+	_channel.publish(order.groupID, {
+		script: "processNextOrderState(message.data.orderID, message.data.newState);",
+		orderID: orderID,
+		newState: newState,
 	});
+	processNextOrderState(orderID, newState);
 }
 
 function getNextState(state) {

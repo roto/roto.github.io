@@ -286,3 +286,43 @@ function addNewOrders(orders, groupID) {
 		});
 	}
 }
+
+function processNextOrderState(orderID, newState) {
+	var order = _AllOrders[orderID];
+	order.state = newState;
+
+	var $orderElement = $('#queue-item-' + order.id + ',#order-item-' + order.id);
+
+	if (VENDOR) {
+		var $actioNBtn = $orderElement.find('a[data-icon]');
+		// temporary disable the link until button animation finish
+		$actioNBtn.bind('click', false);
+
+		$actioNBtn.fadeOut(function() {
+			var nextState = getNextState(newState);
+			var action = getStateAction(nextState);
+			var icon = getIconNameForState(nextState);
+
+			$actioNBtn.attr('class', $actioNBtn.attr('class').replace(/ui-icon-[^\s\\]+/, 'ui-icon-' + icon));
+			$actioNBtn.attr('title', action);
+			$actioNBtn.fadeIn('slow', function() {
+				// button animation finish, re-enable the link
+				$actioNBtn.unbind('click', false);
+			});
+
+			updateState();
+		});
+	} else {
+		updateState();
+	}
+
+	function updateState() {
+		var $stateEl = $orderElement.find('.ui-li-count');
+		if ($stateEl.text() != newState) {
+			$stateEl.fadeOut(function() {
+				$stateEl.text(newState);
+				$stateEl.fadeIn('slow').fadeOut().fadeIn('slow');
+			});
+		}
+	}
+}
