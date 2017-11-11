@@ -94,12 +94,12 @@ function generateQueueTableHTML(order) {
 }
 
 function openQueueDialog(type, orderID) {
-	if (!_GroupOrders.hasOwnProperty(orderID)) {
-		console.warn('Order item "' + orderID + '" is not in the order');
+	if (!_AllOrders.hasOwnProperty(orderID)) {
+		console.warn('Order item "' + orderID + '" is not in the queue');
 		return;
 	}
 
-	var order = _GroupOrders[orderID];
+	var order = _AllOrders[orderID];
 	var $dialog = $('#dialog-queue');
 	$dialog.find('h1[role="heading"]').text(order.item.name);
 
