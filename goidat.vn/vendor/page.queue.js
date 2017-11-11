@@ -14,7 +14,7 @@ function populateQueue() {
 }
 
 function generateQueueItemHTML(order) {
-	var orderHTML = '<li id="queue-item-' + order.id + '"><a href="javascript:openOrderDialog(\'status\', \'' + order.id + '\')">';
+	var orderHTML = '<li id="queue-item-' + order.id + '"><a href="javascript:openQueueDialog(\'edit\', \'' + order.id + '\')">';
 
 	if (order.item.initial) {
 		orderHTML += '<img data-name="' + order.item.initial + '" class="initial uninitialized" style="border-radius: 50%">';
@@ -91,4 +91,84 @@ function generateQueueTableHTML(order) {
 		return '<span class="ui-li-table ui-body-inherit">' + _OrderGroups[order.groupID].tableToDisplay + '</span>';
 	}
 	return '';
+}
+
+function openQueueDialog(type, orderID) {
+	if (!_GroupOrders.hasOwnProperty(orderID)) {
+		console.warn('Order item "' + orderID + '" is not in the order');
+		return;
+	}
+
+	var order = _GroupOrders[orderID];
+	var $dialog = $('#dialog-queue');
+	$dialog.find('h1[role="heading"]').text(order.item.name);
+
+	var $main = $dialog.children('[data-role="main"]');
+	$main.children('div').hide();	// hide all children
+
+	showOrderContent(type);
+	$dialog.popup("open");
+	return;
+
+	function showOrderContent(type) {
+		var $div = $main.children('#dialog-queue-' + type).hide();
+
+		if (type === 'status') {
+			$div.children('img').attr('src', order.item.image);
+			if (order.quantity) {
+				$div.children('span').text(order.quantity + ORDER_QUANTITY_POSTFIX).show();
+			} else {
+				$div.children('span').hide();
+			}
+			$div.children('#dialog-queue-status-request').html(order.request ? order.request : '');
+			$div.children('#dialog-queue-status-status').html(order.status ? order.status : 'Queueing');
+			
+			$div.find('a.ui-icon-edit').off('click').click(function() {
+				$div.hide();
+				showOrderContent('edit');
+				$dialog.popup("reposition", {});
+			});
+
+			$div.find('a.ui-icon-info').off('click').click(function() {
+				$div.hide();
+				showOrderContent('info');
+				$dialog.popup("reposition", {});
+			});
+		} else if (type === 'info') {
+			$div.children('img').attr('src', order.item.image);
+			$div.children('p').text(order.item.desc ? order.item.desc : '');
+			$div.find('a').off('click').click(function() {
+				$div.hide();
+				showOrderContent('status');
+				$dialog.popup("reposition", {});
+			});
+		} else if (type === 'edit') {
+			loadRequestInputEvents($div, order.item.id, orderID);
+			loadQuantityInputEvents($div, order.quantity);
+
+			var $form = $div.find("form");
+			$form.find('a#order-delete').off("click").click(function() {
+				_channel.publish(_GroupID, {
+					script: "deleteOrder(message.data.orderID, message.name);",
+					orderID: orderID,
+				})
+				deleteOrder(orderID);
+			});
+
+			$form.off("submit").submit(function() {
+				fetchOrderInputs(order, $div);
+				$.mobile.back();
+
+				_channel.publish(_GroupID, {
+					script: "updateOrder(message.data.order, message.name);",
+					order: order,
+				});
+				updateOrder(order);
+			});
+		} else {
+			throw 'Invalid order dialog type: "' + type + "'";
+		}
+
+		$div.show();
+	}
 }

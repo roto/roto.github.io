@@ -342,3 +342,9 @@ div[data-theme="b"] [data-role="delivery-table"] .ui-btn {
 		background: -moz-linear-gradient(#00ff00, #00802b); /* For Firefox 3.6 to 15 */
 		background: linear-gradient(#00ff00, #00802b); /* Standard syntax */
 	}
+
+/* Vendor only */
+.heighten-button-group {
+	margin-top: -40px;
+	margin-bottom: 20px;
+}
