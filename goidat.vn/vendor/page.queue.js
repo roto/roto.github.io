@@ -5,7 +5,7 @@ function populateQueue() {
 	// for all orders
 	for (var orderID in _AllOrders) {
 		var order = _AllOrders[orderID];
-		if (order.state && order.state != OrderState.FINISHED) {
+		if (shouldDisplayInQueue(order.state)) {
 			ordersHTML += generateQueueItemHTML(order);
 		}
 	}

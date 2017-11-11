@@ -322,7 +322,7 @@ function processNextOrderState(orderID, newState) {
 		if ($stateEl.text() != newState) {
 			$stateEl.fadeOut(function() {
 				$stateEl.text(newState);
-				if (newState != OrderState.FINISHED) {
+				if (shouldDisplayInQueue(newState)) {
 					$stateEl.fadeIn('slow').fadeOut().fadeIn('slow');
 				} else {
 					$stateEl.fadeIn('slow').fadeOut().fadeIn('slow', function() {
@@ -343,4 +343,8 @@ function processNextOrderState(orderID, newState) {
 			});
 		}
 	}
+}
+
+function shouldDisplayInQueue(state) {
+	return state && state != OrderState.FINISHED && state !== OrderState.REJECTED;
 }
