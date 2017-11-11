@@ -139,11 +139,11 @@ div[data-theme="b"] [data-role="popup"] > [data-role="main"] .ui-btn {
 
 /* Icon Color */
 div[data-theme="a"] .ui-icon-lock:after,
-div[data-theme="a"] #dialog-order-edit .ui-icon-delete:not(.ui-btn-icon-notext):after {
+div[data-theme="a"] [data-role="popup"] .ui-icon-delete:not(.ui-btn-icon-notext):after {
 	background-color: #F66;
 }
 div[data-theme="b"] .ui-icon-lock:after,
-div[data-theme="b"] #dialog-order-edit .ui-icon-delete:not(.ui-btn-icon-notext):after {
+div[data-theme="b"] [data-role="popup"] .ui-icon-delete:not(.ui-btn-icon-notext):after {
 	background-color: #900;
 }
 
