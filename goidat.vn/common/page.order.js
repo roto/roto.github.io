@@ -131,13 +131,13 @@ function openOrderDialog(view, orderID) {
 			$div.children('[name="request"]').html(order.request ? order.request : '');
 			$div.children('[name="state"]').html(order.state);
 			
-			$div.find('a.ui-icon-edit').off('click').click(function() {
+			$div.find('a[data-icon="edit"]').off('click').click(function() {
 				$div.hide();
 				showOrderContent('edit');
 				$dialog.popup("reposition", {});
 			});
 
-			$div.find('a.ui-icon-info').off('click').click(function() {
+			$div.find('a[data-icon="info"]').off('click').click(function() {
 				$div.hide();
 				showOrderContent('info');
 				$dialog.popup("reposition", {});
@@ -155,7 +155,7 @@ function openOrderDialog(view, orderID) {
 			loadQuantityInputEvents($div, order.quantity);
 
 			var $form = $div.find("form");
-			$form.find('a#order-delete').off("click").click(function() {
+			$form.find('a[name="delete"]').off("click").click(function() {
 				_channel.publish(_GroupID, {
 					script: "deleteOrder(message.data.orderID, message.name);",
 					orderID: orderID,

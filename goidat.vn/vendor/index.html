@@ -156,20 +156,20 @@
 			</div>
 		</div>
 
-		<div data-role="popup" id="dialog-queue" data-overlay-theme="b">
+		<div data-role="popup" name="order" id="dialog-queue-order" data-overlay-theme="b">
 			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 			<div data-role="header"><h1></h1></div>
 			<div data-role="main" class="ui-content">
-				<div id="dialog-queue-edit">
+				<div name="edit">
 					<div class="ui-grid-a heighten-button-group">
 						<div class="ui-block-a" style="text-align: left;">
-							<a href='#' id="queue-item" data-role="button" data-inline="true" data-mini="true" data-iconpos="right">Item</a>
+							<a href='#' name="item" data-role="button" data-inline="true" data-mini="true" data-iconpos="right">Item</a>
 						</div>
 						<div class="ui-block-b" style="text-align: right;">
-							<a href='#' id="queue-group" data-role="button" data-inline="true" data-mini="true" data-iconpos="right">Group</a>
+							<a href='#' name="group" data-role="button" data-inline="true" data-mini="true" data-iconpos="right">Group</a>
 						</div>
 					</div>
-					<form id="order-edit-form" action="javascript:void(0);">
+					<form name="edit" action="javascript:void(0);">
 						<label for="request">Additional request:</label>
 						<input name="request" placeholder="Your additional request..">
 						<label for="quantity">Quantity:</label>
@@ -179,15 +179,15 @@
 						</div>
 						<div data-role="state-chain" align="center">
 							<fieldset data-role="controlgroup" data-type="horizontal">
-								<input type="radio" name="state" id="state-q" value="queueing" data-icon="delete"><label for="state-q">Q</label>
-								<input type="radio" name="state" id="state-p" value="processing"><label for="state-p">P</label>
-								<input type="radio" name="state" id="state-s" value="serving"><label for="state-s">S</label>
-								<input type="radio" name="state" id="state-f" value="finished"><label for="state-f">F</label>
+								<label>Q<input type="radio" name="state" value="queueing"></label>
+								<label>P<input type="radio" name="state" value="processing"></label>
+								<label>S<input type="radio" name="state" value="serving"></label>
+								<label>F<input type="radio" name="state" value="finished"></label>
 							</fieldset>
 						</div>
 						<div class="ui-grid-a">
 							<div class="ui-block-a" style="text-align: left;">
-								<a href='#' id="queue-reject" data-rel="back" data-role="button" data-inline="true" data-icon="delete" data-iconpos="right">Reject</a>
+								<a href='#' name="reject" data-rel="back" data-role="button" data-inline="true" data-icon="delete" data-iconpos="right">Reject</a>
 							</div>
 							<div class="ui-block-b" style="text-align: right;">
 								<input type="submit" name="Update" value="Update" data-role="button" data-inline="true" data-icon="check" data-iconpos="right">
@@ -195,7 +195,7 @@
 						</div>
 					</form>
 				</div>
-				<div id="dialog-queue-reject">
+				<div name="reject">
 				</div>
 			</div>
 		</div>
@@ -273,7 +273,7 @@
 						</div>
 						<div class="ui-grid-a">
 							<div class="ui-block-a" style="text-align: left;">
-								<a href='#' id="order-delete" data-rel="back" data-role="button" data-inline="true" data-iconpos="right" data-icon="delete">Delete</a>
+								<a href='#' name="delete" data-rel="back" data-role="button" data-inline="true" data-iconpos="right" data-icon="delete">Delete</a>
 							</div>
 							<div class="ui-block-b" style="text-align: right;">
 								<input type="submit" name="Update" value="Update" data-role="button" data-inline="true" data-iconpos="right" data-icon="check">

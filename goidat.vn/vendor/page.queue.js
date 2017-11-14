@@ -100,7 +100,7 @@ function openQueueDialog(type, orderID) {
 	}
 
 	var order = _AllOrders[orderID];
-	var $dialog = $('#dialog-queue');
+	var $dialog = $('#queue [name="order"]');
 	$dialog.find('h1[role="heading"]').text(order.item.name);
 
 	var $main = $dialog.children('[data-role="main"]');
@@ -110,44 +110,15 @@ function openQueueDialog(type, orderID) {
 	$dialog.popup("open");
 	return;
 
-	function showOrderContent(type) {
-		var $div = $main.children('#dialog-queue-' + type).hide();
+	function showOrderContent(view) {
+		var $div = $main.children('[name="' + view + '"]').hide();
 
-		if (type === 'status') {
-			$div.children('img').attr('src', order.item.image);
-			if (order.quantity) {
-				$div.children('span').text(order.quantity + ORDER_QUANTITY_POSTFIX).show();
-			} else {
-				$div.children('span').hide();
-			}
-			$div.children('#dialog-queue-status-request').html(order.request ? order.request : '');
-			$div.children('#dialog-queue-status-status').html(order.status ? order.status : 'Queueing');
-			
-			$div.find('a.ui-icon-edit').off('click').click(function() {
-				$div.hide();
-				showOrderContent('edit');
-				$dialog.popup("reposition", {});
-			});
-
-			$div.find('a.ui-icon-info').off('click').click(function() {
-				$div.hide();
-				showOrderContent('info');
-				$dialog.popup("reposition", {});
-			});
-		} else if (type === 'info') {
-			$div.children('img').attr('src', order.item.image);
-			$div.children('p').text(order.item.desc ? order.item.desc : '');
-			$div.find('a').off('click').click(function() {
-				$div.hide();
-				showOrderContent('status');
-				$dialog.popup("reposition", {});
-			});
-		} else if (type === 'edit') {
+		if (view === 'edit') {
 			loadRequestInputEvents($div, order.item.id, orderID);
 			loadQuantityInputEvents($div, order.quantity);
 
 			var $form = $div.find("form");
-			$form.find('a#order-delete').off("click").click(function() {
+			$form.find('a[name="delete"]').off("click").click(function() {
 				_channel.publish(_GroupID, {
 					script: "deleteOrder(message.data.orderID, message.name);",
 					orderID: orderID,
@@ -166,7 +137,7 @@ function openQueueDialog(type, orderID) {
 				updateOrder(order);
 			});
 		} else {
-			throw 'Invalid order dialog type: "' + type + "'";
+			throw 'Invalid dialog view: "' + view + "'";
 		}
 
 		$div.show();
