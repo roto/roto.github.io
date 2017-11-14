@@ -41,8 +41,8 @@ function loadRequestInputEvents($div, itemID, orderID) {
 		}
 	});
 
-	if (orderID && _GroupOrders[orderID] && _GroupOrders[orderID].request) {
-		$requestInput.val(_GroupOrders[orderID].request).trigger("input");
+	if (orderID && _AllOrders[orderID] && _AllOrders[orderID].request) {
+		$requestInput.val(_AllOrders[orderID].request).trigger("input");
 	} else {
 		$requestInput.val('').trigger("input");
 	}
