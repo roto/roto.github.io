@@ -93,7 +93,7 @@ function generateQueueTableHTML(order) {
 	return '';
 }
 
-function openQueueDialog(type, orderID) {
+function openQueueDialog(view, orderID) {
 	if (!_AllOrders.hasOwnProperty(orderID)) {
 		console.warn('Order item "' + orderID + '" is not in the queue');
 		return;
@@ -106,7 +106,7 @@ function openQueueDialog(type, orderID) {
 	var $main = $dialog.children('[data-role="main"]');
 	$main.children('div').hide();	// hide all children
 
-	showOrderContent(type);
+	showOrderContent(view);
 	$dialog.popup("open");
 	return;
 
@@ -116,6 +116,7 @@ function openQueueDialog(type, orderID) {
 		if (view === 'edit') {
 			loadRequestInputEvents($div, order.item.id, orderID);
 			loadQuantityInputEvents($div, order.quantity);
+			loadStateInput($div, order.state);
 
 			var $form = $div.find("form");
 			$form.find('a[name="delete"]').off("click").click(function() {
@@ -127,14 +128,15 @@ function openQueueDialog(type, orderID) {
 			});
 
 			$form.off("submit").submit(function() {
-				fetchOrderInputs(order, $div);
+				var changedProps = fetchOrderInputs($div);
+				changedProps.id = order.id;
 				$.mobile.back();
 
 				_channel.publish(_GroupID, {
-					script: "updateOrder(message.data.order, message.name);",
-					order: order,
+					script: "updateOrder(message.data.changedProps, message.name);",
+					changedProps: changedProps,
 				});
-				updateOrder(order);
+				updateOrder(changedProps);
 			});
 		} else {
 			throw 'Invalid dialog view: "' + view + "'";

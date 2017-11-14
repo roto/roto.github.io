@@ -77,19 +77,31 @@ function loadQuantityInputEvents($div, quantity) {
 	}
 }
 
-function fetchOrderInputs(order, $div) {
+function loadStateInput($div, state) {
+	var $stateChain = $div.find('[name="state-chain"]');
+	$stateChain.find('input[value="' + state + '"]').prop('checked', true);
+	$stateChain.enhanceWithin();
+}
+
+/**
+ * return map of only changed properties
+ */
+function fetchOrderInputs($div) {
+	var order = {};
+
 	var quantity = $div.find('input[name="quantity"]').val();
 	if (quantity && quantity > 1) {
 		order.quantity = quantity;
-	} else {
-		delete order.quantity;
 	}
 
 	var request = $div.find('input[name="request"]').val().trim();
 	if (request && request.length > 0) {
 		order.request = request;
-	} else {
-		delete order.request;
+	}
+
+	var state = $div.find('input[name="state"]:checked').val();
+	if (state) {
+		order.state = state;
 	}
 
 	return order;

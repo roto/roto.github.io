@@ -164,14 +164,15 @@ function openOrderDialog(view, orderID) {
 			});
 
 			$form.off("submit").submit(function() {
-				fetchOrderInputs(order, $div);
+				var changedProps = fetchOrderInputs($div);
+				changedProps.id = order.id;
 				$.mobile.back();
 
 				_channel.publish(_GroupID, {
-					script: "updateOrder(message.data.order, message.name);",
-					order: order,
+					script: "updateOrder(message.data.changedProps, message.name);",
+					changedProps: changedProps,
 				});
-				updateOrder(order);
+				updateOrder(changedProps);
 			});
 		} else {
 			throw 'Invalid dialog view: "' + view + "'";
@@ -181,15 +182,17 @@ function openOrderDialog(view, orderID) {
 	}
 }
 
-function updateOrder(order, groupID) {
-	if (groupID) {
-		_OrderGroups[groupID].orders[order.id] = order;
-	} else {
-		_GroupOrders[order.id] = order;
-	}
-	_AllOrders[order.id] = order;
+function updateOrder(changedProps) {
+	var order = _AllOrders ? _AllOrders[changedProps.id] : _GroupOrders[changedProps.id];
 
 	var $orderElement = $('#order-item-' + order.id + ',#queue-item-' + order.id);
+
+	if (changedProps.state && changedProps.state != order.state) {
+		processNextOrderState(changedProps.id, changedProps.state);
+		delete changedProps.state; // done with it
+	}
+
+	Object.assign(order, changedProps);
 	
 	function updateOrderInputElements(property, selector, htmlGeneratorFunc, valuePostfix) {
 		var $el = $orderElement.find(selector);
