@@ -241,29 +241,29 @@
 			</div>
 		</div>
 
-		<div data-role="popup" id="dialog-order" data-overlay-theme="b">
+		<div data-role="popup" name="order" id="dialog-order" data-overlay-theme="b">
 			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 			<div data-role="header"><h1></h1></div>
 			<div data-role="main" class="ui-content">
-				<div id="dialog-order-status">
-					<img style="border-radius: 50%" src=''>
-					<span class="ui-li-quantity ui-body-inherit"></span>
-					<p id="dialog-order-status-request"></p>
-					<p id="dialog-order-status-status"></p>
+				<div name="status">
+					<img name="image" style="border-radius: 50%" src=''>
+					<span name="quantity" class="ui-li-quantity ui-body-inherit"></span>
+					<p name="request"></p>
+					<p name="state"></p>
 					<div style="text-align: center;">
-						<a href='#' class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-edit ui-btn-icon-right">Edit</a>
-						<a href='#' class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-info ui-btn-icon-right">Info</a>
+						<a href='#' data-role="button" data-inline="true" data-iconpos="right" data-icon="edit">Edit</a>
+						<a href='#' data-role="button" data-inline="true" data-iconpos="right" data-icon="info">Info</a>
 					</div>
 				</div>
-				<div id="dialog-order-info">
+				<div name="info">
 					<img style='width: 100%' src=''>
 					<p></p>
 					<div style="text-align: center;">
-						<a href='#' class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-clock ui-btn-icon-right">Status</a>
+						<a href='#' data-role="button" data-inline="true" data-iconpos="right" data-icon="clock">Status</a>
 					</div>
 				</div>
-				<div id="dialog-order-edit">
-					<form id="order-edit-form" action="javascript:void(0);">
+				<div name="edit">
+					<form name="edit" action="javascript:void(0);">
 						<label for="request">Additional request:</label>
 						<input name="request" placeholder="Your additional request..">
 						<label for="quantity">Quantity:</label>
@@ -273,10 +273,10 @@
 						</div>
 						<div class="ui-grid-a">
 							<div class="ui-block-a" style="text-align: left;">
-								<a href='#' id="order-delete" data-rel="back" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-icon-delete ui-btn-icon-right">Delete</a>
+								<a href='#' id="order-delete" data-rel="back" data-role="button" data-inline="true" data-iconpos="right" data-icon="delete">Delete</a>
 							</div>
 							<div class="ui-block-b" style="text-align: right;">
-								<input type="submit" name="Update" value="Update" data-role="button" data-inline="true" data-icon="check" data-iconpos="right">
+								<input type="submit" name="Update" value="Update" data-role="button" data-inline="true" data-iconpos="right" data-icon="check">
 							</div>
 						</div>
 					</form>

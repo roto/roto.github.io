@@ -101,35 +101,35 @@ function generateOrderStateHTML(order) {
 	return '<span class="ui-li-count">' + order.state + '</span>';
 }
 
-function openOrderDialog(type, orderID) {
+function openOrderDialog(view, orderID) {
 	if (!_GroupOrders.hasOwnProperty(orderID)) {
 		console.warn('Order item "' + orderID + '" is not in the order');
 		return;
 	}
 
 	var order = _GroupOrders[orderID];
-	var $dialog = $('#dialog-order');
+	var $dialog = $('#order [name="order"]');
 	$dialog.find('h1[role="heading"]').text(order.item.name);
 
 	var $main = $dialog.children('[data-role="main"]');
 	$main.children('div').hide();	// hide all children
 
-	showOrderContent(type);
+	showOrderContent(view);
 	$dialog.popup("open");
 	return;
 
-	function showOrderContent(type) {
-		var $div = $main.children('#dialog-order-' + type).hide();
+	function showOrderContent(view) {
+		var $div = $main.children('[name="' + view + '"]').hide();
 
-		if (type === 'status') {
-			$div.children('img').attr('src', order.item.image);
+		if (view === 'status') {
+			$div.children('img[name="image"]').attr('src', order.item.image);
 			if (order.quantity) {
-				$div.children('span').text(order.quantity + ORDER_QUANTITY_POSTFIX).show();
+				$div.children('span[name="quantity"]').text(order.quantity + ORDER_QUANTITY_POSTFIX).show();
 			} else {
-				$div.children('span').hide();
+				$div.children('span[name="quantity"]').hide();
 			}
-			$div.children('#dialog-order-status-request').html(order.request ? order.request : '');
-			$div.children('#dialog-order-status-status').html(order.status ? order.status : 'Queueing');
+			$div.children('[name="request"]').html(order.request ? order.request : '');
+			$div.children('[name="state"]').html(order.state);
 			
 			$div.find('a.ui-icon-edit').off('click').click(function() {
 				$div.hide();
@@ -142,7 +142,7 @@ function openOrderDialog(type, orderID) {
 				showOrderContent('info');
 				$dialog.popup("reposition", {});
 			});
-		} else if (type === 'info') {
+		} else if (view === 'info') {
 			$div.children('img').attr('src', order.item.image);
 			$div.children('p').text(order.item.desc ? order.item.desc : '');
 			$div.find('a').off('click').click(function() {
@@ -150,7 +150,7 @@ function openOrderDialog(type, orderID) {
 				showOrderContent('status');
 				$dialog.popup("reposition", {});
 			});
-		} else if (type === 'edit') {
+		} else if (view === 'edit') {
 			loadRequestInputEvents($div, order.item.id, orderID);
 			loadQuantityInputEvents($div, order.quantity);
 
@@ -174,7 +174,7 @@ function openOrderDialog(type, orderID) {
 				updateOrder(order);
 			});
 		} else {
-			throw 'Invalid order dialog type: "' + type + "'";
+			throw 'Invalid dialog view: "' + view + "'";
 		}
 
 		$div.show();
