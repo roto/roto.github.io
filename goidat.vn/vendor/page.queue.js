@@ -103,6 +103,9 @@ function openQueueDialog(view, orderID) {
 	var $dialog = $('#queue [name="order"]');
 	$dialog.find('h1[role="heading"]').text(order.item.name);
 
+	// tag the orderID in the dialog DOM for event handlers
+	$dialog.data('orderID', orderID);
+
 	var $main = $dialog.children('[data-role="main"]');
 	$main.children('div').hide();	// hide all children
 
@@ -144,4 +147,11 @@ function openQueueDialog(view, orderID) {
 
 		$div.show();
 	}
+}
+
+function onQueueDialogOrderButtonGroupClick(button) {
+	var $dialog = $(button).closest('[data-role="popup"]');
+	var orderID = $dialog.data('orderID');
+	var order = _AllOrders[orderID];
+	navigateToOrder(order.groupID);
 }
