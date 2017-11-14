@@ -121,13 +121,11 @@ function openQueueDialog(view, orderID) {
 			loadQuantityInputEvents($div, order.quantity);
 			loadStateInput($div, order.state);
 
-			var $form = $div.find("form");
-			$form.find('a[name="delete"]').off("click").click(function() {
-				_channel.publish(_GroupID, {
-					script: "deleteOrder(message.data.orderID, message.name);",
-					orderID: orderID,
-				})
-				deleteOrder(orderID);
+			var $form = $div.find('form');
+			$form.find('a[name="reject"]').off("click").click(function() {
+				$div.hide();
+				showOrderContent('reject');
+				$dialog.popup("reposition", {});
 			});
 
 			$form.off("submit").submit(function() {
@@ -136,13 +134,35 @@ function openQueueDialog(view, orderID) {
 				$.mobile.back();
 
 				_channel.publish(_GroupID, {
-					script: "updateOrder(message.data.changedProps, message.name);",
+					script: 'updateOrder(message.data.changedProps, message.name);',
 					changedProps: changedProps,
 				});
 				updateOrder(changedProps);
 			});
+		} else if (view == 'reject') {
+			var $form = $div.find('form');
+			var $reasonInput = $form.find('input[name="reason"]');
+			$reasonInput.val('');
+
+			$form.find('a[name="cancel"]').off('click').click(function() {
+				$div.hide();
+				showOrderContent('edit');
+				$dialog.popup("reposition", {});
+			});
+
+			$form.off('submit').submit(function() {
+				var reason = $reasonInput.val()
+
+				_channel.publish(_GroupID, {
+					script: 'rejectOrder(message.data.orderID, message.data.reason);',
+					orderID: order.id,
+					reason: reason,
+				})
+				rejectOrder(order.id, reason);
+				$.mobile.back();
+			});
 		} else {
-			throw 'Invalid dialog view: "' + view + "'";
+			throw 'Invalid dialog view: "' + view + '"';
 		}
 
 		$div.show();

@@ -291,6 +291,12 @@ function addNewOrders(orders, groupID) {
 	}
 }
 
+function rejectOrder(orderID, reason) {
+	var order = _AllOrders[orderID];
+	order.reason = reason;
+	processNextOrderState(orderID, OrderState.REJECTED)
+}
+
 function processNextOrderState(orderID, newState) {
 	var order = _AllOrders[orderID];
 	order.state = newState;

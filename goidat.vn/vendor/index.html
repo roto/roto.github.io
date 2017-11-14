@@ -164,7 +164,7 @@
 				<div name="edit">
 					<div class="ui-grid-a heighten-button-group">
 						<div class="ui-block-a" style="text-align: left;">
-							<a href='#' name="item" data-role="button" data-inline="true" data-mini="true" data-iconpos="right">Item</a>
+							<a href='#' name="item" data-role="button" data-inline="true" data-mini="true" data-iconpos="right" class="ui-disabled">Item</a>
 						</div>
 						<div class="ui-block-b" style="text-align: right;">
 							<a href='#' name="group" data-role="button" data-inline="true" data-mini="true" data-iconpos="right" onclick="onQueueDialogOrderButtonGroupClick(this);">Group</a>
@@ -188,15 +188,27 @@
 						</div>
 						<div class="ui-grid-a">
 							<div class="ui-block-a" style="text-align: left;">
-								<a href='#' name="reject" data-rel="back" data-role="button" data-inline="true" data-icon="delete" data-iconpos="right">Reject</a>
+								<a href='#' name="reject" data-role="button" data-inline="true" data-icon="delete" data-iconpos="right">Reject</a>
 							</div>
 							<div class="ui-block-b" style="text-align: right;">
-								<input type="submit" name="Update" value="Update" data-role="button" data-inline="true" data-icon="check" data-iconpos="right">
+								<input type="submit" name="update" value="Update" data-role="button" data-inline="true" data-icon="check" data-iconpos="right">
 							</div>
 						</div>
 					</form>
 				</div>
 				<div name="reject">
+					<form name="reject" action="javascript:void(0);">
+						<label for="request">Reject reason:</label>
+						<input name="reason" placeholder="Your reason to reject order..">
+						<div class="ui-grid-a">
+							<div class="ui-block-a" style="text-align: left;">
+								<a href='#' name="cancel" data-role="button" data-icon="back" data-inline="true" data-iconpos="right">Cancel</a>
+							</div>
+							<div class="ui-block-b" style="text-align: right;">
+								<input type="submit" name="confirm" value="Confirm" data-role="button" data-icon="check" data-inline="true" data-iconpos="right">
+							</div>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
