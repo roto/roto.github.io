@@ -328,3 +328,27 @@ function hash_to_rbg(hash) {
 	var b = hash & 0x0000FF;
 	return 'rgb(' + r + ',' + g + ',' + b + ')';
 }
+
+function getRealHeight(element) {
+	var rect = element.getBoundingClientRect();
+	
+	if (rect.height) {
+		// `height` is available for IE9+
+		return rect.height;
+	} else {
+		// Calculate height for IE8 and below
+		return rect.top - rect.bottom;
+	}
+}
+
+function getRealWidth(element) {
+	var rect = element.getBoundingClientRect();
+	
+	if (rect.width) {
+		// `width` is available for IE9+
+		return rect.width;
+	} else {
+		// Calculate width for IE8 and below
+		return rect.right - rect.left;
+	}
+}

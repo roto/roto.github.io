@@ -360,7 +360,7 @@ function changeOrderState(orderID, newState) {
 		var $newOrderElement = $orderElement.clone(true, true);
 
 		$orderElement.prop({id: generate_quick_guid()});
-		var originalHeight = $orderElement.height();
+		var originalHeight = getRealHeight($orderElement[0]);
 
 		$newOrderElement.height(0);
 
