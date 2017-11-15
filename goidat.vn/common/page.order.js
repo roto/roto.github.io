@@ -347,6 +347,8 @@ function changeOrderState(orderID, newState) {
 							function() {
 								// remove the item's DOM when animation complete
 								$(this).remove();
+								// make sure the content wrapper height is updated
+								$orderElement.closest('.ui-content').enhanceWithin();
 							}
 						);
 					});
@@ -357,34 +359,34 @@ function changeOrderState(orderID, newState) {
 
 	function onOrderStateChanged(order) {
 		var $orderElement = $('#queue-item-' + order.id);
-		var $newOrderElement = $orderElement.clone(true, true);
+		var $oldOrderElement = $orderElement.clone();
+		$oldOrderElement.removeAttr('id');
 
-		$orderElement.prop({id: generate_quick_guid()});
 		var originalHeight = getRealHeight($orderElement[0]);
-
-		$newOrderElement.height(0);
-
+		$orderElement.height(0);
+		$oldOrderElement.insertBefore('#queue-item-' + order.id);
+		
 		var beforeOrder = updateOrdersPosition(order);
 		if (beforeOrder) {
-			$newOrderElement.insertBefore('#queue-item-' + beforeOrder.id);
+			$orderElement.insertBefore('#queue-item-' + beforeOrder.id);
 		} else {
-			$newOrderElement.appendTo('#queue-list');
+			$orderElement.appendTo('#queue-list');
 		}
 
-		$newOrderElement.animate(
-			{ height: originalHeight },
-			'fast', 'swing',
-			function() {
-				$(this).find('a.ui-btn-active').removeClass('ui-btn-active');
-			}
-		);
-
-		$orderElement.animate(
+		$oldOrderElement.animate(
 			{ height: 0 },
 			'fast', 'swing',
 			function() {
 				// remove the item's DOM when animation complete
 				$(this).remove();
+			}
+		);
+		
+		$orderElement.animate(
+			{ height: originalHeight },
+			'fast', 'swing',
+			function() {
+				$(this).find('a.ui-btn-active').removeClass('ui-btn-active');
 			}
 		);
 	}
