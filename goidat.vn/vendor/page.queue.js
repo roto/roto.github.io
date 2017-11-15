@@ -45,11 +45,11 @@ function processNext(orderID) {
 	var newState = getNextState(order.state);
 	
 	_channel.publish(order.groupID, {
-		script: "processNextOrderState(message.data.orderID, message.data.newState);",
+		script: "changeOrderState(message.data.orderID, message.data.newState);",
 		orderID: orderID,
 		newState: newState,
 	});
-	processNextOrderState(orderID, newState);
+	changeOrderState(orderID, newState);
 }
 
 function getNextState(state) {

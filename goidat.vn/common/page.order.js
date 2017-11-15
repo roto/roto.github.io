@@ -188,7 +188,7 @@ function updateOrder(changedProps) {
 	var $orderElement = $('#order-item-' + order.id + ',#queue-item-' + order.id);
 
 	if (changedProps.state && changedProps.state != order.state) {
-		processNextOrderState(changedProps.id, changedProps.state);
+		changeOrderState(changedProps.id, changedProps.state);
 		delete changedProps.state; // done with it
 	}
 
@@ -294,16 +294,17 @@ function addNewOrders(orders, groupID) {
 function rejectOrder(orderID, reason) {
 	var order = _AllOrders[orderID];
 	order.reason = reason;
-	processNextOrderState(orderID, OrderState.REJECTED)
+	changeOrderState(orderID, OrderState.REJECTED)
 }
 
-function processNextOrderState(orderID, newState) {
+function changeOrderState(orderID, newState) {
 	var order = _AllOrders[orderID];
 	order.state = newState;
 
-	var $orderElement = $('#queue-item-' + order.id + ',#order-item-' + order.id);
-
 	if (VENDOR) {
+		onOrderStateChanged(order);
+		var $orderElement = $('#queue-item-' + order.id + ',#order-item-' + order.id);
+
 		var $actioNBtn = $orderElement.find('a[data-icon]');
 		// temporary disable the link until button animation finish
 		$actioNBtn.bind('click', false);
@@ -323,6 +324,7 @@ function processNextOrderState(orderID, newState) {
 			updateState();
 		});
 	} else {
+		var $orderElement = $('#queue-item-' + order.id + ',#order-item-' + order.id);
 		updateState();
 	}
 
@@ -351,6 +353,68 @@ function processNextOrderState(orderID, newState) {
 				}
 			});
 		}
+	}
+
+	function onOrderStateChanged(order) {
+		var $orderElement = $('#queue-item-' + order.id);
+		var $newOrderElement = $orderElement.clone(true, true);
+
+		$orderElement.prop({id: generate_quick_guid()});
+		var originalHeight = $orderElement.height();
+
+		$newOrderElement.height(0);
+
+		var beforeOrder = updateOrdersPosition(order);
+		if (beforeOrder) {
+			$newOrderElement.insertBefore('#queue-item-' + beforeOrder.id);
+		} else {
+			$newOrderElement.appendTo('#queue-list');
+		}
+
+		$newOrderElement.animate(
+			{ height: originalHeight },
+			'fast', 'swing',
+			function() {
+				$(this).find('a.ui-btn-active').removeClass('ui-btn-active');
+			}
+		);
+
+		$orderElement.animate(
+			{ height: 0 },
+			'fast', 'swing',
+			function() {
+				// remove the item's DOM when animation complete
+				$(this).remove();
+			}
+		);
+	}
+
+	function updateOrdersPosition(changedOrder) {
+		var moved = false;
+		var orders = {};
+		var beforeOrder;
+
+		for (var orderID in _AllOrders) {
+			var order = _AllOrders[orderID];
+
+			if (order.id == changedOrder.id) {
+				continue; // skip the old value
+			} else if (!moved && compareOrder(changedOrder, order) < 0) {
+				moved = true;
+				orders[changedOrder.id] = changedOrder;
+				beforeOrder = order;
+			}
+
+			orders[orderID] = order;
+		}
+
+		if (!moved) {
+			orders[changedOrder.id] = changedOrder;
+		}
+
+		_AllOrders = orders;
+
+		return beforeOrder;
 	}
 }
 

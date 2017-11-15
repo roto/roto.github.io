@@ -7,6 +7,25 @@ OrderState = {
 	REJECTED:	'rejected',
 }
 
+function compareState(a, b) {
+	return getStateOrder(a) - getStateOrder(b);
+
+	function getStateOrder(state) {
+		switch (state) {
+			case OrderState.QUEUEING:	return 1;
+			case OrderState.PROCESSING:	return 2;
+			case OrderState.SERVING:	return 3;
+			case OrderState.FINISHED:	return 4;
+			case OrderState.REJECTED:	return 5;
+		}
+	}
+}
+
+function compareOrder(a, b) {
+	var result = compareState(a.state, b.state);
+	return (result != 0) ? -result : (a.created - b.created);
+}
+
 var _MenuGroups = [{
 		id: 'hot',
 		name: 'Hot',
@@ -219,9 +238,7 @@ if (_AllOrders) {
 		}
 	}
 
-	sorted.sort(function(a, b) {
-		return a.created - b.created;
-	});
+	sorted.sort(compareOrder);
 
 	for (var i = 0; i < sorted.length; ++i) {
 		var order = sorted[i];
