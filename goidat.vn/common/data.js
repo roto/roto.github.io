@@ -21,9 +21,46 @@ function compareState(a, b) {
 	}
 }
 
+function compareRequest(a, b) {
+	if (!a) {
+		return -1;
+	} else if (!b) {
+		return 1;
+	} else {
+		if (a < b) {
+			return -1;
+		} else if (a > b) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+}
+
 function compareOrder(a, b) {
 	var result = compareState(a.state, b.state);
-	return (result != 0) ? -result : (a.created - b.created);
+	if (result != 0) {
+		// revert sort the state
+		return -result;
+	}
+
+	if (a.state == OrderState.PROCESSING) {
+		if (a.item.name < b.item.name) {
+			return -1;
+		} else if (a.item.name > b.item.name) {
+			return 1;
+		} else {
+			result = compareRequest(a.request, b.request);
+			if (result != 0) {
+				// revert sort the request
+				return -result;
+			}
+		}
+	} else if (a.state == OrderState.SERVING) {
+		// TODO: sort by delivery
+	}
+	
+	return a.created - b.created;
 }
 
 var _MenuGroups = [{
