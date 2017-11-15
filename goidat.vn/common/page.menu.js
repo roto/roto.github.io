@@ -46,7 +46,7 @@ function openMenuDialog(type, itemID) {
 
 			$div.find('form').off('submit').submit(function(){
 				var order = createNewOrder(itemID);
-				fetchOrderInputs(order, $div);
+				Object.assign(order, fetchOrderInputs($div));
 
 				_channel.publish(_GroupID, {
 					script: "addNewOrder(message.data.order, message.name);",
