@@ -15,8 +15,9 @@ function compareState(a, b) {
 			case OrderState.QUEUEING:	return 1;
 			case OrderState.PROCESSING:	return 2;
 			case OrderState.SERVING:	return 3;
-			case OrderState.FINISHED:	return 4;
-			case OrderState.REJECTED:	return 5;
+			case OrderState.FINISHED:	return 3;
+			case OrderState.REJECTED:	return 3;
+			default:					return 3;
 		}
 	}
 }
