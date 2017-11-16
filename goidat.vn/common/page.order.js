@@ -302,7 +302,9 @@ function changeOrderState(orderID, newState) {
 	order.state = newState;
 
 	if (VENDOR) {
-		onOrderStateChanged(order);
+		// TBD: should the queue get sorted on every state change?
+		// onQueueStateChanged(order);
+
 		var $orderElement = $('#queue-item-' + order.id + ',#order-item-' + order.id);
 
 		var $actioNBtn = $orderElement.find('a[data-icon]');
@@ -357,7 +359,9 @@ function changeOrderState(orderID, newState) {
 		}
 	}
 
-	function onOrderStateChanged(order) {
+	// TBD: should the queue get sorted on every state change?
+	/*
+	function onQueueStateChanged(order) {
 		var $orderElement = $('#queue-item-' + order.id);
 		var $oldOrderElement = $orderElement.clone();
 		$oldOrderElement.removeAttr('id');
@@ -366,7 +370,7 @@ function changeOrderState(orderID, newState) {
 		$orderElement.height(0);
 		$oldOrderElement.insertBefore('#queue-item-' + order.id);
 		
-		var beforeOrder = updateOrdersPosition(order);
+		var beforeOrder = updateQueuePosition(order);
 		if (beforeOrder) {
 			$orderElement.insertBefore('#queue-item-' + beforeOrder.id);
 		} else {
@@ -391,7 +395,7 @@ function changeOrderState(orderID, newState) {
 		);
 	}
 
-	function updateOrdersPosition(changedOrder) {
+	function updateQueuePosition(changedOrder) {
 		var moved = false;
 		var orders = {};
 		var beforeOrder;
@@ -418,6 +422,7 @@ function changeOrderState(orderID, newState) {
 
 		return beforeOrder;
 	}
+	*/
 }
 
 function shouldDisplayInQueue(state) {
