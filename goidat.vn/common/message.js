@@ -43,6 +43,10 @@ function syncThemAll() {
 			var client = message.data.client;
 			//var groupID = message.data.group; // currently ignored due to client/server desync
 
+			var groupCount = Object.keys(_OrderGroups).length;
+			var groupOrdinal = hash_code(message.data.fingerprint) % groupCount;
+			var groupID = Object.keys(_OrderGroups)[groupOrdinal];
+
 			var data = {
 				script:
 "_MenuItems = message.data.menuItems;\
@@ -52,7 +56,7 @@ _GroupID = message.data.groupID;",
 				menuItems: _MenuItems,
 				menuGroups: _MenuGroups,
 				deliveryData: _DeliveryData,
-				groupID: Object.keys(_OrderGroups)[1],
+				groupID: groupID,
 			};
 
 			// append the module specific data
@@ -65,7 +69,7 @@ _Group = _OrderGroups[_GroupID];";
 				data.orderGroups = _OrderGroups;
 			} else {
 				data.script = data.script + "_Group = message.data.group;";
-				data.group = _OrderGroups[Object.keys(_OrderGroups)[1]];
+				data.group = _OrderGroups[groupID];
 			}
 
 			data.script = data.script + "populateGroupData();";
@@ -76,10 +80,13 @@ _Group = _OrderGroups[_GroupID];";
 
 	var client = generate_quick_guid();
 
-	synChannel.publish('sync', {
-		client: client,
-		isVendor: VENDOR,
-		//group: _GroupID, // currently ignored due to client/server desync
+	new Fingerprint2().get(function(result, components){
+		synChannel.publish('sync', {
+			client: client,
+			isVendor: VENDOR,
+			fingerprint: result,
+			//group: _GroupID, // currently ignored due to client/server desync
+		});
 	});
 
 	synChannel.subscribe(client, syncHandler);
