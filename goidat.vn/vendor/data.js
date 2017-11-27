@@ -1,6 +1,6 @@
 /* Temporary Data */
-_SERVICES = {
-	'089efecc-3e95-47ac-8875-8e41b8ec6df3' : {
+var _SERVICES = {
+	'bun' : {
 		name: 'Bún ngan',
 		desc: 'Chân cầu vượt Kim Mã',
 		alias: 'Ngã Tư Kim Mã',
@@ -119,7 +119,7 @@ _SERVICES = {
 		},
 	},
 
-	'8f0ef4b7-ca4f-48bc-98cb-b60402bf5c49' : {
+	'pizza' : {
 		name: 'PizzaTent',
 		desc: 'Núi Trúc',
 		alias: 'Pizza Núi Trúc',
@@ -189,8 +189,8 @@ _SERVICES = {
 	},
 };
 
-_CUSTOMERS = {
-	'089efecc-3e95-47ac-8875-8e41b8ec6df3' : {
+var _CUSTOMERS = {
+	'bun' : {
 		groups : {
 			[generate_quick_guid()] : {
 				tables: [
@@ -272,7 +272,7 @@ _CUSTOMERS = {
 		},
 	},
 
-	'8f0ef4b7-ca4f-48bc-98cb-b60402bf5c49' : {
+	'pizza' : {
 		groups : {
 			[generate_quick_guid()] : {
 				tables: [
@@ -309,71 +309,3 @@ _CUSTOMERS = {
 		},
 	},
 }
-
-// construct the full order list from bill list
-/*var _AllOrders = {};
-
-if (_AllOrders) {
-	var sorted = [];
-	for (var groupID in _OrderGroups) {
-		var tableSharedCount = Number.MAX_SAFE_INTEGER;
-
-		var group = _OrderGroups[groupID];
-		group.tableToDisplay = getGroupDisplayName(group);
-		
-		for (var orderID in group.orders) {
-			var order = group.orders[orderID];
-			order.id = orderID;
-			order.groupID = groupID;
-			order.state = OrderState.QUEUEING;
-
-			sorted.push(order);
-		}
-	}
-
-	sorted.sort(compareOrder);
-
-	for (var i = 0; i < sorted.length; ++i) {
-		var order = sorted[i];
-		_AllOrders[order.id] = order;
-	}
-}
-
-// orders for table 206
-// https://stackoverflow.com/questions/4044845/retrieving-a-property-of-a-json-object-by-index/31103463#31103463
-var _GroupID = Object.keys(_OrderGroups)[1];
-var _Group = _OrderGroups[_GroupID];
-
-function getGroupDisplayName(group) {
-	var displayName;
-
-	for (var i in group.tables) {
-		var table = group.tables[i];
-		var floorID = table.floor;
-		var seatID = table.seat;
-
-		var floor = _DeliveryData[floorID];
-		if (!floor) {
-			throw 'Floor not exist: ' + floorID;
-		}
-
-		var seat = floor.seats[seatID];
-		if (!seat) {
-			throw 'Seat not exist: ' + seatID + ' on floor ' + floorID;
-		}
-
-		if (!seat.groups) {
-			seat.groups = [ groupID ];
-		} else if ($.inArray(groupID, seat.groups) < 0) {
-			seat.groups.push(groupID);
-		}
-
-		if (tableSharedCount > seat.groups.length) {
-			tableSharedCount = seat.groups.length;
-			displayName = seat.displayName;
-		}
-	}
-
-	return displayName;
-}
-*/

@@ -227,14 +227,15 @@ function updateOrder(changedProps) {
 }
 
 function deleteOrder(orderID, groupID) {
-	if (_Group.hasOwnProperty(orderID)) {
+	if (_Group.orders.hasOwnProperty(orderID)) {
 		delete _Group.orders[orderID];
 	}
 
 	if (VENDOR) {
-		if (groupID) {
-			delete _OrderGroups[groupID].orders[orderID];
+		if (!groupID) {
+			groupID = _AllOrders[orderID].groupID;
 		}
+		delete _OrderGroups[groupID].orders[orderID];
 		delete _AllOrders[orderID];
 	}
 	

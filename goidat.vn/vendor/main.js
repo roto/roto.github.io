@@ -21,20 +21,15 @@ $(document).ready(function(){
 	config_page_slide_for_touch_device(['order', 'menu']);
 })
 
-function populateServiceData() {
+function populateService() {
+	populateQueue();
 	populateQuickMenu();
-	populateGroupData();
 }
 
 function populateGroupData() {
-	populateQueue();
 	populateDelivery();
 
 	if ($.mobile.activePage && $.mobile.activePage.attr('id') == 'order') {
 		populateOrder(_GroupID);
 	}
-
-	$('.initial.uninitialized').removeClass('uninitialized').each(function() {
-		initial($(this));
-	});
 }

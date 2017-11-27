@@ -1,5 +1,16 @@
 
 function populateQuickMenu() {
+	var $page = $('#menu');
+	try {
+		$page.page('destroy');
+	} catch (err) {
+		if (err.message.indexOf('prior to initialization') >= 0) {
+			// page might not be initilized, ignore and continue
+		} else {
+			throw err;
+		}
+	}
+
 	var groupsHTML = '';
 
 	// for each menu's groups
@@ -16,10 +27,12 @@ function populateQuickMenu() {
 	}
 
 	// append the collapsible group div
-	$('ul#menu-list[data-role="listview"]').empty().append($(groupsHTML)).listview().listview("refresh")
+	$('ul#menu-list[data-role="listview"]').empty().append($(groupsHTML))//.listview().listview("refresh")
 			.find('.initial.uninitialized').removeClass('uninitialized').each(function() {
 				initial($(this));
 			});
+
+	$page.page();
 }
 
 function generateQuickMenuGroupHTML(group) {

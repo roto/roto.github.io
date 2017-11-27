@@ -10,7 +10,10 @@ function populateQueue() {
 		}
 	}
 
-	$('ul#queue-list[data-role="listview"]').empty().append($(ordersHTML)).listview().listview("refresh");
+	$('ul#queue-list[data-role="listview"]').empty().append($(ordersHTML)).listview().listview("refresh")
+			.find('.initial.uninitialized').removeClass('uninitialized').each(function() {
+				initial($(this));
+			});
 }
 
 function generateQueueItemHTML(order) {
