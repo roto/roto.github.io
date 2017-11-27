@@ -14,6 +14,10 @@ var _ably = new Ably.Realtime({
 var _channel;
 
 _ably.connection.on('connected', function() {
+	if (VENDEE) {
+		$.mobile.loading('show');
+	}
+
 	syncThemAll();
 
 	_channel = _ably.channels.get('Huế');
@@ -87,7 +91,8 @@ _Group = _OrderGroups[_GroupID];";
 	// auto unsubscribe after 13s
 	setTimeout(function() {
 		synChannel.unsubscribe(client, syncHandler);
-	}, 30 * 1000);
+		$.mobile.loading('hide');
+	}, 13 * 1000);
 
 	function syncHandler(message) {
 		synChannel.unsubscribe(client, syncHandler);
@@ -96,6 +101,8 @@ _Group = _OrderGroups[_GroupID];";
 		if (message.data.script) {
 			eval(message.data.script);
 		}
+
+		$.mobile.loading('hide');
 
 		if (VENDEE) {
 			// vendee need correct group id
