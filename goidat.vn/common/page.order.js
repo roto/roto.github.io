@@ -186,7 +186,7 @@ function openOrderDialog(view, orderID) {
 }
 
 function updateOrder(changedProps) {
-	var order = _Group.orders[changedProps.id] ? _Group.orders[changedProps.id] : _AllOrders[changedProps.id];
+	var order = VENDOR ? _AllOrders[changedProps.id] : _Group.orders[changedProps.id];
 
 	var $orderElement = $('#order-item-' + order.id + ',#queue-item-' + order.id);
 
@@ -301,16 +301,16 @@ function addNewOrders(orders, groupID) {
 }
 
 function rejectOrder(orderID, reason) {
-	var order = _AllOrders[orderID];
+	var order = VENDOR ? _AllOrders[orderID] : _Group.orders[orderID];
 	order.reason = reason;
 	changeOrderState(orderID, OrderState.REJECTED)
 }
 
 function changeOrderState(orderID, newState) {
-	if (VENDOR) {
-		var order = _AllOrders[orderID];
-		order.state = newState;
+	var order = VENDOR ? _AllOrders[orderID] : _Group.orders[orderID];
+	order.state = newState;
 
+	if (VENDOR) {
 		// TBD: should the queue get sorted on every state change?
 		// onQueueStateChanged(order);
 
@@ -335,9 +335,6 @@ function changeOrderState(orderID, newState) {
 			updateState();
 		});
 	} else {
-		var order = _Group.orders[orderID];
-		order.state = newState;
-
 		var $orderElement = $('#queue-item-' + order.id + ',#order-item-' + order.id);
 		updateState();
 	}
