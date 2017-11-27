@@ -16,12 +16,14 @@ function populateQueue() {
 function generateQueueItemHTML(order) {
 	var orderHTML = '<li id="queue-item-' + order.id + '"><a href="javascript:openQueueDialog(\'edit\', \'' + order.id + '\')">';
 
-	if (order.item.initial) {
-		orderHTML += '<img data-name="' + order.item.initial + '" class="initial uninitialized" style="border-radius: 50%">';
+	var item = _MenuItems[order.itemID];
+
+	if (item.initial) {
+		orderHTML += '<img data-name="' + item.initial + '" class="initial uninitialized" style="border-radius: 50%">';
 	}
 
-	if (order.item.name) {
-		orderHTML += '<h2>' + order.item.name + '</h2>';
+	if (item.name) {
+		orderHTML += '<h2>' + item.name + '</h2>';
 	}
 
 	orderHTML += generateOrderRequestHTML(order);
@@ -100,8 +102,9 @@ function openQueueDialog(view, orderID) {
 	}
 
 	var order = _AllOrders[orderID];
+	var item = _MenuItems[order.itemID];
 	var $dialog = $('#queue [name="order"]');
-	$dialog.find('h1[role="heading"]').text(order.item.name);
+	$dialog.find('h1[role="heading"]').text(item.name);
 
 	// tag the orderID in the dialog DOM for event handlers
 	$dialog.data('orderID', orderID);
@@ -117,7 +120,7 @@ function openQueueDialog(view, orderID) {
 		var $div = $main.children('[name="' + view + '"]').hide();
 
 		if (view === 'edit') {
-			loadRequestInputEvents($div, order.item.id, orderID);
+			loadRequestInputEvents($div, item.id, orderID);
 			loadQuantityInputEvents($div, order.quantity);
 			loadStateInput($div, order.state);
 

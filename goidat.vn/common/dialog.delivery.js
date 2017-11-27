@@ -108,13 +108,13 @@ function updateDeliveryLink(data) {
 }
 
 function updateGroupOrderDisplayName(tableName, groupID) {
-	if (!groupID) {
-		groupID = _GroupID;
-	}
-
-	_OrderGroups[groupID].tableToDisplay = tableName;
-
 	if (VENDOR) {
+		if (!groupID) {
+			groupID = _GroupID;
+		}
+
+		_OrderGroups[groupID].tableToDisplay = tableName;
+
 		var orders = _OrderGroups[groupID].orders;
 		for (var orderID in orders) {
 			var order = orders[orderID];
@@ -122,6 +122,8 @@ function updateGroupOrderDisplayName(tableName, groupID) {
 			// update queue list table display
 			$('#queue-item-' + order.id + ' span.ui-li-table').text(tableName);
 		}
+	} else {
+		_Group.tableToDisplay = tableName;
 	}
 }
 
@@ -131,7 +133,7 @@ function updateGroupTables(tables, groupID) {
 	}
 
 	// update global data
-	var group = _OrderGroups[groupID];
+	var group = VENDOR ? _OrderGroups[groupID] : _Group;
 	
 	// remove all groupID from old seats
 	for (var i in group.tables) {

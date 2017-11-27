@@ -87,7 +87,7 @@ function menuItemClick(itemID) {
 		var $this = $(this);
 		var order = $this.data('order');
 
-		if(order && order.item.id === itemID && !order.request) {
+		if(order && order.itemID === itemID && !order.request) {
 			var currentQuantity = order.quantity;
 
 			// register the Undo action
@@ -251,9 +251,10 @@ function acceptPreviewList() {
 function openQuickMenuDialog(link) {
 	var $item = $(link).parent();
 	var order = $item.data('order');
+	var item = _MenuItems[order.itemID];
 
 	var $dialog = $('#dialog-menu');
-	$dialog.find('h1').text(order.item.name);
+	$dialog.find('h1').text(item.name);
 
 	var $main = $dialog.children('[data-role="main"]');
 	$main.children('div').hide();	// hide all children
@@ -266,7 +267,7 @@ function openQuickMenuDialog(link) {
 		var $div = $main.children('#dialog-menu-' + type).hide();
 
 		if (type === 'edit') {
-			loadRequestInputEvents($div, order.item.id, order.id);
+			loadRequestInputEvents($div, item.id, order.id);
 			loadQuantityInputEvents($div, order.quantity);
 
 			var $form = $div.find("form");

@@ -1,5 +1,16 @@
 
 function populateMenu() {
+	var $page = $('#menu');
+	try {
+		$page.page('destroy');
+	} catch (err) {
+		if (err.message.indexOf('prior to initialization') >= 0) {
+			// page might not be initilized, ignore and continue
+		} else {
+			throw err;
+		}
+	}
+
 	var groupsHTML = '';
 
 	// for each menu's groups
@@ -14,7 +25,9 @@ function populateMenu() {
 	}
 
 	// append the collapsible group div
-	$('ul#menu-list[data-role="listview"]').empty().append($(groupsHTML)).listview().listview("refresh");
+	$('ul#menu-list[data-role="listview"]').empty().append($(groupsHTML));//.listview().listview("refresh");
+
+	$page.page();
 }
 
 function openMenuDialog(type, itemID) {

@@ -2,7 +2,7 @@
 function populateOrder(groupID) {
 	if (groupID) {
 		_GroupID = groupID;
-		_GroupOrders = _OrderGroups[groupID].orders;
+		_Group = _OrderGroups[groupID];
 
 		populateOrderHeader();
 	}
@@ -20,8 +20,8 @@ function populateOrder(groupID) {
 
 	loadDeliveryPopup();
 
-	if (_GroupOrders.tableToDisplay) {
-		var dest = 'Table ' + _GroupOrders.tableToDisplay;
+	if (_Group.tableToDisplay) {
+		var dest = 'Table ' + _Group.tableToDisplay;
 		$('a#footer-button-delivery').text(dest);
 	}
 }
@@ -48,8 +48,8 @@ function generateOrdersHTML() {
 	var ordersHTML = '';
 
 	// for each menu's groups
-	for (var id in _GroupOrders) {
-		var order = _GroupOrders[id];
+	for (var id in _Group.orders) {
+		var order = _Group.orders[id];
 		ordersHTML += generateOrderHTML(order);
 	}
 
@@ -62,16 +62,18 @@ function generateOrdersHTML() {
 function generateOrderHTML(order) {
 	var orderHTML = '<li id="order-item-' + order.id + '"><a href="javascript:openOrderDialog(\'status\', \'' + order.id + '\')">';
 
-	if (VENDEE && order.item.image) {
-		orderHTML += '<img style="border-radius: 50%" src="' + order.item.image + '">';
-	} else if (VENDOR && order.item.initial) {
-		orderHTML += '<img data-name="' + order.item.initial + '" class="initial uninitialized" style="border-radius: 50%">';
+	var item = _MenuItems[order.itemID];
+
+	if (VENDEE && item.image) {
+		orderHTML += '<img style="border-radius: 50%" src="' + item.image + '">';
+	} else if (VENDOR && item.initial) {
+		orderHTML += '<img data-name="' + item.initial + '" class="initial uninitialized" style="border-radius: 50%">';
 	} else {
 		throw "Invalid module";
 	}
 
-	if (order.item.name) {
-		orderHTML += '<h2>' + order.item.name + '</h2>';
+	if (item.name) {
+		orderHTML += '<h2>' + item.name + '</h2>';
 	}
 
 	orderHTML += generateOrderRequestHTML(order);
@@ -102,14 +104,15 @@ function generateOrderStateHTML(order) {
 }
 
 function openOrderDialog(view, orderID) {
-	if (!_GroupOrders.hasOwnProperty(orderID)) {
+	if (!_Group.orders.hasOwnProperty(orderID)) {
 		console.warn('Order item "' + orderID + '" is not in the order');
 		return;
 	}
 
-	var order = _GroupOrders[orderID];
+	var order = _Group.orders[orderID];
+	var item = _MenuItems[order.itemID];
 	var $dialog = $('#order [name="order"]');
-	$dialog.find('h1[role="heading"]').text(order.item.name);
+	$dialog.find('h1[role="heading"]').text(item.name);
 
 	var $main = $dialog.children('[data-role="main"]');
 	$main.children('div').hide();	// hide all children
@@ -122,7 +125,7 @@ function openOrderDialog(view, orderID) {
 		var $div = $main.children('[name="' + view + '"]').hide();
 
 		if (view === 'status') {
-			$div.children('img[name="image"]').attr('src', order.item.image);
+			$div.children('img[name="image"]').attr('src', item.image);
 			if (order.quantity) {
 				$div.children('span[name="quantity"]').text(order.quantity + ORDER_QUANTITY_POSTFIX).show();
 			} else {
@@ -143,15 +146,15 @@ function openOrderDialog(view, orderID) {
 				$dialog.popup("reposition", {});
 			});
 		} else if (view === 'info') {
-			$div.children('img').attr('src', order.item.image);
-			$div.children('p').text(order.item.desc ? order.item.desc : '');
+			$div.children('img').attr('src', item.image);
+			$div.children('p').text(item.desc ? item.desc : '');
 			$div.find('a').off('click').click(function() {
 				$div.hide();
 				showOrderContent('status');
 				$dialog.popup("reposition", {});
 			});
 		} else if (view === 'edit') {
-			loadRequestInputEvents($div, order.item.id, orderID);
+			loadRequestInputEvents($div, item.id, orderID);
 			loadQuantityInputEvents($div, order.quantity);
 
 			var $form = $div.find("form");
@@ -183,7 +186,7 @@ function openOrderDialog(view, orderID) {
 }
 
 function updateOrder(changedProps) {
-	var order = _AllOrders ? _AllOrders[changedProps.id] : _GroupOrders[changedProps.id];
+	var order = _Group.orders[changedProps.id] ? _Group.orders[changedProps.id] : _AllOrders[changedProps.id];
 
 	var $orderElement = $('#order-item-' + order.id + ',#queue-item-' + order.id);
 
@@ -224,12 +227,16 @@ function updateOrder(changedProps) {
 }
 
 function deleteOrder(orderID, groupID) {
-	if (groupID) {
-		delete _OrderGroups[groupID].orders[orderID];
-	} else {
-		delete _GroupOrders[orderID];
+	if (_Group.hasOwnProperty(orderID)) {
+		delete _Group.orders[orderID];
 	}
-	delete _AllOrders[orderID];
+
+	if (VENDOR) {
+		if (groupID) {
+			delete _OrderGroups[groupID].orders[orderID];
+		}
+		delete _AllOrders[orderID];
+	}
 	
 	var $orderElement = $('#order-item-' + orderID + ',#queue-item-' + orderID);
 	$orderElement.children('a').off('click').attr('href', undefined);
@@ -248,7 +255,7 @@ function createNewOrder(itemID) {
 	return {
 		id: generate_quick_guid(),
 		created: (new Date).getTime(),
-		item: _MenuItems[itemID],
+		itemID: itemID,
 		state: OrderState.QUEUEING,
 	};
 }
@@ -266,17 +273,19 @@ function addNewOrders(orders, groupID) {
 	for (var i = 0; i < orders.length; ++i) {
 		var order = orders[i];
 		order.groupID = groupID;
-		_OrderGroups[groupID].orders[order.id] = order;
+
+		if (VENDOR) {
+			_OrderGroups[groupID].orders[order.id] = order;
+			_AllOrders[order.id] = order;
+
+			var queueHTML = generateQueueItemHTML(order);
+			$('#queue-list').append($(queueHTML));
+		} else {
+			_Group.orders[order.id] = order;
+		}
 		
 		var orderHTML = generateOrderHTML(order);
 		$(orderHTML).insertBefore('#new-order')
-
-		_AllOrders[order.id] = order;
-		
-		if (VENDOR) {
-			var queueHTML = generateQueueItemHTML(order);
-			$('#queue-list').append($(queueHTML));
-		}
 
 		$('#order-item-' + order.id + ',#queue-item-' + order.id).fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
 	}
@@ -298,10 +307,10 @@ function rejectOrder(orderID, reason) {
 }
 
 function changeOrderState(orderID, newState) {
-	var order = _AllOrders[orderID];
-	order.state = newState;
-
 	if (VENDOR) {
+		var order = _AllOrders[orderID];
+		order.state = newState;
+
 		// TBD: should the queue get sorted on every state change?
 		// onQueueStateChanged(order);
 
@@ -326,6 +335,9 @@ function changeOrderState(orderID, newState) {
 			updateState();
 		});
 	} else {
+		var order = _Group.orders[orderID];
+		order.state = newState;
+
 		var $orderElement = $('#queue-item-' + order.id + ',#order-item-' + order.id);
 		updateState();
 	}
