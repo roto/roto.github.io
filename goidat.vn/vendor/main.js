@@ -6,8 +6,6 @@ $(document).ready(function(){
 	initialize_local_storage();
 
 	populateHome();
-	populateQuickMenu();
-	populateGroupData();
 	
 	// not sure why, but this has to be done after menu is populated
 	if (local_load('theme') === 'b') {
@@ -22,6 +20,11 @@ $(document).ready(function(){
 
 	config_page_slide_for_touch_device(['order', 'menu']);
 })
+
+function populateServiceData() {
+	populateQuickMenu();
+	populateGroupData();
+}
 
 function populateGroupData() {
 	populateQueue();
