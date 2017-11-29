@@ -1,5 +1,12 @@
 /* Data Models */
-OrderState = {
+var LocationState = {
+	REJECTED: 'rejected',
+	BLOCKED: 'blocked',
+	ACCEPTED: 'accepted',
+	UNSUPPORTED: 'unsupported',
+}
+
+var OrderState = {
 	QUEUEING: 	'queueing',
 	PROCESSING:	'processing',
 	SERVING:	'serving',
