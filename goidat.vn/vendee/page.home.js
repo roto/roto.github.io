@@ -1,6 +1,20 @@
 function populateHome() {
 	populateAddress();
 
+	var $form = $('#service-search-form');
+	
+	$form.off('submit').submit(function() {
+		var $input = $form.find('[name="service-search"]');
+		var text = $input.val();
+		if (text && text.length > 0) {
+			$.mobile.loading('show');
+			search(text, function(results) {
+				$.mobile.loading('hide');
+				// TODO: processs results here
+			});
+		}
+	});
+
 	function populateAddress() {
 		var $pAddress = $('#p-address');
 		var $hdnAddress = $('#address');
@@ -152,4 +166,47 @@ function location_load() {
 
 function location_save(location) {
 	local_save('location', JSON.stringify(location));
+}
+
+function search(text, onSuccess) {
+	var services = {
+		'bun' : {
+			name: 'Bún ngan',
+			desc: 'Chân cầu vượt Kim Mã',
+		},
+		'pizza' : {
+			name: 'PizzaTent',
+			desc: 'Núi Trúc',
+		},
+	};
+
+	text = text.toUpperCase();
+	var results = {};
+	var properties = ['name', 'desc']
+
+	for (var propID in properties) {
+		var property = properties[propID];
+
+		for (var serviceID in services) {
+			if (results.hasOwnProperty(serviceID)) {
+				continue;
+			}
+
+			var service = services[serviceID];
+			var propValue = service[property].toUpperCase();
+
+			if (propValue.indexOf(text) >= 0 ||
+					removeDiacritics(propValue).indexOf(text) >= 0) {
+				results[serviceID] = service;
+			}
+		}
+	}
+
+	if ($.isFunction(onSuccess)) {
+		setTimeout(function() {
+			onSuccess(results);
+		}, 1000 + Math.random() * 1000);
+	} else {
+		return results;
+	}
 }
