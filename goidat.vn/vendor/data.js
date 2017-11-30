@@ -3,6 +3,7 @@ var _SERVICES = {
 	'bun' : {
 		name: 'Bún ngan',
 		desc: 'Chân cầu vượt Kim Mã',
+		image: 'http://maishouston.com/img/home-photo-3.jpg',
 		alias: 'Ngã Tư Kim Mã',
 		initial: 'NTKM',
 
@@ -122,6 +123,7 @@ var _SERVICES = {
 	'pizza' : {
 		name: 'PizzaTent',
 		desc: 'Núi Trúc',
+		image: 'http://retaildesignblog.net/wp-content/uploads/2014/04/Peppes-Pizza-restaurant-by-RISS-INTERIORARKITEKTER-Oslo-Norway.jpg',
 		alias: 'Pizza Núi Trúc',
 		initial: 'PNT',
 

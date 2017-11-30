@@ -9,8 +9,10 @@ function populateHome() {
 		if (text && text.length > 0) {
 			$.mobile.loading('show');
 			search(text, function(results) {
+				var $ul = $('#service-list');
+				var html = generateServicesHTML(results);
+				$ul.empty().append($(html)).listview().listview('refresh');
 				$.mobile.loading('hide');
-				// TODO: processs results here
 			});
 		}
 	});
@@ -168,15 +170,62 @@ function location_save(location) {
 	local_save('location', JSON.stringify(location));
 }
 
+function generateServicesHTML(services) {
+	var html = '';
+
+	// for each menu's groups
+	for (var id in services) {
+		var service = services[id];
+		service.id = id;
+		html += generateServiceHTML(service);
+	}
+
+	return html;
+}
+
+function generateServiceHTML(service) {
+	var html = '<li id="service-item-' + service.id + '"><a href="javascript:navigateToService(\'' + service.id + '\');">';
+
+	if (service.image) {
+		html += '<img src="' + service.image + '" style="border-radius: 15%">';
+	}
+
+	if (service.name) {
+		html += '<h2>' + service.name + '</h2>';
+	}
+
+	if (service.desc) {
+		html += '<p>' + service.desc + '</p>';
+	}
+
+	if (service.status) {
+		html += '<span class="ui-li-count">' + service.status + '</span>';
+	}
+
+	html += '</a></li>';
+
+	return html;
+}
+
+function navigateToService(serviceID) {
+	$.mobile.navigate('#order', {
+		transition: "slidefade",
+	});
+
+	// TODO: Fetch and load service order
+}
+
 function search(text, onSuccess) {
 	var services = {
 		'bun' : {
 			name: 'Bún ngan',
 			desc: 'Chân cầu vượt Kim Mã',
+			image: 'http://maishouston.com/img/home-photo-3.jpg',
 		},
 		'pizza' : {
 			name: 'PizzaTent',
 			desc: 'Núi Trúc',
+			image: 'http://retaildesignblog.net/wp-content/uploads/2014/04/Peppes-Pizza-restaurant-by-RISS-INTERIORARKITEKTER-Oslo-Norway.jpg',
 		},
 	};
 
