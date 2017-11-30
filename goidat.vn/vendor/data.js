@@ -272,6 +272,7 @@ var _CUSTOMERS = {
 				},
 			},
 		},
+		pendingMessages : [],
 	},
 
 	'pizza' : {
@@ -309,5 +310,6 @@ var _CUSTOMERS = {
 				},
 			},
 		},
+		pendingMessages : [],
 	},
 }

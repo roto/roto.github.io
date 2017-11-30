@@ -42,12 +42,21 @@ function navigateToService(serviceID) {
 
 	loadServiceData(serviceID);
 	populateService();
+
+	// replay all the pending messages while the service is inative
+	while (_CUSTOMERS[serviceID].pendingMessages.length > 0) {
+		messageHandler(_CUSTOMERS[serviceID].pendingMessages.shift());
+	}
 }
 
 function loadServiceData(serviceID) {
+	// switch channel
+	_channel = _ably.channels.get(serviceID);
+
 	var service = _SERVICES[serviceID];
 	var customer = _CUSTOMERS[serviceID];
 
+	_ServiceID = serviceID;
 	_OrderGroups = customer.groups;
 	_DeliveryData = service.delivery;
 	_MenuItems = service.product.items;
@@ -57,33 +66,35 @@ function loadServiceData(serviceID) {
 	_AllOrders = customer.queue;
 
 	if (!_AllOrders) {
+		loadAllOrders();
+	}
+
+	function loadAllOrders() {
 		// construct the full order list from bill list
 		customer.queue = _AllOrders = {};
+		
+		var sorted = [];
+		for (var groupID in _OrderGroups) {
+			var tableSharedCount = Number.MAX_SAFE_INTEGER;
 
-		if (_AllOrders) {
-			var sorted = [];
-			for (var groupID in _OrderGroups) {
-				var tableSharedCount = Number.MAX_SAFE_INTEGER;
+			var group = _OrderGroups[groupID];
+			group.tableToDisplay = getGroupDisplayName(group);
+			
+			for (var orderID in group.orders) {
+				var order = group.orders[orderID];
+				order.id = orderID;
+				order.groupID = groupID;
+				order.state = OrderState.QUEUEING;
 
-				var group = _OrderGroups[groupID];
-				group.tableToDisplay = getGroupDisplayName(group);
-				
-				for (var orderID in group.orders) {
-					var order = group.orders[orderID];
-					order.id = orderID;
-					order.groupID = groupID;
-					order.state = OrderState.QUEUEING;
-
-					sorted.push(order);
-				}
+				sorted.push(order);
 			}
+		}
 
-			sorted.sort(compareOrder);
+		sorted.sort(compareOrder);
 
-			for (var i = 0; i < sorted.length; ++i) {
-				var order = sorted[i];
-				_AllOrders[order.id] = order;
-			}
+		for (var i = 0; i < sorted.length; ++i) {
+			var order = sorted[i];
+			_AllOrders[order.id] = order;
 		}
 
 		function getGroupDisplayName(group) {
