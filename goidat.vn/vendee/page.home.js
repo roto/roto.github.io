@@ -1,6 +1,9 @@
 function populateHome() {
 	populateAddress();
+	populateSearchForm();
+}
 
+function populateSearchForm() {
 	var $form = $('#service-search-form');
 	
 	$form.off('submit').submit(function() {
