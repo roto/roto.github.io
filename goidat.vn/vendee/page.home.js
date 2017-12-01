@@ -63,7 +63,31 @@ function navigateToService(serviceID) {
 		transition: "slidefade",
 	});
 
-	// TODO: Fetch and load service order
+	fetchServiceData(serviceID);
+}
+
+function fetchServiceData(serviceID) {
+	var dataChannel = _ably.channels.get('data');
+	var client = generate_quick_guid();
+
+	dataChannel.subscribe(client, function(message) {
+		dataChannel.unsubscribe(client, arguments.callee);
+		messageHandler(message);
+		populateService(serviceID);	
+	});
+
+	dataChannel.publish('fetch', {
+		client: client,
+		serviceID: serviceID,
+		service: true,
+		customer: true,
+	});
+}
+
+function populateService(serviceID) {
+	loadServiceData(serviceID);
+	populateOrder();
+	populateMenu();
 }
 
 function search(text, onSuccess) {
@@ -92,7 +116,7 @@ function search(text, onSuccess) {
 	if ($.isFunction(onSuccess)) {
 		setTimeout(function() {
 			onSuccess(results);
-		}, 1000 + Math.random() * 1000);
+		}, 600 + Math.random() * 700);
 	} else {
 		return results;
 	}

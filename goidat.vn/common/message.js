@@ -31,6 +31,8 @@ _ably.connection.on('connected', function() {
 				});
 			}
 		}
+
+		initDataProvider();
 	}
 
 	/*if (VENDOR) {
@@ -86,4 +88,30 @@ populateHome();",
 			eval(message.data.script);
 		}
 	}
+}
+
+function initDataProvider() {
+	var dataChannel = _ably.channels.get('data');
+
+	dataChannel.subscribe('fetch', function(message) {
+		var serviceID = message.data.serviceID;
+
+		var data = {
+			script: "",
+		}
+
+		if (message.data.service) {
+			data.script += "Object.assign(_SERVICES, message.data.service);";
+			data.service = { [serviceID] : _SERVICES[serviceID] };
+		}
+
+		if (message.data.customer) {
+			data.script += "Object.assign(_CUSTOMERS, message.data.customer);";
+			data.customer = { [serviceID] : _CUSTOMERS[serviceID] };
+		}
+
+		if (data.script.length > 0) {
+			dataChannel.publish(message.data.client, data);
+		}
+	});
 }
