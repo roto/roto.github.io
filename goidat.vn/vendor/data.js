@@ -143,12 +143,37 @@ var _SERVICES = {
 					price:	'65000',
 					initial:	'BD',
 				},
+				'pizza-vegan': {
+					name:   'Pizza Vegan',
+					desc:   'Pizza nấm rau quả cho người ăn chay.',
+					image:  'http://mywholefoodskitchen.com/wp-content/uploads/2013/04/pizza2.jpg',
+					price:	'70000',
+					initial:	'BD',
+				},
+				'spaghetti-bo-ham': {
+					name:   'Spaghetti Bò Hầm',
+					desc:   'Thịt bò hầm với sốt cà chua.',
+					image:  'http://vaobepnauan.com/wp-content/uploads/2014/07/cach-lam-my-y-ngon-5.jpg',
+					price:	'55000',
+					initial:	'SBH',
+				},
+				'spaghetti-bolognese': {
+					name:   'Spaghetti Bolognese',
+					desc:   'Bolognese.',
+					image:  'https://scm-assets.constant.co/scm/unilever/a6798e909fa57bfd19c3e7f00737e5d6/d6ed4451-2c6b-4782-b19e-da7c6c558cc3.jpg',
+					price:	'60000',
+					initial:	'SB',
+				},
 			},
 
 			categories : [{
 				id: 'pizza',
 				name: 'Pizza',
-				items: ['pizza-hai-san', 'pizza-bo-dua'],
+				items: ['pizza-hai-san', 'pizza-bo-dua', 'pizza-vegan'],
+			},{
+				id: 'spaghetti',
+				name: 'Spaghetti',
+				items: ['spaghetti-bo-ham', 'spaghetti-bolognese'],
 			}],
 		},
 
@@ -285,12 +310,6 @@ var _CUSTOMERS = {
 				],
 				orders: {
 					[generate_quick_guid()] : {
-						created: (new Date).getTime() - 1000 * 60 * 10,
-						itemID: 'pizza-hai-san',
-						request: 'nhiều ớt',
-						quantity: 2,
-					},
-					[generate_quick_guid()] : {
 						created: (new Date).getTime() - 1000 * 60 * 3,
 						itemID: 'pizza-bo-dua',
 					},
@@ -306,6 +325,12 @@ var _CUSTOMERS = {
 						created: (new Date).getTime() - 1000 * 60 * 9,
 						itemID: 'pizza-hai-san',
 						request: 'đế mỏng',
+					},
+					[generate_quick_guid()] : {
+						created: (new Date).getTime() - 1000 * 60 * 10,
+						itemID: 'spaghetti-bo-ham',
+						request: 'nhiều ớt',
+						quantity: 2,
 					},
 				},
 			},
