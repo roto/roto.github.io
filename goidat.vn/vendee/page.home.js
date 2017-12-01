@@ -67,19 +67,6 @@ function navigateToService(serviceID) {
 }
 
 function search(text, onSuccess) {
-	var services = {
-		'bun' : {
-			name: 'Bún ngan',
-			desc: 'Chân cầu vượt Kim Mã',
-			image: 'http://maishouston.com/img/home-photo-3.jpg',
-		},
-		'pizza' : {
-			name: 'PizzaTent',
-			desc: 'Núi Trúc',
-			image: 'http://retaildesignblog.net/wp-content/uploads/2014/04/Peppes-Pizza-restaurant-by-RISS-INTERIORARKITEKTER-Oslo-Norway.jpg',
-		},
-	};
-
 	text = text.toUpperCase();
 	var results = {};
 	var properties = ['name', 'desc']
@@ -87,12 +74,12 @@ function search(text, onSuccess) {
 	for (var propID in properties) {
 		var property = properties[propID];
 
-		for (var serviceID in services) {
+		for (var serviceID in _SERVICES) {
 			if (results.hasOwnProperty(serviceID)) {
 				continue;
 			}
 
-			var service = services[serviceID];
+			var service = _SERVICES[serviceID];
 			var propValue = service[property].toUpperCase();
 
 			if (propValue.indexOf(text) >= 0 ||

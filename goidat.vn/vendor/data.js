@@ -312,4 +312,4 @@ var _CUSTOMERS = {
 		},
 		pendingMessages : [],
 	},
-}
+};
