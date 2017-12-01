@@ -148,7 +148,7 @@ var _SERVICES = {
 					desc:   'Pizza nấm rau quả cho người ăn chay.',
 					image:  'http://mywholefoodskitchen.com/wp-content/uploads/2013/04/pizza2.jpg',
 					price:	'70000',
-					initial:	'BD',
+					initial:	'PV',
 				},
 				'spaghetti-bo-ham': {
 					name:   'Spaghetti Bò Hầm',
@@ -310,7 +310,7 @@ var _CUSTOMERS = {
 				],
 				orders: {
 					[generate_quick_guid()] : {
-						created: (new Date).getTime() - 1000 * 60 * 3,
+						created: (new Date).getTime() - 1000 * 60 * 10,
 						itemID: 'pizza-bo-dua',
 					},
 				},
@@ -327,7 +327,7 @@ var _CUSTOMERS = {
 						request: 'đế mỏng',
 					},
 					[generate_quick_guid()] : {
-						created: (new Date).getTime() - 1000 * 60 * 10,
+						created: (new Date).getTime() - 1000 * 60 * 3,
 						itemID: 'spaghetti-bo-ham',
 						request: 'nhiều ớt',
 						quantity: 2,
