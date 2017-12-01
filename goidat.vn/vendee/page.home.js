@@ -67,6 +67,7 @@ function navigateToService(serviceID) {
 }
 
 function fetchServiceData(serviceID) {
+	$.mobile.loading('show');
 	var dataChannel = _ably.channels.get('data');
 	var client = generate_quick_guid();
 
@@ -87,6 +88,7 @@ function fetchServiceData(serviceID) {
 function populateService(serviceID) {
 	loadServiceData(serviceID);
 	populateOrder();
+	$.mobile.loading('hide');
 	populateMenu();
 }
 
@@ -116,7 +118,7 @@ function search(text, onSuccess) {
 	if ($.isFunction(onSuccess)) {
 		setTimeout(function() {
 			onSuccess(results);
-		}, 600 + Math.random() * 700);
+		}, 100 + Math.random() * 300);
 	} else {
 		return results;
 	}
