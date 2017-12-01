@@ -88,7 +88,7 @@ function fetchServiceData(serviceID, chain) {
 	dataChannel.publish('fetch', {
 		client: client,
 		serviceID: serviceID,
-		service: true,
+		service: !_SERVICES[serviceID].hasOwnProperty('product'),
 		customer: true,
 	});
 }
