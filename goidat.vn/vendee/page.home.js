@@ -59,20 +59,28 @@ function generateServiceHTML(service) {
 }
 
 function navigateToService(serviceID) {
-	$.mobile.navigate('#order', {
-		transition: "slidefade",
-	});
-
-	fetchServiceData(serviceID);
+	if ((typeof _ServiceID === 'undefined') || serviceID != _ServiceID) {
+		$.mobile.loading('show');
+		fetchServiceData(serviceID, function() {
+			$.mobile.navigate('#order', {
+				transition: "slidefade",
+			});
+			$.mobile.loading('hide');
+		});
+	} else {
+		$.mobile.navigate('#order', {
+			transition: "slidefade",
+		});
+	}
 }
 
-function fetchServiceData(serviceID) {
-	$.mobile.loading('show');
+function fetchServiceData(serviceID, chain) {
 	var dataChannel = _ably.channels.get('data');
 	var client = generate_quick_guid();
 
 	dataChannel.subscribe(client, function(message) {
 		dataChannel.unsubscribe(client, arguments.callee);
+		chain();
 		messageHandler(message);
 		populateService(serviceID);	
 	});
@@ -88,7 +96,6 @@ function fetchServiceData(serviceID) {
 function populateService(serviceID) {
 	loadServiceData(serviceID);
 	populateOrder();
-	$.mobile.loading('hide');
 	populateMenu();
 }
 
