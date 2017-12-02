@@ -21,7 +21,7 @@ html, body, #home { /* specify page */
 	bottom: 52px;
 }
 
-/* vertical centralize the list iamge */
+/* vertical centralize the list image */
 ul[data-role="listview"] > li > a > img {
 	border-radius: 50%; /* somehow, still need a property in the HTML img tag */
 	position: absolute;
@@ -32,6 +32,15 @@ ul[data-role="listview"] > li > a > img {
 	width:  70px;
 	height: 70px;
 	box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* vertical centralize the service list image */
+ul[data-role="listview"] > li > a > img.service {
+	/* somehow, still need a property in the HTML img tag */
+	position: absolute;
+	margin: 10px;
+	width:  60px;
+	height: 60px;
 }
 
 ul[data-role="listview"] > li > a {

@@ -64,7 +64,7 @@ ul[data-role="listview"] > li > a > img {
 	box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6), 0 6px 20px 0 rgba(0, 0, 0, 0.3);
 }
 
-/* vertical centralize the list initial */
+/* vertical centralize the service list image */
 ul[data-role="listview"] > li > a > img.initial {
 	/* somehow, still need a property in the HTML img tag */
 	position: absolute;

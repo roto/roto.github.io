@@ -38,7 +38,7 @@ function generateServiceHTML(service) {
 	var html = '<li id="service-item-' + service.id + '"><a href="javascript:navigateToService(\'' + service.id + '\');">';
 
 	if (service.image) {
-		html += '<img src="' + service.image + '" style="border-radius: 15%">';
+		html += '<img src="' + service.image + '" style="border-radius: 15%" class="service">';
 	}
 
 	if (service.name) {
