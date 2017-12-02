@@ -59,7 +59,7 @@ function generateServiceHTML(service) {
 }
 
 function navigateToService(serviceID) {
-	if ((typeof _ServiceID === 'undefined') || serviceID != _ServiceID) {
+	if (serviceID != _ServiceID) {
 		$.mobile.loading('show');
 		fetchServiceData(serviceID, function() {
 			$.mobile.navigate('#order', {

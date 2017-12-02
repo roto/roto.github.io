@@ -5,8 +5,7 @@ _ably.connection.on('connected', function() {
 	for (var id in _SERVICES) {
 		with ({serviceID: id}) { // create a object to pass the id value to closure
 			_ably.channels.get(serviceID).subscribe(function(message) {
-				if (VENDOR &&
-						((typeof _ServiceID === 'undefined') || serviceID != _ServiceID)) {
+				if (VENDOR && serviceID != _ServiceID) {
 					// not active service, queue the message
 					_CUSTOMERS[serviceID].pendingMessages.push(message);
 				} else {

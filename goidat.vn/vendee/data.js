@@ -15,3 +15,5 @@ var _SERVICES = {
 
 var _CUSTOMERS = {
 };
+
+var _ServiceID;
