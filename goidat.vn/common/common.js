@@ -168,6 +168,18 @@ function switchTheme() {
 	local_save('theme', newTheme);
 }
 
+function isActiveService(serviceID) {
+	if (typeof _ServiceID === 'undefined') {
+		return false;
+	}
+
+	if ($.mobile.activePage.attr('id') == 'home') {
+		return false;
+	}
+
+	return _ServiceID == serviceID;
+}
+
 function loadServiceData(serviceID) {
 	// unscribe the previous channel
 	if (VENDEE && _channel) {

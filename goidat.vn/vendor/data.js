@@ -338,5 +338,3 @@ var _CUSTOMERS = {
 		pendingMessages : [],
 	},
 };
-
-var _ServiceID;
