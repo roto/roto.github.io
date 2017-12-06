@@ -14,10 +14,22 @@ function populateSearchForm() {
 			search(text, function(results) {
 				var $ul = $('#service-list');
 				var html = generateServicesHTML(results);
+				$form.find('[name="hideable"]').hide();
 				$ul.empty().append($(html)).listview().listview('refresh');
 				$.mobile.loading('hide');
 			});
 		}
+	});
+
+	$form.off('focusin').focusin(function(event) {
+		$form.find('[name="hideable"]').show();
+	}).off('focusout').focusout(function(event) {
+		// stackoverflow.com/questions/5049172/jquery-focus-blur-on-form-not-individual-inputs/5049387#5049387
+		setTimeout(function() {
+			if (!$form[0].contains(document.activeElement)) {
+				$form.find('[name="hideable"]').hide();
+			}
+		}, 0);
 	});
 }
 
