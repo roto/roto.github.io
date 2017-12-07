@@ -10,11 +10,11 @@ function populateSearchForm() {
 		var $input = $form.find('[name="service-search"]');
 		var text = $input.val();
 		if (text && text.length > 0) {
+			$input.blur();
 			$.mobile.loading('show');
 			search(text, function(results) {
 				var $ul = $('#service-list');
 				var html = generateServicesHTML(results);
-				$form.find('[name="hideable"]').hide();
 				$ul.empty().append($(html)).listview().listview('refresh');
 				$.mobile.loading('hide');
 			});
@@ -29,7 +29,7 @@ function populateSearchForm() {
 			if (!$form[0].contains(document.activeElement)) {
 				$form.find('[name="hideable"]').hide();
 			}
-		}, 0);
+		});
 	});
 }
 
