@@ -3,20 +3,24 @@
 /*****************************************************************************/
 
 /* Find the duplicate order */
-function isRequestOrdered(itemID, request, excludeOrderID) {
+function isOrderDuplicate(order) {
+	var itemID = order.itemID;
+	var excludeOrderID = order.id;
+	var request = order.request;
+
 	for (var i in _Group.orders) {
 		if (excludeOrderID === i) {
 			continue;
 		}
 
-		var order = _Group.orders[i];
-		if (order.itemID === itemID) {
-			if (!request && !order.request) {
+		var groupOrder = _Group.orders[i];
+		if (groupOrder.itemID === itemID) {
+			if (!request && !groupOrder.request) {
 				return true;
 			}
 
-			if (request && order.request ) {
-				if (request.trim().toLowerCase() === order.request.trim().toLowerCase()) {
+			if (request && groupOrder.request ) {
+				if (request.trim().toLowerCase() === groupOrder.request.trim().toLowerCase()) {
 					return true;
 				}
 			}
@@ -26,14 +30,17 @@ function isRequestOrdered(itemID, request, excludeOrderID) {
 	return false;
 }
 
-function loadRequestInputEvents($div, itemID, orderID) {
+function loadRequestInputEvents($div, order) {
 	var $requestInput = $div.find('input[name="request"]');
 	$requestInput.off("input");
 	var $dupWarn = $div.find('#warn-duplicate');
-
+	var tempOrder = clone(order);
+	
 	// there are orders of the same item, monitor the input event
 	$requestInput.on("input", function() {
-		if (isRequestOrdered(itemID, $requestInput.val(), orderID)) {
+		tempOrder.request = $requestInput.val();
+
+		if (isOrderDuplicate(tempOrder)) {
 			// identical order exists, show warning
 			$dupWarn.show();
 		} else {
@@ -41,23 +48,17 @@ function loadRequestInputEvents($div, itemID, orderID) {
 		}
 	});
 
-	if (orderID) {
-		var order = _Group.orders.hasOwnProperty(orderID) ? _Group.orders[orderID] : _AllOrders[orderID];
-
-		if (order && order.request) {
-			$requestInput.val(order.request).trigger("input");
-		} else {
-			$requestInput.val('').trigger("input");
-		}
+	if (order && order.request) {
+		$requestInput.val(order.request).trigger("input");
 	} else {
 		$requestInput.val('').trigger("input");
 	}
 }
 
-function loadQuantityInputEvents($div, quantity) {
+function loadQuantityInputEvents($div, order) {
 	var $quantityRangeInput = $div.find('input[name="quantity"]');
 	var $slider = $div.find('div[role="application"]');
-	updateRangeSlider(quantity ? quantity : 1);
+	updateRangeSlider((order && order.quantity) ? order.quantity : 1);
 
 	$quantityRangeInput.off("focus").on("focus", function() {
 		$quantityRangeInput.removeAttr("max");
@@ -83,15 +84,27 @@ function loadQuantityInputEvents($div, quantity) {
 	}
 }
 
-function populateOptionInputs($div, itemID) {
-	var item = _MenuItems[itemID];
+function loadOptionInputs($div, order) {
+	var item = _MenuItems[order.itemID];
+	var options = order.options ? order.options : [];
 
 	if (item && item.options) {
 		var html = '<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">';
 		for (var i = 0; i < item.options.length; ++i) {
 			var option = item.options[i];
-			html += '<label>' + option + '<input type="checkbox"></label>';
+			html += '<label>' + option + '<input type="checkbox"';
+
+			var idx = $.inArray(option, options);
+			if (idx >= 0) {
+				html += ' checked';
+				options.splice(idx, 1);
+			}
+
+			html += '></label>';
 		}
+
+		// TODO: put the rest of options here, or at the begining of the list
+
 		html += '</fieldset>';
 
 		var $optionsDiv = $div.find('[name="options"]');
@@ -99,10 +112,22 @@ function populateOptionInputs($div, itemID) {
 	}
 }
 
-function loadStateInput($div, state) {
+function loadStateInput($div, order) {
 	var $stateChain = $div.find('[name="state-chain"]');
-	$stateChain.find('input[value="' + state + '"]').prop('checked', true);
-	$stateChain.enhanceWithin();
+	if ($stateChain.length > 0) {
+		$stateChain.find('input[value="' + order.state + '"]').prop('checked', true);
+		$stateChain.enhanceWithin();
+	}
+}
+
+/**
+ * load the order form inputs
+ */
+function loadOrderInputs($div, order) {
+	loadRequestInputEvents($div, order);
+	loadQuantityInputEvents($div, order);
+	loadOptionInputs($div, order);
+	loadStateInput($div, order);
 }
 
 /**

@@ -266,6 +266,15 @@ div[data-theme="b"] [data-role="delivery-table"] .ui-btn {
 	opacity: .6;
 }
 
+/* Order options format */
+[name="options"] .ui-checkbox.ui-controlgroup-controls .ui-btn-corner-all,
+[name="options"] .ui-controlgroup-controls .ui-btn.ui-corner-all {
+    border-radius: 6px;
+	border-width: 1px;
+	padding: 6px 8px;
+	margin: 3px;
+}
+
 /* Clone and override from jQM's .ui-focus class */
 [data-role="delivery-table"] .ui-highlight {
     -webkit-box-shadow: 0 0 20px #38c !important;

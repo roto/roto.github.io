@@ -164,6 +164,7 @@ var _SERVICES = {
 					image:  'http://vaobepnauan.com/wp-content/uploads/2014/07/cach-lam-my-y-ngon-5.jpg',
 					price:	'55000',
 					initial:	'SBH',
+					options: ['nhiều sốt', 'sốt cay'],
 				},
 				'spaghetti-bolognese': {
 					name:   'Spaghetti Bolognese',
@@ -171,6 +172,7 @@ var _SERVICES = {
 					image:  'https://scm-assets.constant.co/scm/unilever/a6798e909fa57bfd19c3e7f00737e5d6/d6ed4451-2c6b-4782-b19e-da7c6c558cc3.jpg',
 					price:	'60000',
 					initial:	'SB',
+					options: ['thêm ớt quả', 'nóng', 'lạnh'],
 				},
 			},
 

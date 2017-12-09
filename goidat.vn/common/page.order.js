@@ -154,8 +154,7 @@ function openOrderDialog(view, orderID) {
 				$dialog.popup("reposition", {});
 			});
 		} else if (view === 'edit') {
-			loadRequestInputEvents($div, item.id, orderID);
-			loadQuantityInputEvents($div, order.quantity);
+			loadOrderInputs($div, order);
 
 			var $form = $div.find("form");
 			$form.find('a[name="delete"]').off("click").click(function() {

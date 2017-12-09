@@ -280,8 +280,7 @@ function openQuickMenuDialog(link) {
 		var $div = $main.children('#dialog-menu-' + type).hide();
 
 		if (type === 'edit') {
-			loadRequestInputEvents($div, item.id, order.id);
-			loadQuantityInputEvents($div, order.quantity);
+			loadOrderInputs($div, order);
 
 			var $form = $div.find("form");
 			$form.find('a#order-delete').off("click").click(function() {
@@ -306,7 +305,7 @@ function openQuickMenuDialog(link) {
 				var quantity = order.quantity;
 				var request = order.request;
 
-				fetchOrderInputs(order, $div);
+				Object.assign(order, fetchOrderInputs($div));
 				$.mobile.back();
 
 				var quantityChanged = quantity != order.quantity;

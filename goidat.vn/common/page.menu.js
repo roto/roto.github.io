@@ -54,12 +54,10 @@ function openMenuDialog(type, itemID) {
 				$dialog.popup("reposition", {});
 			});
 		} else if (type === 'new') {
-			loadRequestInputEvents($div, itemID);
-			loadQuantityInputEvents($div);
-			populateOptionInputs($div, itemID);
+			var order = createNewOrder(itemID);
+			loadOrderInputs($div, order);
 
 			$div.find('form').off('submit').submit(function(){
-				var order = createNewOrder(itemID);
 				Object.assign(order, fetchOrderInputs($div));
 
 				_channel.publish(_GroupID, {

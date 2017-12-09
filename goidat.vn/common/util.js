@@ -352,3 +352,10 @@ function getRealWidth(element) {
 		return rect.right - rect.left;
 	}
 }
+
+/**
+ * Shallow clone the object, including functions.
+ */
+function clone(object) {
+	return Object.assign({}, object);
+}

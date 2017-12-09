@@ -123,9 +123,7 @@ function openQueueDialog(view, orderID) {
 		var $div = $main.children('[name="' + view + '"]').hide();
 
 		if (view === 'edit') {
-			loadRequestInputEvents($div, item.id, orderID);
-			loadQuantityInputEvents($div, order.quantity);
-			loadStateInput($div, order.state);
+			loadOrderInputs($div, order);
 
 			var $form = $div.find('form');
 			$form.find('a[name="reject"]').off("click").click(function() {
