@@ -15,6 +15,7 @@ var _SERVICES = {
 					image:  'https://media.foody.vn/res/g1/6682/prof/s480x300/foody-mobile-foody-a-hai-com-ga-x-869-635948407399671556.jpg',
 					price:	'35000',
 					initial:	'CG',
+					options: ['không nước sốt', 'ít cơm', 'nhiều cơm'],
 				},
 				
 				'com-rang-dua-bo': {
@@ -22,6 +23,7 @@ var _SERVICES = {
 					image:  'https://i.ytimg.com/vi/e9h2xmSoyLo/maxresdefault.jpg',
 					price:	'25000',
 					initial:	'CRDB',
+					options: ['ít cơm', 'nhiều cơm'],
 				},
 			
 				'pho-bo': {
@@ -30,6 +32,7 @@ var _SERVICES = {
 					image:  'http://vaobepnauan.com/wp-content/uploads/2014/08/cach-nau-pho-bo-gia-truyen-2.jpg',
 					price:	'30000',
 					initial:	'PB',
+					options: ['tái', 'chín', 'gàu', 'ít phở', 'nhiều phở'],
 				},
 				
 				'pho-ga': {
@@ -38,6 +41,7 @@ var _SERVICES = {
 					image:  'http://amthuchanoi.org/wp-content/uploads/2015/04/Diem-danh-nhung-quan-pho-ga-ngon-o-ha-noi6.jpg',
 					price:	'30000',
 					initial:	'PG',
+					options: ['gà đùi', 'ít phở', 'nhiều phở'],
 				},
 				
 				'pho-ngan': {
@@ -46,6 +50,7 @@ var _SERVICES = {
 					image:  'https://media.foody.vn/res/g4/36737/prof/s576x330/foody-mobile-quan-pho-ngan-bac-giang.jpg',
 					price:	'3500000',
 					initial:	'PN',
+					options: ['nhiều tiết', 'ít phở', 'nhiều phở'],
 				},
 				
 				'pho-ngo': {
@@ -135,6 +140,7 @@ var _SERVICES = {
 					image:  'http://www.miasdailydish.com/wp-content/uploads/2015/10/cauliflower-seafood-pizza-4.jpg',
 					price:	'80000',
 					initial:	'HS',
+					options: ['cỡ nhỏ', 'cỡ lớn', 'đế dày', 'đế mỏng'],
 				},
 				'pizza-bo-dua': {
 					name:   'Pizza Bò Dứa',
@@ -142,6 +148,7 @@ var _SERVICES = {
 					image:  'http://www.antoniospizza.net/images/food_specpizzas/papasgoldenbbgv2.jpg',
 					price:	'65000',
 					initial:	'BD',
+					options: ['cỡ nhỏ', 'cỡ lớn', 'đế dày', 'đế mỏng'],
 				},
 				'pizza-vegan': {
 					name:   'Pizza Vegan',
@@ -149,6 +156,7 @@ var _SERVICES = {
 					image:  'http://mywholefoodskitchen.com/wp-content/uploads/2013/04/pizza2.jpg',
 					price:	'70000',
 					initial:	'PV',
+					options: ['cỡ nhỏ', 'cỡ lớn', 'đế dày', 'đế mỏng'],
 				},
 				'spaghetti-bo-ham': {
 					name:   'Spaghetti Bò Hầm',

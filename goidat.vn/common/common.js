@@ -83,6 +83,22 @@ function loadQuantityInputEvents($div, quantity) {
 	}
 }
 
+function populateOptionInputs($div, itemID) {
+	var item = _MenuItems[itemID];
+
+	if (item && item.options) {
+		var html = '<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">';
+		for (var i = 0; i < item.options.length; ++i) {
+			var option = item.options[i];
+			html += '<label>' + option + '<input type="checkbox"></label>';
+		}
+		html += '</fieldset>';
+
+		var $optionsDiv = $div.find('[name="options"]');
+		$optionsDiv.empty().html(html).parent().enhanceWithin();
+	}
+}
+
 function loadStateInput($div, state) {
 	var $stateChain = $div.find('[name="state-chain"]');
 	$stateChain.find('input[value="' + state + '"]').prop('checked', true);
@@ -108,6 +124,15 @@ function fetchOrderInputs($div) {
 	var state = $div.find('input[name="state"]:checked').val();
 	if (state) {
 		order.state = state;
+	}
+	
+	var options = [];
+	$div.find('[name="options"] label.ui-checkbox-on').each(function(index, label) {
+		options.push($(label).text());
+	});
+
+	if (options.length > 0) {
+		order.options = options;
 	}
 
 	return order;

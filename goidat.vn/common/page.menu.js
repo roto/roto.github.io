@@ -56,6 +56,7 @@ function openMenuDialog(type, itemID) {
 		} else if (type === 'new') {
 			loadRequestInputEvents($div, itemID);
 			loadQuantityInputEvents($div);
+			populateOptionInputs($div, itemID);
 
 			$div.find('form').off('submit').submit(function(){
 				var order = createNewOrder(itemID);

@@ -185,6 +185,15 @@ div[data-theme="b"] #dialog-delivery .seat-taken {
 	background-color: red !important;
 }
 
+/* Order options format */
+[name="options"] .ui-checkbox.ui-controlgroup-controls .ui-btn-corner-all,
+[name="options"] .ui-controlgroup-controls .ui-btn.ui-corner-all {
+    border-radius: 6px;
+	border-width: 1px;
+	padding: 6px 8px;
+	margin: 3px;
+}
+
 /* Time Picker */
 /* Hide the original input, and picker icon */
 #tab-book .ui-input-has-clear {
