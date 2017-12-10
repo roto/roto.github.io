@@ -108,7 +108,7 @@ function loadQuantityInputEvents($div, order) {
 
 function loadOptionInputs($div, order) {
 	var item = _MenuItems[order.itemID];
-	var options = order.options ? order.options : [];
+	var options = order.options ? order.options.slice() : [];
 
 	if (item && item.options) {
 		var html = '<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">';
