@@ -4,41 +4,63 @@
 
 /* Find the duplicate order */
 function isOrderDuplicate(order) {
-	var itemID = order.itemID;
-	var excludeOrderID = order.id;
-	var request = order.request;
-
 	for (var i in _Group.orders) {
-		if (excludeOrderID === i) {
+		if (order.id === i) {
 			continue;
 		}
 
-		var groupOrder = _Group.orders[i];
-		if (groupOrder.itemID === itemID) {
-			if (!request && !groupOrder.request) {
-				return true;
-			}
-
-			if (request && groupOrder.request ) {
-				if (request.trim().toLowerCase() === groupOrder.request.trim().toLowerCase()) {
-					return true;
-				}
-			}
+		if (isOrderEqual(order, _Group.orders[i])) {
+			return true;
 		}
 	}
 
 	return false;
 }
 
+function isOrderEqual(a, b) {
+	if (a.itemID != b.itemID) {
+		return false;
+	}
+
+	var aRequest = a.request ? a.request.trim().toLowerCase() : a.request;
+	var bRequest = b.request ? b.request.trim().toLowerCase() : b.request;
+
+	if (aRequest !== bRequest) {
+		return false;
+	}
+
+	if (a.options === b.options) {
+		return true;
+	}
+
+	if ((!a.options && b.options) || (a.options && !b.options)) {
+		return false;
+	}
+
+	if (a.options.length != b.options.length) {
+		return false;
+	}
+
+	for (var i = 0; i < a.options.length; ++i) {
+		if ($.inArray(a.options[i], b.options) < 0) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 function loadRequestInputEvents($div, order) {
 	var $requestInput = $div.find('input[name="request"]');
-	$requestInput.off("input");
+
+	// Duplication warning text
 	var $dupWarn = $div.find('#warn-duplicate');
 	var tempOrder = clone(order);
 	
 	// there are orders of the same item, monitor the input event
-	$requestInput.on("input", function() {
-		tempOrder.request = $requestInput.val();
+	$requestInput.off("input").on("input", function() {
+		fetchRequestInput(tempOrder, $div);
+		fetchOptionsInput(tempOrder, $div);
 
 		if (isOrderDuplicate(tempOrder)) {
 			// identical order exists, show warning
@@ -109,6 +131,25 @@ function loadOptionInputs($div, order) {
 
 		var $optionsDiv = $div.find('[name="options"]');
 		$optionsDiv.empty().html(html).parent().enhanceWithin();
+
+		// Duplication warning text
+		var $dupWarn = $div.find('#warn-duplicate');
+		var tempOrder = clone(order);
+
+		$optionsDiv.find('input').off('change').change(function() {
+			// use setTimeout here to queue the action after all the DOM update
+			setTimeout(function() {
+				fetchRequestInput(tempOrder, $div);
+				fetchOptionsInput(tempOrder, $div);
+		
+				if (isOrderDuplicate(tempOrder)) {
+					// identical order exists, show warning
+					$dupWarn.show();
+				} else {
+					$dupWarn.hide();
+				}
+			});
+		});
 	}
 }
 
@@ -124,9 +165,9 @@ function loadStateInput($div, order) {
  * load the order form inputs
  */
 function loadOrderInputs($div, order) {
+	loadOptionInputs($div, order);
 	loadRequestInputEvents($div, order);
 	loadQuantityInputEvents($div, order);
-	loadOptionInputs($div, order);
 	loadStateInput($div, order);
 }
 
@@ -136,30 +177,37 @@ function loadOrderInputs($div, order) {
 function fetchOrderInputs($div) {
 	var order = {};
 
-	var quantity = $div.find('input[name="quantity"]').val();
-	if (quantity && quantity > 1) {
-		order.quantity = quantity;
-	}
+	fetchOptionsInput(order, $div);
+	fetchRequestInput(order, $div);
+	fetchQuantityInput(order, $div);
+	fetchStateInput(order, $div);
 
+	return order;
+}
+
+function fetchRequestInput(order, $div) {
 	var request = $div.find('input[name="request"]').val().trim();
-	if (request && request.length > 0) {
-		order.request = request;
-	}
+	order.request = request;
+	return order;
+}
 
-	var state = $div.find('input[name="state"]:checked').val();
-	if (state) {
-		order.state = state;
-	}
-	
+function fetchQuantityInput(order, $div) {
+	var quantity = $div.find('input[name="quantity"]').val();
+	order.quantity = quantity;
+	return order;
+}
+
+function fetchOptionsInput(order, $div) {
 	var options = [];
 	$div.find('[name="options"] label.ui-checkbox-on').each(function(index, label) {
 		options.push($(label).text());
 	});
+	order.options = options;
+	return order;
+}
 
-	if (options.length > 0) {
-		order.options = options;
-	}
-
+function fetchStateInput(order, $div) {
+	order.state = $div.find('input[name="state"]:checked').val();
 	return order;
 }
 
