@@ -33,20 +33,15 @@ function isOrderPropsEqual(a, b) {
 		return false;
 	}
 
-	if (a.options === b.options) {
-		return true;
-	}
+	var aOptions = a.options ? a.options : [];
+	var bOptions = b.options ? b.options : [];
 
-	if ((!a.options && b.options) || (a.options && !b.options)) {
+	if (aOptions.length != bOptions.length) {
 		return false;
 	}
 
-	if (a.options.length != b.options.length) {
-		return false;
-	}
-
-	for (var i = 0; i < a.options.length; ++i) {
-		if ($.inArray(a.options[i], b.options) < 0) {
+	for (var i = 0; i < aOptions.length; ++i) {
+		if ($.inArray(aOptions[i], bOptions) < 0) {
 			return false;
 		}
 	}
