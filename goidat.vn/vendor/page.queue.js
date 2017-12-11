@@ -29,7 +29,7 @@ function generateQueueItemHTML(order) {
 		orderHTML += '<h2>' + item.name + '</h2>';
 	}
 
-	orderHTML += generateOrderRequestHTML(order);
+	orderHTML += generateOrderPropsHTML(order);
 	orderHTML += generateOrderQuantityHTML(order);
 	orderHTML += generateOrderStateHTML(order);
 	orderHTML += generateQueueTableHTML(order);

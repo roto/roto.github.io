@@ -76,7 +76,7 @@ function generateOrderHTML(order) {
 		orderHTML += '<h2>' + item.name + '</h2>';
 	}
 
-	orderHTML += generateOrderRequestHTML(order);
+	orderHTML += generateOrderPropsHTML(order);
 	orderHTML += generateOrderQuantityHTML(order);
 	orderHTML += generateOrderStateHTML(order);
 
@@ -85,11 +85,28 @@ function generateOrderHTML(order) {
 	return orderHTML;
 }
 
+function generateOrderPropsHTML(order) {
+	var html = '<p class="ui-li-props">';
+	html += generateOrderRequestHTML(order);
+	html += generateOrderOptionsHTML(order);
+	return html + '</p>';
+}
+
 function generateOrderRequestHTML(order) {
-	if (order.request) {
-		return '<p>' + order.request + '</p>';
+	if (order.request && order.request.length > 0) {
+		return '<span name="request">' + order.request + '</span>';
 	}
 	return '';
+}
+
+function generateOrderOptionsHTML(order) {
+	var html = '';
+	if (order.options && order.options.length > 0) {
+		for (var i = 0; i < order.options.length; ++i) {
+			html += '<span name="option">' + order.options[i]  + '</span>';
+		}
+	}
+	return html;
 }
 
 function generateOrderQuantityHTML(order) {
@@ -186,7 +203,8 @@ function openOrderDialog(view, orderID) {
 
 function updateOrder(changedProps) {
 	var order = VENDOR ? _AllOrders[changedProps.id] : _Group.orders[changedProps.id];
-
+	var oldOrder = clone(order);
+	
 	var $orderElement = $('#order-item-' + order.id + ',#queue-item-' + order.id);
 
 	if (changedProps.state && changedProps.state != order.state) {
@@ -196,14 +214,16 @@ function updateOrder(changedProps) {
 
 	Object.assign(order, changedProps);
 	
-	function updateOrderInputElements(property, selector, htmlGeneratorFunc, valuePostfix) {
-		var $el = $orderElement.find(selector);
+	// update order request
+	if (changedProps.request != oldOrder.request) {
+		var $el = $orderElement.find('a > p > span[name="request"]');
 		if ($el.length > 0) {
-			if (order[property]) {
-				var valueWithPF = valuePostfix ? order[property] + valuePostfix : order[property];
-				if ($el.text() != valueWithPF) {
-					$el.text(valueWithPF);
-					$el.fadeOut().fadeIn('slow').fadeOut().fadeIn('slow');
+			if (changedProps.request && changedProps.request.length > 0) {
+				if ($el.text() != changedProps.request) {
+					$el.fadeOut(function() {
+						$el.text(changedProps.request);
+						$el.fadeIn('slow').fadeOut().fadeIn('slow');
+					});
 				}
 			} else {
 				$el.fadeOut(1000, function() {
@@ -212,17 +232,69 @@ function updateOrder(changedProps) {
 				});
 			}
 		} else {
-			if (order[property]) {
-				$(htmlGeneratorFunc(order))
-						.insertAfter('#order-item-' + order.id + ' > a > h2,#queue-item-' + order.id + ' > a > h2')
+			if (changedProps.request && changedProps.request.length > 0) {
+				$(generateOrderRequestHTML(changedProps)).appendTo($orderElement.find('a > p'))
 						.hide().fadeIn(1000);
 			}
 		}
 	}
 
-	// update order request
-	updateOrderInputElements('request', 'p', generateOrderRequestHTML);
-	updateOrderInputElements('quantity', '.ui-li-quantity', generateOrderQuantityHTML, ORDER_QUANTITY_POSTFIX);
+	// update order quantity
+	if (changedProps.quantity != oldOrder.quantity) {
+		var $el = $orderElement.find('a > span.ui-li-quantity');
+		if ($el.length > 0) {
+			if (changedProps.quantity && changedProps.quantity > 1) {
+				if ($el.text() != changedProps.quantity + ORDER_QUANTITY_POSTFIX) {
+					$el.fadeOut(function() {
+						$el.text(changedProps.quantity + ORDER_QUANTITY_POSTFIX);
+						$el.fadeIn('slow').fadeOut().fadeIn('slow');
+					});
+				}
+			} else {
+				$el.fadeOut(1000, function() {
+					// remove the item's DOM when animation complete
+					$(this).remove();
+				});
+			}
+		} else {
+			if (changedProps.quantity && changedProps.quantity > 1) {
+				$(generateOrderQuantityHTML(changedProps)).appendTo($orderElement.find('a'))
+						.hide().fadeIn(1000);
+			}
+		}
+	}
+
+	// update order options
+	if (!isOrderOptionsEqual(oldOrder, changedProps)) {
+		var oldOptions = oldOrder.options ? oldOrder.options : [];
+		var newOptions = changedProps.options ? changedProps.options : [];
+		var optionsToRemove = oldOptions.filter(function(value) {
+			return $.inArray(value, newOptions) < 0;
+		});
+		var optionsToInsert = newOptions.filter(function(value) {
+			return $.inArray(value, oldOptions) < 0;
+		});
+
+		var $elmToRemove = $([]);
+		if (optionsToRemove.length > 0) {
+			$orderElement.find('a > p > span[name="option"]').each(function() {
+				if ($.inArray($(this).text(), optionsToRemove) >= 0) {
+					$elmToRemove = $elmToRemove.add(this);
+				}
+			});
+		}
+
+		$elmToRemove.fadeOut(1000).promise().done(function() {
+			// remove the option's DOM when animation complete
+			$(this).remove();
+
+			if (optionsToInsert.length > 0) {
+				$(generateOrderOptionsHTML({options: optionsToInsert}))
+						.appendTo($orderElement.find('a > p'))
+						.hide().fadeIn(1000);
+			}
+		});
+	}
 }
 
 function deleteOrder(orderID, groupID) {

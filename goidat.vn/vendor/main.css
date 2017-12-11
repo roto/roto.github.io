@@ -156,6 +156,28 @@ li#new-order > a > div.ui-li-thumb > img {
 	margin-left: 6px;
 }
 
+/* Order options */
+/* Clone from .ui-li-count (jQueryMobile) */
+.ui-li-props {
+	display: -webkit-flex; /* Safari */
+    -webkit-flex-wrap: wrap; /* Safari 6.1+ */
+    display: flex !important;
+	flex-wrap: wrap !important;
+	overflow: visible !important;
+	padding-right: 2em !important;
+}
+
+.ui-li-props > span[name="option"] {
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	padding: 0 .2em;
+	margin-top: -10px;
+	margin: 0 .2em;
+	border-radius: 6px;
+	border-color: #888 !important;
+}
+
 /* Order Preview */
 #order-preview-list > li {
 	margin-right: -20px;

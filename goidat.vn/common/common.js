@@ -33,6 +33,10 @@ function isOrderPropsEqual(a, b) {
 		return false;
 	}
 
+	return isOrderOptionsEqual(a, b);
+}
+
+function isOrderOptionsEqual(a, b) {
 	var aOptions = a.options ? a.options : [];
 	var bOptions = b.options ? b.options : [];
 
