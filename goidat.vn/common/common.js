@@ -22,6 +22,10 @@ function isOrderEqual(a, b) {
 		return false;
 	}
 
+	return isOrderPropsEqual(a, b);
+}
+
+function isOrderPropsEqual(a, b) {
 	var aRequest = a.request ? a.request.trim().toLowerCase() : a.request;
 	var bRequest = b.request ? b.request.trim().toLowerCase() : b.request;
 
@@ -48,6 +52,36 @@ function isOrderEqual(a, b) {
 	}
 
 	return true;
+}
+
+function getOrderHash(order) {
+	var value = '';
+	if (order.request) {
+		value += order.request;
+	}
+	if (order.options && order.options.length > 0) {
+		for (var i = 0; i < order.options.length; ++i) {
+			value += order.options[i];
+		}
+	}
+
+	if (value.length > 0) {
+		return hash_code(value);
+	} else {
+		return null;
+	}
+}
+
+function isOrderHasProps(order) {
+	if (order.request && order.request.length > 0) {
+		return true;
+	}
+
+	if (order.options && order.options.length > 0) {
+		return true;
+	}
+
+	return false;
 }
 
 function loadRequestInputEvents($div, order) {

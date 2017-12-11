@@ -100,12 +100,12 @@ function menuItemClick(itemID) {
 		var $this = $(this);
 		var order = $this.data('order');
 
-		if(order && order.itemID === itemID && !order.request) {
+		if(order && order.itemID === itemID && !isOrderHasProps(order)) {
 			var currentQuantity = order.quantity;
 
 			// register the Undo action
 			historyAdd(function() {
-				setPreviewQuantity($this, currentQuantity);
+				updatePreviewQuantity($this, currentQuantity);
 			});
 
 			if (!order.quantity) {
@@ -114,7 +114,7 @@ function menuItemClick(itemID) {
 				++order.quantity;
 			}
 
-			setPreviewQuantity($this, order.quantity);
+			updatePreviewQuantity($this, order.quantity);
 
 			itemExist = true;
 			return false; // stop processing the next .each() iteration
@@ -177,23 +177,25 @@ function onNewPreviewItem($item) {
 	}
 }
 
-function setPreviewQuantity($item, quantity) {
-	$item.data('order').quantity = quantity;
-
-	var $span = $item.children('span');
-	$span.text(quantity);
-
-	if (quantity > 1) {
-		$span.css('visibility', 'visible');
-	} else {
-		$span.css('visibility', 'hidden');
-	}
+function updatePreviewProps($item, props) {
+	var order = Object.assign($item.data('order'), props);
+	var propsHash = getOrderHash(order);
+	$item.children('a').first().css('background-color', propsHash ? hash_to_rbg(propsHash) : 'transparent');
 }
 
-function setPreviewRequest($item, request) {
-	$item.data('order').request = request;
-	var color = (request && request.length > 0) ? hash_to_rbg(hash_code(request)) : 'transparent';
-	$item.children('a').first().css('background-color', color);
+function updatePreviewQuantity($item, quantity) {
+	$item.data('order').quantity = quantity;
+
+	if (quantity) {
+		var $span = $item.children('span');
+		$span.text(quantity);
+
+		if (quantity > 1) {
+			$span.css('visibility', 'visible');
+		} else {
+			$span.css('visibility', 'hidden');
+		}
+	}
 }
 
 function historyAdd(action) {
@@ -302,23 +304,24 @@ function openQuickMenuDialog(link) {
 			});
 
 			$form.off("submit").submit(function() {
-				var quantity = order.quantity;
-				var request = order.request;
-
-				Object.assign(order, fetchOrderInputs($div));
+				var props = Object.assign({}, fetchOrderInputs($div));
 				$.mobile.back();
 
-				var quantityChanged = quantity != order.quantity;
-				var requestChanged = request !== order.request;
+				if (props.quantity != order.quantity || !isOrderPropsEqual(props, order)) {
+					var oldQuantity = order.quantity;
 
-				if (quantityChanged || requestChanged) {
-					historyAdd(function() {
-						setPreviewQuantity($item, quantity);
-						setPreviewRequest($item, request);
-					});
+					with({oldProps: {
+						request: order.request,
+						options: order.options ? order.options.slice() : null,
+					}}) {
+						historyAdd(function() {
+							updatePreviewQuantity($item, oldQuantity);
+							updatePreviewProps($item, oldProps);
+						});
+					}
 
-					setPreviewQuantity($item, order.quantity);
-					setPreviewRequest($item, order.request);
+					updatePreviewQuantity($item, props.quantity);
+					updatePreviewProps($item, props);
 				}
 			});
 		} else {
