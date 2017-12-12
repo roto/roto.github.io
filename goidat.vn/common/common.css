@@ -35,6 +35,7 @@ ul[data-role="listview"] > li > a > img {
 }
 
 /* vertical centralize the service list image */
+ul[data-role="listview"] > li > a > img.initial,
 ul[data-role="listview"] > li > a > img.service {
 	/* somehow, still need a property in the HTML img tag */
 	position: absolute;
@@ -73,12 +74,13 @@ li#new-order > a > div.ui-li-thumb > img {
 }
 
 /* Order status */
+#queue .ui-li-count,
 #order .ui-li-count {
 	top: 65%;
 }
 
 /* Order status dialog */
-[data-role="popup"] [name="status"] > img{
+[data-role="popup"] [name="status"] > img {
 	max-height: 5em;
 	max-width: 5em;
     margin: 0em 1em 0em 0em;
