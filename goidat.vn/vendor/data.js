@@ -239,12 +239,13 @@ var _CUSTOMERS = {
 					[generate_quick_guid()] : {
 						created: (new Date).getTime() - 1000 * 60 * 10,
 						itemID: 'pho-ngan',
-						request: 'nhiều tiết',
+						options: ['nhiều tiết'],
 						quantity: 4,
 					},
 					[generate_quick_guid()] : {
 						created: (new Date).getTime() - 1000 * 60 * 3,
 						itemID: 'pho-bo',
+						options: ['gàu', 'chín'],
 						quantity: 3,
 					},
 				},
@@ -258,11 +259,12 @@ var _CUSTOMERS = {
 					[generate_quick_guid()] : {
 						created: (new Date).getTime() - 1000 * 60 * 9,
 						itemID: 'pho-bo',
-						request: 'ít bún',
+						options: ['tái', 'ít phở'],
 					},
 					[generate_quick_guid()] : {
 						created: (new Date).getTime() - 1000 * 60 * 5,
 						itemID: 'com-ga',
+						request: 'gà đùi',
 						quantity: 2,
 					}
 				},
@@ -288,7 +290,7 @@ var _CUSTOMERS = {
 					[generate_quick_guid()] : {
 						created: (new Date).getTime() - 1000 * 60 * 2,
 						itemID: 'com-ga',
-						request: 'không sốt',
+						options: ['không nước sốt'],
 						quantity: 2,
 					}
 				},
@@ -303,6 +305,7 @@ var _CUSTOMERS = {
 					[generate_quick_guid()] : {
 						created: (new Date).getTime() - 1000 * 60 * 13,
 						itemID: 'com-ga',
+						request: 'không hành',
 					}
 				},
 			},
@@ -322,6 +325,7 @@ var _CUSTOMERS = {
 					[generate_quick_guid()] : {
 						created: (new Date).getTime() - 1000 * 60 * 10,
 						itemID: 'pizza-bo-dua',
+						options: ['cỡ lớn', 'đế mỏng'],
 					},
 				},
 			},
@@ -334,12 +338,12 @@ var _CUSTOMERS = {
 					[generate_quick_guid()] : {
 						created: (new Date).getTime() - 1000 * 60 * 9,
 						itemID: 'pizza-hai-san',
-						request: 'đế mỏng',
+						request: 'nhiều ớt',
 					},
 					[generate_quick_guid()] : {
 						created: (new Date).getTime() - 1000 * 60 * 3,
 						itemID: 'spaghetti-bo-ham',
-						request: 'nhiều ớt',
+						options: ['sốt cay'],
 						quantity: 2,
 					},
 				},
