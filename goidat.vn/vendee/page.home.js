@@ -10,7 +10,10 @@ function populateSearchForm() {
 		var $input = $form.find('[name="service-search"]');
 		var text = $input.val();
 		if (text && text.length > 0) {
+			// out focus all possible submit sources to trigger form's focusout
 			$input.blur();
+			$form.find('[type="submit"]').blur();
+
 			$.mobile.loading('show');
 			search(text, function(results) {
 				var $ul = $('#service-list');
