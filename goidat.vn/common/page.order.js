@@ -233,7 +233,7 @@ function updateOrder(changedProps) {
 			}
 		} else {
 			if (changedProps.request && changedProps.request.length > 0) {
-				$(generateOrderRequestHTML(changedProps)).appendTo($orderElement.find('a > p'))
+				$(generateOrderRequestHTML(changedProps)).prependTo($orderElement.find('a > p'))
 						.hide().fadeIn(1000);
 			}
 		}
