@@ -148,10 +148,13 @@ function openOrderDialog(view, orderID) {
 			} else {
 				$div.children('span[name="quantity"]').hide();
 			}
-			$div.children('[name="request"]').html(order.request ? order.request : '');
+			$div.find('[name="request"]').html(order.request ? order.request : '');
+
 			$div.children('[name="options"]').html(generateOrderOptionsHTML(order));
-			$div.children('[name="state"]').html(order.state);
-			
+
+			var pecentage = ((hash_code(order.id)>>>0) % 20 * 5);
+			$div.children('[name="state"]').html('Status: ' + order.state + ' ' + pecentage + '%');
+
 			$div.find('a[data-icon="edit"]').off('click').click(function() {
 				$div.hide();
 				showOrderContent('edit');
