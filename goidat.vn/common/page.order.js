@@ -149,6 +149,7 @@ function openOrderDialog(view, orderID) {
 				$div.children('span[name="quantity"]').hide();
 			}
 			$div.children('[name="request"]').html(order.request ? order.request : '');
+			$div.children('[name="options"]').html(generateOrderOptionsHTML(order));
 			$div.children('[name="state"]').html(order.state);
 			
 			$div.find('a[data-icon="edit"]').off('click').click(function() {
