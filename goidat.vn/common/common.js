@@ -240,7 +240,10 @@ function fetchOptionsInput(order, $div) {
 }
 
 function fetchStateInput(order, $div) {
-	order.state = $div.find('input[name="state"]:checked').val();
+	var $checkedState = $div.find('input[name="state"]:checked');
+	if ($checkedState && $checkedState.length > 0) {
+		order.state = $checkedState.val();
+	}
 	return order;
 }
 
