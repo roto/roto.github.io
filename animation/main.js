@@ -5,9 +5,12 @@ $(document).ready(function() {
 });
 
 function injectSvg(xmlDoc) {
-	var svg = $(xmlDoc);//.find('svg');
-	var container = $("#container");
-	container.append(svg);
+	var svg = $(xmlDoc).find('svg');
+	if (!svg || svg.length == 0) {
+		// local file case
+		svg = $(xmlDoc);
+	}
+	$("#container").append(svg);
 }
 
 function startAnimation() {
