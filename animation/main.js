@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$.get('sample.svg')
+	$.get('BB_00007.svg')
 			.then(injectSvg)
 			.always(startAnimation);
 });
@@ -34,7 +34,7 @@ function sortByClass(paths) {
 	});
 }
 
-var speed = 60.0;
+var speed = 600.0;
 var delay = 0.0;
 
 function initPathDrawing(path) {
