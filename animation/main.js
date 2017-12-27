@@ -160,7 +160,9 @@ function startAnimation() {
 
 	paths.each(function(index, path) {
 		initPathDrawing(path);
-	}).each(function(index, path) {
+	});
+	
+	$(paths.get().reverse()).each(function(index, path) {
 		startPathDrawing(path);
 	});
 }
