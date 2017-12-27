@@ -17,16 +17,20 @@ function startAnimation() {
 	var paths = $('.squiggle-animated path');
 
 	// sort by class
-	paths = paths.sort(function(a, b) {
+	//paths = sortByClass(paths);
+
+	paths.each(function(index, path) {
+		initPathDrawing(path);
+	});
+}
+
+function sortByClass(paths) {
+	return paths.sort(function(a, b) {
 		var $aClass = $(a).attr('class');
 		$aClass = $aClass ? $aClass : '';
 		var $bClass = $(b).attr('class');
 		$bClass = $bClass ? $bClass : '';
 		return $aClass.localeCompare($bClass);
-	});
-
-	paths.each(function(index, path) {
-		initPathDrawing(path);
 	});
 }
 
