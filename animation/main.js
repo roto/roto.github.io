@@ -160,6 +160,8 @@ function startAnimation() {
 
 	paths.each(function(index, path) {
 		initPathDrawing(path);
+	}).each(function(index, path) {
+		startPathDrawing(path);
 	});
 }
 
@@ -195,8 +197,11 @@ function initPathDrawing(path) {
 	path.style.transitionTimingFunction = path.style.WebkitTransitionTimingFunction = 'ease-in-out';	
 	path.style.transitionDuration = path.style.WebkitTransitionDuration = duration + 's';
 	path.style.transitionDelay = path.style.WebkitTransitionDelay = delay + 's';
-	// Go!
-	path.style.strokeDashoffset = '0';
 
 	delay += duration;
+}
+
+function startPathDrawing(path) {
+	// Go!
+	path.style.strokeDashoffset = '0';
 }
