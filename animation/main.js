@@ -2,6 +2,7 @@ $(document).ready(function() {
 	$.get('BB_00007.svg')
 			.then(injectSvg)
 			.always(mergePath)
+			.always(correctStrokeWidth)
 			.always(startAnimation);
 });
 
@@ -58,6 +59,7 @@ function mergePath() {
 					// wrap the last path up
 					$lastPath.removeData('x');
 					$lastPath.removeData('y');
+					$lastPath.removeData('count');
 					// init the next path chain
 					lastPath = path;
 				}
@@ -66,13 +68,35 @@ function mergePath() {
 			}
 		}
 
-		updatePathData(lastPath, segments);
+		updatePathData(lastPath, segments, getStrokeWidth($(path)));
 	});
 }
 
-function updatePathData(path, segments) {
+function getStrokeWidth($path) {
+	var sw = Number($path.css('stroke-width').slice(0, -2));
+	return sw;
+}
+
+function updatePathData(path, segments, strokeWidth) {
 	var x = 0.0;
 	var y = 0.0;
+
+	var $path = $(path);
+
+	if (strokeWidth) {
+		var count = $path.data('count');
+		if (!count) {
+			count = 0;
+		}
+
+		var lastStrokeWidth = getStrokeWidth($path);
+		var newStrokeWidth = (lastStrokeWidth * count + strokeWidth) / (count + 1);
+		$path.css('stroke-width', newStrokeWidth + 'px');
+
+		++count;
+		$path.data('count', count);
+	}
+
 
 	for (var i = segments.length - 1; i >= 0; --i) {
 		var seg = segments[i];
@@ -87,7 +111,6 @@ function updatePathData(path, segments) {
 			x += parseFloat(point[2]);
 			y += parseFloat(point[3]);
 		} else if (point[1] == "M" || point[1] == "L") {
-			var $path = $(path);
 			$path.data('x', parseFloat(point[2]) + x);
 			$path.data('y', parseFloat(point[3]) + y);
 			return;
@@ -95,6 +118,38 @@ function updatePathData(path, segments) {
 			throw "Unrecognized path command: " + point[1];
 		}
 	}
+}
+
+function correctStrokeWidth() {
+	var paths = $('.squiggle-animated path');
+
+	var maxSW = 0;
+	var minSW = 999999;
+
+	paths.each(function(index, path) {
+		var $path = $(path);
+		var sw = getStrokeWidth($path);
+		if (sw > 0) {
+			if (sw > maxSW) {
+				maxSW = sw;
+			}
+			if (sw < minSW) {
+				minSW = sw;
+			}
+		}
+	});
+
+	paths.each(function(index, path) {
+		var $path = $(path);
+		var sw = getStrokeWidth($path);
+		if (sw > 0) {
+			sw -= minSW;
+			sw += 1;
+			sw = Math.pow(sw, 2);
+			sw -= 1;
+			$path.css('stroke-width', sw + 'px');
+		}
+	});
 }
 
 function startAnimation() {
