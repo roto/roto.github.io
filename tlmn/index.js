@@ -113,7 +113,7 @@ function calculateTotals() {
 		var values = getCellValues($cells);
 		if (isZeroSum(values)) {
 			for (var i = 0; i < totals.length; ++i) {
-				if (emptyColumns[r]) {
+				if (emptyColumns[i]) {
 					continue;
 				}
 				totals[i] += values[i];
