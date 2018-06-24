@@ -108,14 +108,14 @@ function calculateTotals() {
 	var $rows = $('table tr:not([name])');
 
 	for (var r = 0; r < $rows.length; ++r) {
-		if (emptyColumns[r]) {
-			continue;
-		}
 		$row = $($rows.get(r));
 		var $cells = $row.children('td');
 		var values = getCellValues($cells);
 		if (isZeroSum(values)) {
 			for (var i = 0; i < totals.length; ++i) {
+				if (emptyColumns[r]) {
+					continue;
+				}
 				totals[i] += values[i];
 			}
 		}
