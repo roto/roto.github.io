@@ -29,8 +29,8 @@ $(document).ready(function () {
 		calculateTotals();
 
 		function calculateLastValue() {
-			var emptyIndex = -1;
-			var sum = 0;
+			let sum = 0;
+			let emptyIdxs = [];
 			for (var i = 0; i < $cells.length; ++i) {
 				var $cell = $cells.get(i);
 				var $input = $cell.children[0];
@@ -43,26 +43,33 @@ $(document).ready(function () {
 				if ($.isNumeric(val)) {
 					sum += Number(val);
 				} else {
-					if (emptyIndex >= 0) {
-						// has another empty cell, do nothing
-						return;
-					} else {
-						// save the empty cell index
-						emptyIndex = i;
-					}
+					emptyIdxs.push(i)
 				}
 			}
 
-			if (emptyIndex >= 0) {
-				// there's only 1 empty cell, set the value
-				$cells.get(emptyIndex).children[0].value = -sum;
-				$cells.get(emptyIndex).children[0].disabled = true;
-				if ($row.attr('name')) {
-					$row.removeAttr('name');
-					var newRowHTML = '<tr name="new"><td><input type=number></td><td><input type=number></td><td><input type=number></td><td><input type=number></td></tr>';
-					$(newRowHTML).insertAfter($row).find('input').on('input', onScoreInput);
-				}	
+			if (emptyIdxs.length > 1) {
+				// clear all input of remain status
+				emptyIdxs.forEach(idx => enableInput(idx))
+			} else if (emptyIdxs.length === 1) {
+				disableInput(emptyIdxs[0], -sum);
 			}
+		}
+
+		function enableInput(idx) {
+			const input = $cells.get(idx).children[0];
+			input.value = undefined;
+			input.disabled = false;
+		}
+
+		function disableInput(idx, value) {
+			const input = $cells.get(idx).children[0];
+			input.value = value;
+			input.disabled = true;
+			if ($row.attr('name')) {
+				$row.removeAttr('name');
+				var newRowHTML = '<tr name="new"><td><input type=number></td><td><input type=number></td><td><input type=number></td><td><input type=number></td></tr>';
+				$(newRowHTML).insertAfter($row).find('input').on('input', onScoreInput);
+			}	
 		}
 	}
 
