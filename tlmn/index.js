@@ -21,9 +21,9 @@ $(document).ready(function () {
 
 		var values = getCellValues($cells);
 		if (isZeroSum(values)) {
-			$cells.children('input').css('color', 'inherit');
+			$cells.children('input').css('color', 'lightgray');
 		} else {
-			$cells.children('input').css('color', 'red');
+			$cells.children('input').css('color', '#FF9800');
 		}
 
 		calculateTotals();

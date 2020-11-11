@@ -9,35 +9,37 @@ table {
 td, th {
 	border: 1px solid #aaaaaa;
 	text-align: center;
-	padding: 2px;
 }
 
 th {
-	color: white;
-	background-color: gray;
-}
-
-tr:nth-child(odd) input {
-	background-color: #dddddd;
+	color: cyan;
+	background-color: #444;
 }
 
 tr[name="total"] * {
-	color: black;
-	background-color: lightgray;
-}
-
-tr[name="players"] input {
-	width: 50px;
-	background-color: gray;
-	color: white;
-	font-weight: bold;
+	color: lightgray;
+	background-color: #555;
 }
 
 tr input {
 	width: 50px;
+	padding-left: 1em;
 	text-align: center;
 	font-size: inherit;
 	border: 0px;
+	background-color: #666;
+}
+
+tr:nth-child(odd) input {
+	background-color: #555;
+}
+
+tr[name="players"] input {
+	padding-left: 0;
+	width: 50px;
+	background-color: #444;
+	color: cyan;
+	font-weight: bold;
 }
 
 .control {
@@ -47,4 +49,8 @@ tr input {
 .control button {
 	margin: 1em;
 	padding: .5em 2em;
+}
+
+body {
+	background-color: #333;
 }
