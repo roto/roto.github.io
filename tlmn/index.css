@@ -23,7 +23,6 @@ tr[name="total"] * {
 
 tr input {
 	width: 50px;
-	padding-left: 1em;
 	text-align: center;
 	font-size: inherit;
 	border: 0px;
@@ -35,7 +34,6 @@ tr:nth-child(odd) input {
 }
 
 tr[name="players"] input {
-	padding-left: 0;
 	width: 50px;
 	background-color: #444;
 	color: cyan;
@@ -53,4 +51,18 @@ tr[name="players"] input {
 
 body {
 	background-color: #333;
+}
+
+/* hide the number input scroll bar */
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+	-moz-appearance: textfield;
 }
