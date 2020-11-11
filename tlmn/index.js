@@ -10,7 +10,16 @@ $(document).ready(function () {
 		localStorage.setItem('name-' + columnIdx, value);
 	});
 
-	$('tr[name="new"] input').on('input', onScoreInput);
+	$('tr[name="new"] input')
+		.on('input', onScoreInput)
+		.on('keydown', onScoreEnter)
+
+	function onScoreEnter(e) {
+		if (e.key !== 'Enter') {
+			return
+		}
+		nextOnTabIndex(e.target).focus()
+	}
 
 	function onScoreInput() {
 		var $input = $(this);
@@ -68,7 +77,9 @@ $(document).ready(function () {
 			if ($row.attr('name')) {
 				$row.removeAttr('name');
 				var newRowHTML = '<tr name="new"><td><input type=number></td><td><input type=number></td><td><input type=number></td><td><input type=number></td></tr>';
-				$(newRowHTML).insertAfter($row).find('input').on('input', onScoreInput);
+				$(newRowHTML).insertAfter($row).find('input')
+					.on('input', onScoreInput)
+					.on('keydown', onScoreEnter)
 			}	
 		}
 	}
@@ -179,6 +190,18 @@ function calculateTotals() {
 function resetScores() {
 	$('table tr:not([name])').remove();
 	calculateTotals();
+}
+
+function nextOnTabIndex(element) {
+	const fields = $($('table')
+		.find('a[href], button, input, select, textarea')
+		.filter(':visible').filter('a, :enabled')
+		.toArray()
+		.sort(function (a, b) {
+			return ((a.tabIndex > 0) ? a.tabIndex : 1000) - ((b.tabIndex > 0) ? b.tabIndex : 1000);
+		}));
+
+	return fields.eq((fields.index(element) + 1) % fields.length);
 }
 
 // Production steps of ECMA-262, Edition 5, 15.4.4.17
