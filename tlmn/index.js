@@ -13,7 +13,6 @@ $(document).ready(function () {
 
 	function onScoreInput() {
 		var $input = $(this);
-		var value = $input.val();
 
 		var $row = $input.parent().parent();
 		var $cells = $row.children('td');
