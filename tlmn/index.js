@@ -7,6 +7,7 @@ $(document).ready(function () {
 		var value = $input.val().trim();
 		$('table').find('tr[name="header"]').get(0).cells[columnIdx].innerHTML = value;
 		emptyColumns[columnIdx] = value.length <= 0;
+		localStorage.setItem('name-' + columnIdx, value);
 	});
 
 	$('tr[name="new"] input').on('input', onScoreInput);
@@ -81,13 +82,27 @@ $(document).ready(function () {
 	});
 
 	try {
-		loadScores()
+		loadData()
 	} catch (err) {
 		console.error('Failed to load local scores', err)
 	}
 });
 
-function loadScores() {
+function loadData() {
+	const event = new Event('input', { bubbles: true, cancelable: true });
+
+	// load the players name
+	for (let i = 0; i < 4; ++i) {
+		const name = localStorage.getItem('name-' + i)
+		if (!name) {
+			continue
+		}
+		const element = $('table').find(`tr[name="players"] > th[index="${i}"] > input`).get(0)
+		element.value = name
+		element.dispatchEvent(event);
+	}
+
+	// load the total scores
 	const item = localStorage.getItem('totals');
 	if (!item) {
 		return
@@ -97,7 +112,6 @@ function loadScores() {
 		return
 	}
 	const inputs = $('tr[name="new"] input')
-	const event = new Event('input', { bubbles: true, cancelable: true });
 	for (let i = 0; i < totals.length; ++i) {
 		inputs[i].value = totals[i]
 		inputs[i].dispatchEvent(event);
