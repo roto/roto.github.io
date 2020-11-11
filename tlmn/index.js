@@ -108,7 +108,7 @@ function loadData() {
 		return
 	}
 	const totals = JSON.parse(item);
-	if (!totals || !totals.some(t => t > 0)) {
+	if (!totals || !totals.some(t => t !== 0)) {
 		return
 	}
 	const inputs = $('tr[name="new"] input')
