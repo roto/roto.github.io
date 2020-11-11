@@ -80,7 +80,34 @@ $(document).ready(function () {
 			}
 		}
 	});
+
+	try {
+		loadScores()
+	} catch (err) {
+		console.error('Failed to load local scores', err)
+	}
 });
+
+function loadScores() {
+	const item = localStorage.getItem('totals');
+	if (!item) {
+		return
+	}
+	const totals = JSON.parse(item);
+	if (!totals || !totals.some(t => t > 0)) {
+		return
+	}
+	const inputs = $('tr[name="new"] input')
+	const event = new Event('input', { bubbles: true, cancelable: true });
+	for (let i = 0; i < totals.length; ++i) {
+		inputs[i].value = totals[i]
+		inputs[i].dispatchEvent(event);
+	}
+}
+
+function saveScores(totals) {
+	localStorage.setItem('totals', JSON.stringify(totals));
+}
 
 function isZeroSum(values) {
 	var sum = 0;
@@ -132,9 +159,38 @@ function calculateTotals() {
 	for (var i = 0; i < $totalEs.length; ++i) {
 		$totalEs.get(i).innerHTML = emptyColumns[i] ? '' : totals[i];
 	}
+
+	saveScores(totals)
 }
 
 function resetScores() {
 	$('table tr:not([name])').remove();
 	calculateTotals();
+}
+
+// Production steps of ECMA-262, Edition 5, 15.4.4.17
+// Reference: http://es5.github.io/#x15.4.4.17
+if (!Array.prototype.some) {
+	Array.prototype.some = function (fun, thisArg) {
+		'use strict';
+
+		if (this == null) {
+			throw new TypeError('Array.prototype.some called on null or undefined');
+		}
+
+		if (typeof fun !== 'function') {
+			throw new TypeError();
+		}
+
+		var t = Object(this);
+		var len = t.length >>> 0;
+
+		for (var i = 0; i < len; i++) {
+			if (i in t && fun.call(thisArg, t[i], i, t)) {
+				return true;
+			}
+		}
+
+		return false;
+	};
 }
