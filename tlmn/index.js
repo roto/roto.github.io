@@ -12,7 +12,14 @@ $(document).ready(function () {
 
 	$('tr[name="new"] input')
 		.on('input', onScoreInput)
+	
+	$('input')
 		.on('keydown', onScoreEnter)
+		.on('focus', onFocus)
+
+	function onFocus(e) {
+		e.target.select()
+	}
 
 	function onScoreEnter(e) {
 		if (e.key == 'Enter' || (e.keyCode || e.which) == 13) {
@@ -82,6 +89,7 @@ $(document).ready(function () {
 				$(newRowHTML).insertAfter($row).find('input')
 					.on('input', onScoreInput)
 					.on('keydown', onScoreEnter)
+					.on('focus', onFocus)
 			}	
 		}
 	}
