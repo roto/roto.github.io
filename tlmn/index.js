@@ -15,10 +15,9 @@ $(document).ready(function () {
 		.on('keydown', onScoreEnter)
 
 	function onScoreEnter(e) {
-		if (e.key !== 'Enter') {
-			return
+		if (e.key == 'Enter' || (e.keyCode || e.which) == 13) {
+			nextOnTabIndex(e.target).focus()
 		}
-		nextOnTabIndex(e.target).focus()
 	}
 
 	function onScoreInput(e) {
