@@ -21,12 +21,12 @@ $(document).ready(function () {
 		nextOnTabIndex(e.target).focus()
 	}
 
-	function onScoreInput() {
-		var $input = $(this);
+	function onScoreInput(e) {
+		var $active = $(this);
 
-		var $row = $input.parent().parent();
+		var $row = $active.parent().parent();
 		var $cells = $row.children('td');
-		calculateLastValue();
+		calculateLastValue($cells, $active);
 
 		var values = getCellValues($cells);
 		if (isZeroSum(values)) {
@@ -37,18 +37,18 @@ $(document).ready(function () {
 
 		calculateTotals();
 
-		function calculateLastValue() {
+		function calculateLastValue($cells, $active) {
 			let sum = 0;
 			let emptyIdxs = [];
 			for (var i = 0; i < $cells.length; ++i) {
 				var $cell = $cells.get(i);
-				var $input = $cell.children[0];
+				var input = $cell.children[0];
 				if (emptyColumns[i]) {
-					$input.value = '';
-					$input.disabled = true;
+					input.value = undefined;
+					// $input.disabled = true;
 					continue;
 				}
-				var val = $input.disabled ? undefined : $input.value;
+				var val = input.disabled ? undefined : input.value;
 				if ($.isNumeric(val)) {
 					sum += Number(val);
 				} else {
@@ -60,23 +60,26 @@ $(document).ready(function () {
 				// clear all input of remain status
 				emptyIdxs.forEach(idx => enableInput(idx))
 			} else if (emptyIdxs.length === 1) {
-				disableInput(emptyIdxs[0], -sum);
+				const isCurrent = $active[0].getAttribute('index') == emptyIdxs[0]
+				const emptyingCurrentInput = !e.data && !e.originalEvent.data
+				if (!isCurrent || emptyingCurrentInput) {
+					disableInput(emptyIdxs[0], -sum);
+				}
 			}
 		}
 
 		function enableInput(idx) {
-			const input = $cells.get(idx).children[0];
-			input.value = undefined;
-			input.disabled = false;
+			// const input = $cells.get(idx).children[0];
+			// input.disabled = false;
 		}
 
 		function disableInput(idx, value) {
 			const input = $cells.get(idx).children[0];
 			input.value = value;
-			input.disabled = true;
+			// input.disabled = true;
 			if ($row.attr('name')) {
 				$row.removeAttr('name');
-				var newRowHTML = '<tr name="new"><td><input type=number></td><td><input type=number></td><td><input type=number></td><td><input type=number></td></tr>';
+				var newRowHTML = '<tr name="new"><td><input index=0 type=number></td><td><input index=1 type=number></td><td><input index=2 type=number></td><td><input index=3 type=number></td></tr>';
 				$(newRowHTML).insertAfter($row).find('input')
 					.on('input', onScoreInput)
 					.on('keydown', onScoreEnter)
