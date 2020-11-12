@@ -28,11 +28,13 @@ $(document).ready(function () {
 	}
 
 	function onScoreInput(e) {
+		delete this.ag;	// clear the auto generated flag
 		var $active = $(this);
 
 		var $row = $active.parent().parent();
 		var $cells = $row.children('td');
-		calculateLastValue($cells, $active);
+		const currentIdx = this.getAttribute('index');
+		calculateLastValue($cells);
 
 		var values = getCellValues($cells);
 		if (isZeroSum(values)) {
@@ -43,46 +45,60 @@ $(document).ready(function () {
 
 		calculateTotals();
 
-		function calculateLastValue($cells, $active) {
-			let sum = 0;
-			let emptyIdxs = [];
+		function findInputAG($cells) {
+			const emptyIdxs = []
 			for (var i = 0; i < $cells.length; ++i) {
-				var $cell = $cells.get(i);
-				var input = $cell.children[0];
-				if (emptyColumns[i]) {
-					input.value = undefined;
-					// $input.disabled = true;
-					continue;
+				const $cell = $cells.get(i)
+				const input = $cell.children[0]
+				if (input.ag) {
+					var agInput = i;
 				}
-				var val = input.disabled ? undefined : input.value;
-				if ($.isNumeric(val)) {
-					sum += Number(val);
-				} else {
+				if (!$.isNumeric(input.value)) {
 					emptyIdxs.push(i)
 				}
 			}
+			if (emptyIdxs.length === 1) {
+				return emptyIdxs[0]
+			}
+			if (typeof agInput !== 'undefined') {
+				return agInput
+			}
+			return -1;
+		}
 
-			if (emptyIdxs.length > 1) {
-				// clear all input of remain status
-				emptyIdxs.forEach(idx => enableInput(idx))
-			} else if (emptyIdxs.length === 1) {
-				const isCurrent = $active[0].getAttribute('index') == emptyIdxs[0]
-				const emptyingCurrentInput = !e.data && !e.originalEvent.data
-				if (!isCurrent || emptyingCurrentInput) {
-					disableInput(emptyIdxs[0], -sum);
+		function sumInput($cells, agIdx) {
+			let sum = 0;
+			for (var i = 0; i < $cells.length; ++i) {
+				const $cell = $cells.get(i);
+				const input = $cell.children[0];
+				if (i !== agIdx) {
+					sum += parseInt(input.value)
+					delete input.ag
 				}
 			}
+			return sum;
 		}
 
-		function enableInput(idx) {
-			// const input = $cells.get(idx).children[0];
-			// input.disabled = false;
+		function calculateLastValue($cells) {
+			const agIdx = findInputAG($cells)
+			if (agIdx < 0) {
+				return
+			}
+
+			const isCurrent = currentIdx == agIdx
+			const emptyingCurrentInput = !e.data && !e.originalEvent.data
+			if (isCurrent && !emptyingCurrentInput) {
+				return	// don't auto generate active input while editing
+			}
+			
+			const sum = sumInput($cells, agIdx)
+			autogenerate(agIdx, -sum);
 		}
 
-		function disableInput(idx, value) {
+		function autogenerate(idx, value) {
 			const input = $cells.get(idx).children[0];
 			input.value = value;
-			// input.disabled = true;
+			input.ag = true;
 			if ($row.attr('name')) {
 				$row.removeAttr('name');
 				var newRowHTML = '<tr name="new"><td><input index=0 type=number></td><td><input index=1 type=number></td><td><input index=2 type=number></td><td><input index=3 type=number></td></tr>';
